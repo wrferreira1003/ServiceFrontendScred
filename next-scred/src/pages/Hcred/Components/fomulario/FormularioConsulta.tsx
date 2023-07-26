@@ -115,8 +115,9 @@ export default function FormularioSolicitacao(){
     try{
       const files = data.fileUpload
       for (let i = 0; i < files.length; i++) {
-        console.log(data)
+  
       }
+      console.log(data)
       setMessage("Dados enviados com sucesso.")
     } catch (erro){
       console.error(erro)

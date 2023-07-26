@@ -18,6 +18,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/pages/Hcred/Tabelionato"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/pages/Hcred/Tabelionato", "src/pages/Hcred/Components"],
   "exclude": ["node_modules"]
 }
