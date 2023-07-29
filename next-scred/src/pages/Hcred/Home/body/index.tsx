@@ -79,12 +79,12 @@ export default function Body() {
         </div>
       </div>
       <div className="flex flex-none items-center gap-x-4">
-        <a
+        <Link
           href="/Hcred/Tabelionato"
           className="hidden rounded-md bg-blue-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm ring-1 ring-inset hover:bg-blue-700 sm:block"
         >
           Nova Solicitação
-        </a>
+        </Link>
       </div>
     </li>
   ))}
