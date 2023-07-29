@@ -110,9 +110,10 @@ export default function FormDocumentos({ formDataDocumentos,
                       type="text"
                       id="rg"
                       placeholder='Digite seu RG'
-                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 px-1
-                                ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 
-                                focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 py-1.5 px-1
+                      text-gray-900 shadow-sm ring-1 ring-inset 
+                      ring-gray-300 placeholder:text-gray-400 focus:ring-2 
+                      focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       {...register('rg')}
                     />
                     {errors.rg && (
@@ -129,9 +130,10 @@ export default function FormDocumentos({ formDataDocumentos,
                     <input
                       type="text"
                       id="cpf"
-                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 
-                                 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 
-                                 first-letter:first-line:marker:selection:focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 py-1.5 px-1
+                                 text-gray-900 shadow-sm ring-1 ring-inset 
+                                 ring-gray-300 placeholder:text-gray-400 focus:ring-2 
+                                  focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       {...register('cpf')}
                       />
                       {errors.cpf && (
@@ -175,10 +177,10 @@ export default function FormDocumentos({ formDataDocumentos,
                     <input
                       type="text"
                       id="cpfenvolvido"
-                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 
-                                 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 
-                                 first-letter:first-line:marker:selection:focus:ring-inset
-                                 focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 py-1.5 px-1
+                                 text-gray-900 shadow-sm ring-1 ring-inset 
+                                 ring-gray-300 placeholder:text-gray-400 focus:ring-2 
+                                  focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       {...register('cpfenvolvido')}
                       />
                       {errors.cpfenvolvido && (

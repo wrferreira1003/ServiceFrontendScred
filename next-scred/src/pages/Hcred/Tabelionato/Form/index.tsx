@@ -213,8 +213,8 @@ export default function Tabelionato(){
             </p>
           </div>
 
-          <div className="flex flex-col w-full items-center justify-center mx-auto mt-10">
-            <div className="flex flex-col sm:flex-row items-center justify-center">
+          <div className="bg-slate-100 flex flex-col p-3 rounded-md items-center justify-center mx-auto mt-10 mb-2">
+            <div className="flex flex-col sm:flex-row items-center justify-center mt-5">
               {steps?.map((step, i) => (
                 <div
                   key={i}
@@ -229,6 +229,7 @@ export default function Tabelionato(){
                 </div>
                   ))}
               </div>
+              
               {currentStep === 1 && <DadosPessoas 
                                     formData={formData} 
                                     handleFormDataChange={handleFormDataChange}
@@ -253,7 +254,7 @@ export default function Tabelionato(){
                                       
 
               {currentStep === 5 &&  < ResumoForm />}
-                    
+       
               {!complete && (
               <div className="btn-group flex gap-x-3 mb-5">
                 {currentStep > 1 && (
