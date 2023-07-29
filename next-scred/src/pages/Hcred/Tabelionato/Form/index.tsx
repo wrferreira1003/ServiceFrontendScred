@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { TiTick } from "react-icons/ti";
 import DadosPessoas from '../../Components/fomulario/DadosPessoas';
 import HeaderService from '../../Components/headerService';
 import EnderecoForm from '../../Components/fomulario/endereco';
@@ -7,6 +6,7 @@ import FormDocumentos from '../../Components/fomulario/documentos';
 import Afiliados from '../../Components/fomulario/afiliados';
 import DadosCartorio from '../../Components/fomulario/dadosCartorio';
 import ResumoForm from '../../Components/fomulario/resumoform';
+import { Check } from '@phosphor-icons/react';
 
 interface FormularioDadosPessoal {
   nome: string;
@@ -223,7 +223,7 @@ export default function Tabelionato(){
                   } `}
                 >
                   <div className="step">
-                    {i + 1 < currentStep || complete ? <TiTick size={24} /> : i + 1}
+                    {i + 1 < currentStep || complete ? <Check size={32} /> : i + 1}
                   </div>
                   <p className="text-gray-500">{step}</p>
                 </div>
@@ -301,7 +301,7 @@ export default function Tabelionato(){
                     } `}
                   >
                     <div className="step">
-                      {i + 1 < currentStep || complete ? <TiTick size={24} /> : i + 1}
+                      {i + 1 < currentStep || complete ? <Check size={32} /> : i + 1}
                     </div>
                     <p className="text-gray-500">{step}</p>
                   </div>

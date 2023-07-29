@@ -1,6 +1,5 @@
-import { PhotoIcon } from '@heroicons/react/24/solid'
 import { useEffect, useState } from 'react'
-import { useForm, FormProvider, Controller } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import * as zod from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 
