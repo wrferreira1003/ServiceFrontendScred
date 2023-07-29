@@ -214,7 +214,7 @@ export default function Tabelionato(){
           </div>
 
           <div className="flex flex-col w-full items-center justify-center mx-auto mt-10">
-            <div className="flex justify-between">
+            <div className="flex flex-col sm:flex-row items-center justify-center">
               {steps?.map((step, i) => (
                 <div
                   key={i}
@@ -292,7 +292,7 @@ export default function Tabelionato(){
             </div>
 
             <div className="flex flex-col w-full items-center justify-center mx-auto mt-10">            
-              <div className="flex justify-between">
+              <div className="flex flex-col sm:flex-row items-center justify-center">
                 {steps?.map((step, i) => (
                   <div
                     key={i}
