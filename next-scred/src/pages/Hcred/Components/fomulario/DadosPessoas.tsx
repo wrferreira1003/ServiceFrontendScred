@@ -28,6 +28,18 @@ const createUserSchema = zod.object({
   }, {
     message:'Número de telefone inválido, o formato correto é (XX) XXXXX-XXXX',
   }),
+
+  nomeenvolvido: zod.string().nonempty({
+    message: 'O Nome é obrigatório',
+  }).min(3,{
+    message: 'O Nome precisa ter no mínimo 3 caracteres'
+  }),
+
+  sobrenomeenvolvido: zod.string().nonempty({
+    message: 'O Sobrenome é obrigatório',
+  }).min(3,{
+    message: 'O Sobrenome precisa ter no mínimo 3 caracteres'
+  }),
 });
 
 //Criando a typagem a partir do Schema de validação
@@ -59,6 +71,8 @@ export default function DadosPessoas({formData,
       sobrenome: formData ? formData.sobrenome : '',
       email: formData ? formData.email: '',
       telefone: formData ? formData.telefone: '',
+      nomeenvolvido: formData ? formData.nomeenvolvido: '',
+      sobrenomeenvolvido: formData ? formData.sobrenomeenvolvido: '',
       //Colocar os valores default para cada campo.
     }
   });
@@ -94,7 +108,12 @@ export default function DadosPessoas({formData,
   return(
     <div className=" w-full">
       <form onSubmit={handleSubmit(createUser)} action="">  
-        <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+        <h2 className="text-lg font-semibold leading-7
+                       text-gray-900 mt-10">
+          Dados do Solicitante
+        </h2>
+        <div className="mt-5 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+        
 
           {/* Campo Nome */}
           <div className="sm:col-span-3">
@@ -184,6 +203,59 @@ export default function DadosPessoas({formData,
                     <p className="text-red-500 mt-2 text-sm">{errors.telefone.message}</p>
                   )}
           </div>
+          </div>
+
+          <h2 className="text-lg font-semibold leading-7
+                       text-gray-900 mt-10">
+          Dados do Envolvido no processo
+        </h2>
+        <div className="mt-5 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+        
+
+          {/* Campo Nome */}
+          <div className="sm:col-span-3">
+            <label htmlFor="nomeenvolvido" className="block text-sm font-medium leading-6 text-gray-900">
+              Primeiro Nome
+            </label>
+            <div className="mt-2">
+              <input
+                type="text"
+                id="nomeenvolvido"
+                placeholder='Digite seu nome'
+                className="block w-full rounded-md border-0 py-1.5 px-1
+                           text-gray-900 shadow-sm ring-1 ring-inset 
+                           ring-gray-300 placeholder:text-gray-400 focus:ring-2 
+                           focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                {...register('nomeenvolvido')}
+              />
+              
+            </div>
+            {errors.nomeenvolvido && (
+                    <p className="text-red-500 mt-2 text-sm">{errors.nomeenvolvido.message}</p>
+                  )}
+          </div>
+          
+          {/* Campo Sobrenome */}
+          <div className="sm:col-span-3">
+            <label htmlFor="sobrenomeenvolvido" className="block text-sm font-medium leading-6 text-gray-900">
+              Sobrenome
+            </label>
+            <div className="mt-2">
+              <input
+                type="text"
+                id="sobrenomeenvolvido"
+                placeholder='Digite seu sobrenome'
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900 px-1
+                          shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 
+                          focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                {...register('sobrenomeenvolvido')}
+              />
+              
+            </div>
+            {errors.sobrenomeenvolvido && (
+                    <p className="text-red-500 mt-2 text-sm">{errors.sobrenomeenvolvido.message}</p>
+                  )}
+          </div>       
           </div>
       
     

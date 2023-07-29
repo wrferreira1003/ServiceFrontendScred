@@ -53,6 +53,10 @@ export default function EnderecoForm({formDataendereco,
     resolver: zodResolver(createUserSchema),
     defaultValues:{
       estado: formDataendereco ? formDataendereco.estado : '',
+      endereco: formDataendereco ? formDataendereco.endereco : '',
+      cidade: formDataendereco ? formDataendereco.cidade : '',
+      bairro: formDataendereco ? formDataendereco.bairro : '',
+      cep: formDataendereco ? formDataendereco.cep : '',
       //Colocar os valores default para cada campo.
     }
   });

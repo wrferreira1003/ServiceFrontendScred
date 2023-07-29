@@ -3,12 +3,18 @@ import { TiTick } from "react-icons/ti";
 import DadosPessoas from '../../Components/fomulario/DadosPessoas';
 import HeaderService from '../../Components/headerService';
 import EnderecoForm from '../../Components/fomulario/endereco';
+import FormDocumentos from '../../Components/fomulario/documentos';
+import Afiliados from '../../Components/fomulario/afiliados';
+import DadosCartorio from '../../Components/fomulario/dadosCartorio';
+import ResumoForm from '../../Components/fomulario/resumoform';
 
 interface FormularioDadosPessoal {
   nome: string;
   sobrenome: string;
   email: string;
   telefone: string;
+  nomeenvolvido: string;
+  sobrenomeenvolvido: string;
   
 }
 interface FormularioEndereco {
@@ -17,18 +23,42 @@ interface FormularioEndereco {
   cidade: string;
   bairro: string;
   cep: string;
-}   
+}
+
+interface FormularioDocumentos{
+  rg: string;
+  cpf: string;
+  rgenvolvido: string;
+  cpfenvolvido: string;
+  fileUpload: any;
+}
+
+interface FormularioAfiliados{
+  cidadeafiliado: string;
+  afiliado: string;
+}
+
+interface FormularioCartorio{
+  cartorio: string;
+  estadolivro: string;
+  livro: string;
+  folha: string;
+}
+
 
 export default function Tabelionato(){
   const [servico, setServico] = useState('');
   const [subservico, setSubServico] = useState('');
   const [validateAndSave, setValidateAndSave] = useState<(() => Promise<boolean>) | null>(null);
-  
+  const [isDisable, setIsDisable] = useState(false);
+
   const [formData, setFormData] = useState<FormularioDadosPessoal>({
     nome: '', 
     sobrenome: '', 
     email: '', 
     telefone: '',
+    nomeenvolvido: '',
+    sobrenomeenvolvido: '', 
   });
   const [formDataendereco, setFormDataendereco] = useState<FormularioEndereco>({
     estado: '',
@@ -37,9 +67,28 @@ export default function Tabelionato(){
     bairro: '',
     cep: '',
   });
+
+  const [formDataDocumentos, setFormDataDocumentos] = useState<FormularioDocumentos>({
+    rg: '',
+    cpf: '',
+    rgenvolvido: '',
+    cpfenvolvido: '',
+    fileUpload: '',
+  });
+
+  const [formDataAfiliados, setformDataAfiliados] = useState<FormularioAfiliados>({
+    cidadeafiliado: '',
+    afiliado: '',
+  });
+  const [formDataCartorio, setformDataCartorio] = useState<FormularioCartorio>({
+    cartorio: '',
+    estadolivro: '',
+    livro: '',
+    folha: '',
+  });
   
   //stepper
-  const steps = ["Informações básica", "Endereço", "Documentos", "Resumo", "Resumo"];
+  const steps = ["Informações básica", "Endereço", "Documentos", "Cartório", "Resumo"];
   const [currentStep, setCurrentStep] = useState(1);
   const [complete, setComplete] = useState(false);
 
@@ -48,7 +97,6 @@ export default function Tabelionato(){
   }
   const handleSubServicoChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSubServico(event.target.value);
-    console.log(event.target.value);
   }
 
   //Funcao que recebe os dados dos componentes do formulario
@@ -57,8 +105,6 @@ export default function Tabelionato(){
       ...prevData,
       ...newData
     }));
-    console.log('Dados pessoal');
-    console.log(newData); // agora você pode ver os novos dados do formulário no console
   }
   //Funcao que recebe os dados dos componentes do formulario
   const handleFormDataChangeEndereco = (newData: any) => {
@@ -66,22 +112,47 @@ export default function Tabelionato(){
       ...prevDataendereco,
       ...newData
     }));
-    console.log('Endereco');
-    console.log(newData); // agora você pode ver os novos dados do formulário no console
+  }
+
+  const handleFormDataChangeDocumentos = (newData: any) => {
+    setFormDataDocumentos(prevDataDocumentos => ({
+      ...prevDataDocumentos,
+      ...newData
+    }))
+  };
+
+  const handleFormDataChangeAfiliados = (newData: any) => {
+    setformDataAfiliados(prevDataAfiliados => ({
+      ...prevDataAfiliados,
+      ...newData
+    }))
+  }
+
+  const handleFormDataChangeCartorio = (newData: any) => {
+    setformDataCartorio(prevDataCartorio => ({
+      ...prevDataCartorio,
+      ...newData
+    }))
   }
 
   const combineDataForm = () => {
     const combinedData = {
+      servico,
+      subservico,
       ...formData,
-      ...formDataendereco
+      ...formDataendereco,
+      ...formDataDocumentos,
+      ...formDataAfiliados,
+      ...formDataCartorio
     }
     console.log(combinedData);
   };
 
+  const onNextStep = () => {
+    setIsDisable(true);
+  };
   //Funcao que Comunica com os componentes de formulario e faz as validacoes 
-  const handleNextClick = async () => {
-    console.log('Clique no next');
-      
+  const handleNextClick = async () => {      
     if (currentStep === steps.length) {
       setComplete(true);
       combineDataForm() //Chamando a funcao para juntar os dados.
@@ -90,36 +161,42 @@ export default function Tabelionato(){
       if (currentStep === 1 && validateAndSave) {
         const isValid = await validateAndSave(); // Valida e salva os dados antes de avançar
         if (isValid) {
+          onNextStep()
           setCurrentStep((prev) => prev + 1);
         }
       } else if (currentStep === 2 && validateAndSave) {
-        console.log('Aqui colocaremos o formulario parte 2')
         const isValidEndereco = await validateAndSave();
         if (isValidEndereco) {
         setCurrentStep((prev) => prev + 1);
         }
 
-      } else if (currentStep === 3){
-      
-        console.log('Aqui colocaremos o formulario parte 3')
+      } else if (currentStep === 3 && validateAndSave) {
+        const isValidDocumentos = await validateAndSave();
+        if (isValidDocumentos) {
         setCurrentStep((prev) => prev + 1);
-      } else if (currentStep === 4){
-      
-        console.log('Aqui colocaremos o formulario parte 3')
-        setCurrentStep((prev) => prev + 1);
-      } else if (currentStep === 5){
-      
+        }
+
+      } else if (currentStep === 4 && validateAndSave) {
+          const isValidAfiliados = await validateAndSave(); // Validação de Afiliados sempre ocorre
+          let isValidCartorio = true; // Inicialmente, consideramos que o Cartorio é válido
+    
+          if (servico === 'Solicitação de Consulta') { // Se for uma 'Nova solicitação', devemos validar o Cartorio também
+            isValidCartorio = await validateAndSave(); // Chame a função que valida Cartorio
+          }
+        if (isValidAfiliados && isValidCartorio) {
+            setCurrentStep((prev) => prev + 1);
+        }
+      } else if (currentStep === 5){      
         console.log('Aqui colocaremos o formulario parte 3')
         setCurrentStep((prev) => prev + 1);
       }
-
     }
-  
   };
   
   return (
     <div className=" w-4/5 mx-auto">
       <HeaderService 
+        isDisabled = {isDisable}
         handleServicoChange={handleServicoChange}
         handleSubServicoChange={handleSubServicoChange}
       /> 
@@ -128,10 +205,10 @@ export default function Tabelionato(){
         <div>   
           <div>
             <h2 className="text-lg font-semibold leading-7 text-gray-900 mt-10">
-              Informações Para Solicitaçao de Consulta de Documentos</h2>
+              Informações Para Solicitaçao de um novo documento</h2>
             <p className="mt-1 text-sm leading-6 text-gray-600">
             Esta solicitação foi criada especificamente para os clientes que desejam solicitar 
-            uma novo documentos em um determinado cartório. Por favor, tenha em mente que as informações requeridas para tal consulta 
+            um novo documento em um determinado cartório. Por favor, tenha em mente que as informações requeridas para tal consulta 
             devem estar corretas e completas para garantir a precisão dos resultados
             </p>
           </div>
@@ -161,9 +238,21 @@ export default function Tabelionato(){
                                       formDataendereco={formDataendereco} 
                                       handleFormDataChangeEndereco={handleFormDataChangeEndereco}
                                       setValidateAndSave= {setValidateAndSave}/>}
-              {currentStep === 3 && ""}
-              {currentStep === 4 && ""}
-              {currentStep === 5 && ""}
+              {currentStep === 3 && <FormDocumentos 
+                                     formDataDocumentos={formDataDocumentos}
+                                     handleFormDataChangeDocumentos={handleFormDataChangeDocumentos}
+                                     setValidateAndSave= {setValidateAndSave}   
+                                    />}
+              {currentStep === 4 &&   <> 
+                                        <Afiliados
+                                          handleFormDataChangeAfiliados = {handleFormDataChangeAfiliados} 
+                                          setValidateAndSave = {setValidateAndSave}
+                                          formDataAfiliados = {formDataAfiliados}
+                                        />
+                                      </>}
+                                      
+
+              {currentStep === 5 &&  < ResumoForm />}
                     
               {!complete && (
               <div className="btn-group flex gap-x-3 mb-5">
@@ -219,14 +308,33 @@ export default function Tabelionato(){
                     ))}
                 </div>
                 {currentStep === 1 && <DadosPessoas 
-                                      formData={formData} 
-                                      handleFormDataChange={handleFormDataChange}
-                                      setValidateAndSave= {setValidateAndSave}
-                                      />}
-                {currentStep === 2 && ""}
-                {currentStep === 3 && ""}
-                {currentStep === 4 && ""}
-                {currentStep === 5 && ""}
+                                    formData={formData} 
+                                    handleFormDataChange={handleFormDataChange}
+                                    setValidateAndSave= {setValidateAndSave}
+                                    />}
+              {currentStep === 2 && <EnderecoForm 
+                                      formDataendereco={formDataendereco} 
+                                      handleFormDataChangeEndereco={handleFormDataChangeEndereco}
+                                      setValidateAndSave= {setValidateAndSave}/>}
+              {currentStep === 3 && <FormDocumentos 
+                                     formDataDocumentos={formDataDocumentos}
+                                     handleFormDataChangeDocumentos={handleFormDataChangeDocumentos}
+                                     setValidateAndSave= {setValidateAndSave}   
+                                    />}
+              {currentStep === 4 &&   <> 
+                                        < DadosCartorio
+                                        handleFormDataChangeCartorio= {handleFormDataChangeCartorio}
+                                        formDataCartorio= {formDataCartorio}
+                                        setValidateAndSave= {setValidateAndSave}
+                                        />
+                                        
+                                        <Afiliados
+                                          handleFormDataChangeAfiliados = {handleFormDataChangeAfiliados} 
+                                          setValidateAndSave = {setValidateAndSave}
+                                          formDataAfiliados = {formDataAfiliados}
+                                        />
+                                      </>}
+              {currentStep === 5 && < ResumoForm />}
                       
                 {!complete && (
                 <div className="btn-group flex gap-x-3 mb-5">
@@ -234,7 +342,8 @@ export default function Tabelionato(){
                     <button
                       className="btn w-24 flex items-center justify-center text-center
                                 focus:outline-none focus:ring-0"
-                      onClick={() => setCurrentStep((prev) => prev - 1)}
+                      onClick={() => setCurrentStep((prev) => prev - 1) 
+                      }
                     > 
                       Voltar
                     </button>
@@ -249,8 +358,6 @@ export default function Tabelionato(){
                 )}
               </div>
             </div>
-
-
             )}
           </div> 
              

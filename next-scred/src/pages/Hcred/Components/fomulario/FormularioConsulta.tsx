@@ -63,8 +63,9 @@ const createUserSchema = zod.object({
       cpf => cpf.length === 11,
     {message: 'CPF precisa ter apenas números'}
   ),
-  fileUpload: zod.any(), // ou você pode encontrar um validador apropriado
 
+  
+  fileUpload: zod.any(), // ou você pode encontrar um validador apropriado
   mensagem: zod.string(),
   
   afiliado: zod

@@ -1,12 +1,21 @@
+import { useState } from "react";
 
 type HandleChange = (event: React.ChangeEvent<HTMLSelectElement>) => void;
 
 interface ChildComponentProps {
   handleServicoChange: HandleChange;
   handleSubServicoChange: HandleChange;
+  isDisabled: boolean
 }
-export default function HeaderService({handleServicoChange, handleSubServicoChange}: ChildComponentProps){
-    return (
+export default function HeaderService({handleServicoChange, 
+                                      handleSubServicoChange,
+                                      isDisabled}: ChildComponentProps){
+  
+  const [isDisable, setIsDisable] = useState(false);
+  
+  
+  
+                                        return (
         <div>
           <h1 className="text-2xl font-semibold leading-7 text-gray-900">
             Solicitação de Serviços</h1>
@@ -25,15 +34,17 @@ export default function HeaderService({handleServicoChange, handleSubServicoChan
               </label>
               <div className="mt-2">
                 <select
+                  disabled={isDisabled}
                   id="solicitacao"
                   autoComplete="solicitacao-name"
+                  required
                   className="block w-64 rounded-md border-0 py-1.5 text-gray-900 
                             shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 
                             focus:ring-inset focus:ring-indigo-600 sm:max-w-xs 
                             sm:text-sm sm:leading-6"
                   onChange={handleServicoChange}
                 >
-                  <option>Selecione o Tipo de Serviço</option>
+                  <option selected>Selecione o Tipo de Serviço</option>
                   <option>Nova Solicitação</option>
                   <option>Solicitação de Consulta</option>
                     
@@ -49,14 +60,16 @@ export default function HeaderService({handleServicoChange, handleSubServicoChan
               <div className="mt-2">
                 <select
                   id="solicitacao"
+                  disabled={isDisabled}
                   autoComplete="solicitacao-name"
+                  required
                   className="block w-64 rounded-md border-0 py-1.5 text-gray-900 
                             shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 
                             focus:ring-inset focus:ring-indigo-600 sm:max-w-xs 
                             sm:text-sm sm:leading-6"
                   onChange={handleSubServicoChange}
                 > 
-                  <option>Tipo de Serviço</option>
+                  <option selected>Tipo de Serviço</option>
                   <option>Ata Notarial</option>
                   <option>Emissão de Certidão</option>
                   <option>Escritura</option>
