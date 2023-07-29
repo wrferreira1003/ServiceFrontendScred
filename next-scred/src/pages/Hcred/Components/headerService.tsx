@@ -11,11 +11,9 @@ export default function HeaderService({handleServicoChange,
                                       handleSubServicoChange,
                                       isDisabled}: ChildComponentProps){
   
-  const [isDisable, setIsDisable] = useState(false);
   
   
-  
-                                        return (
+  return (
         <div>
           <h1 className="text-2xl font-semibold leading-7 text-gray-900">
             Solicitação de Serviços</h1>
@@ -26,7 +24,7 @@ export default function HeaderService({handleServicoChange,
           à sua solicitação. Uma vez realizada a seleção, você será redirecionado para o 
           preenchimento do formulário correspondente.
           </p>
-          <div className="flex gap-x-16">
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-x-16">
             <div className="sm:col-span-3 mt-5">
               <label htmlFor="solicitacao" 
                     className="block text-lg font-bold leading-6 text-gray-900">
