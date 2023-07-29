@@ -107,14 +107,14 @@ export default function Header() {
           <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
             Equipe
           </a>
-          <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
+          <Link href="#" className="text-sm font-semibold leading-6 text-gray-900">
             Afiliados
-          </a>
+          </Link>
         </Popover.Group>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          <a href="/afiliados" className="text-sm font-semibold leading-6 text-gray-900">
+          <Link href="/afiliados" className="text-sm font-semibold leading-6 text-gray-900">
             Login Afiliados <span aria-hidden="true">&rarr;</span>
-          </a>
+          </Link>
         </div>
       </nav>
 
