@@ -19,17 +19,6 @@ const createUserSchema = zod.object({
     {message: 'CPF precisa ter apenas números'}
   ),
 
-  rgenvolvido: zod.string().nonempty({
-    message: 'O RG é obrigatório',
-  }),
-  
-  cpfenvolvido: zod
-    .string()
-    .nonempty('CPF não pode ser vazio')
-    .refine(
-      cpf => cpf.length === 11,
-    {message: 'CPF precisa ter apenas números'}
-  ),
 });
 
 //Criando a typagem a partir do Schema de validação
@@ -41,7 +30,7 @@ interface FormularioEnderecoProps {
   setValidateAndSave: React.Dispatch<React.SetStateAction<(() => Promise<boolean>) | null>>;
 }
 
-export default function FormDocumentos({ formDataDocumentos,
+export default function FormDocumentosSimples({ formDataDocumentos,
                                          handleFormDataChangeDocumentos, 
                                          setValidateAndSave}:FormularioEnderecoProps ){
   
@@ -58,8 +47,7 @@ export default function FormDocumentos({ formDataDocumentos,
     defaultValues:{
       rg: formDataDocumentos ? formDataDocumentos.rg : '',
       cpf: formDataDocumentos ? formDataDocumentos.cpf : '',
-      rgenvolvido: formDataDocumentos ? formDataDocumentos.rgenvolvido : '',
-      cpfenvolvido: formDataDocumentos ? formDataDocumentos.cpfenvolvido : '',
+
     }
   });
 
@@ -140,58 +128,10 @@ export default function FormDocumentos({ formDataDocumentos,
                   </div>
                 </div>
               </div>
-
-              <h2 className="text-lg font-semibold leading-7
-                       text-gray-900 mt-10">
-          Dados do Envolvido no processo
-        </h2>
-          {/* Campo de Identidade */}
-          <div className="mt-5 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                <div className="sm:col-span-2 sm:col-start-1">
-                  <label htmlFor="rgenvolvido" className="block text-sm font-medium leading-6 text-gray-900">
-                    Identidade do Envolvido
-                  </label>
-                  <div className="mt-2">
-                    <input
-                      type="text"
-                      id="rgenvolvido"
-                      placeholder='Digite seu RG'
-                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 px-1
-                                ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 
-                                focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      {...register('rgenvolvido')}
-                    />
-                    {errors.rgenvolvido && (
-                      <p className="text-red-500 mt-2 text-sm">{errors.rgenvolvido.message}</p>
-                    )}
-                  </div>
-                </div>
-
-                <div className="sm:col-span-2">
-                  <label htmlFor="cpfenvolvido" className="block text-sm font-medium leading-6 text-gray-900">
-                    CPF do Envolvido
-                  </label>
-                  <div className="mt-2">
-                    <input
-                      type="text"
-                      id="cpfenvolvido"
-                      className="block w-full rounded-md border-0 py-1.5 px-1
-                                 text-gray-900 shadow-sm ring-1 ring-inset 
-                                 ring-gray-300 placeholder:text-gray-400 focus:ring-2 
-                                  focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      {...register('cpfenvolvido')}
-                      />
-                      {errors.cpfenvolvido && (
-                      <p className="text-red-500 mt-2 text-sm">{errors.cpfenvolvido.message}</p>
-                    )}
-                  </div>
-                </div>
-              </div>
               <div>
-               < UploadDocumentos />
+              <UploadDocumentos />
               </div>
-
-
+              
       </form>
     </div>
   )
