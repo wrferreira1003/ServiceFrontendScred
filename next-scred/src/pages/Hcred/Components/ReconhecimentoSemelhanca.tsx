@@ -180,7 +180,7 @@ export default function ReconhecimentoSemelhanca(){
             <h2 className="text-lg font-semibold leading-7 text-gray-900 mt-10">
               Reconhecimento de Firma por Semelhança</h2>
             <p className="mt-1 text-sm leading-6 text-gray-600">
-            O Reconhecimento de Firma por Verdadeiro é um procedimento jurídico que confirma a 
+            O Reconhecimento de Firma por Semelhança é um procedimento jurídico que confirma a 
             autenticidade de uma assinatura em um documento. No processo, o tabelião compara a 
             assinatura no documento com a original registrada em arquivo, atestando a autenticidade 
             se forem semelhantes.
