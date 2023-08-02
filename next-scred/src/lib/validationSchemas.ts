@@ -36,4 +36,115 @@ export const createUserSchema = zod.object({
   }).min(3,{
     message: 'O Sobrenome precisa ter no mínimo 3 caracteres'
   }),
+
+  estadocivil: zod.string().nonempty({
+    message: 'O Estado Civil é obrigatório',
+  }).min(3,{
+    message: 'O Nome precisa ter no mínimo 3 caracteres'
+  }),
+
+  profissao: zod.string().nonempty({
+    message: 'A profissão é obrigatório',
+  }),
+  nascimento: zod.string().nonempty({
+    message: 'A data de nascimento é obrigatória',
+  }),
+
+  afiliado: zod
+    .string()
+    .nonempty({
+      message: 'Selecione um afiliado',
+    })
+    .refine(value => value !== '' && value !== 'Selecione um afiliado', {
+    message: 'Selecione um afiliado',
+  }),
+
+  cidadeafiliado: zod
+  .string()
+    .nonempty({
+      message: 'Selecione uma cidade',
+    })
+    .refine(value => value !== '' && value !== 'Selecione uma cidade', {
+    message: 'Selecione uma cidade',
+  }),
+
+  cartorio: zod
+    .string()
+    .nonempty('Informar o nome do Cartório'
+  ),
+  
+  estadolivro: zod
+    .string()
+    .nonempty('Informar o Estado do Registro'
+  ),
+  
+  livro: zod
+  .string()
+  .nonempty('Informar o número do livro'
+  ),
+  
+  folha: zod
+    .string()
+    .nonempty('Informar o número da folha'
+  ),
+  
+  //Realizar as validacoes dos documentos
+  rg: zod.string().nonempty({
+    message: 'O RG é obrigatório',
+  }),
+  
+  cpf: zod
+    .string()
+    .nonempty('CPF não pode ser vazio')
+    .refine(
+      cpf => cpf.length === 11,
+    {message: 'CPF precisa ter apenas números'}
+  ),
+
+  rgenvolvido: zod.string().nonempty({
+    message: 'O RG é obrigatório',
+  }),
+  
+  cpfenvolvido: zod
+    .string()
+    .nonempty('CPF não pode ser vazio')
+    .refine(
+      cpf => cpf.length === 11,
+    {message: 'CPF precisa ter apenas números'}
+  ),
+
+  //Realizar as validacoes do Endereço
+  estado: zod.string().nonempty({
+    message: 'Selecione o Estado',
+  }),
+
+  endereco: zod.string().nonempty({
+    message: 'Preencher o endereço',
+  }),
+
+  cidade: zod.string().nonempty({
+    message: 'Preencha com o nome da cidade',
+  }),
+
+  bairro: zod.string().nonempty({
+    message: 'Preencha com o nome do Bairro',
+  }),
+  cep: zod.string().refine(value => {
+    const regex = /^[0-9]{5}-[0-9]{3}$/;
+    return regex.test(value);
+  }, {
+    message:'CEP inválido, o formato correto é 00000-000',
+  }),
+
+  cidadeCartorio: zod.string().nonempty({
+    message: 'Preencha com o nome da cidade do Cartório',
+  }),
+
+  estadoCartorio: zod.string().nonempty({
+    message: 'Selecione o Estado do Cartório',
+  }),
+
+  //Realizar as validacoes dos dados aqui.
+  fileUpload: zod.any(),
+  // Todo: Criar as validacoes necessaria para os arquivos upload.
 });

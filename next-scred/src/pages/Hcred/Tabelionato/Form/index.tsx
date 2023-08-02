@@ -3,6 +3,7 @@ import HeaderService from '../../Components/headerService';
 import NovoServico from '../../Components/NovoServicoGeral';
 import ConsultaServico from '../../Components/ConsultaServico';
 import ReconhecimentoVerdadeiro from '../../Components/ReconhecimentoVerdadeiro';
+import ReconhecimentoSemelhanca from '../../Components/ReconhecimentoSemelhanca';
 //import { Check } from '@phosphor-icons/react';
 
 export default function Tabelionato(){
@@ -49,11 +50,11 @@ export default function Tabelionato(){
         
         )}
 
-        {/* Reconhecimento por Verdadeiro*/}
+      {/* Reconhecimento por Verdadeiro*/}
       {(subservico === 'Reconhecimento de Firma por Semelhança' && servico === 'Nova Solicitação') && (
         
-        <h1>Reconhecimento de Firma Semelhança</h1>
-      
+        <ReconhecimentoSemelhanca />
+
       )}
             
     </div> 

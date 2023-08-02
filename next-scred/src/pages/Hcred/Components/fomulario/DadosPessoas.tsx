@@ -4,9 +4,17 @@ import * as zod from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { createUserSchema } from '../../../../lib/validationSchemas'
 
+const personalInfoSchema = createUserSchema.pick({
+  nome: true,
+  sobrenome: true,
+  email: true,
+  telefone: true,
+  nomeenvolvido: true,
+  sobrenomeenvolvido: true,
+});
 
 //Criando a typagem a partir do Schema de validação
-type CreateUserData = zod.infer<typeof createUserSchema>
+type CreateUserData = zod.infer<typeof personalInfoSchema>
 
 interface FormularioSolicitacaoProps {
   handleFormDataChange: (data: CreateUserData) => void;
@@ -28,7 +36,7 @@ export default function DadosPessoas({formData,
     getValues,
     trigger,
   } = useForm<CreateUserData>({
-    resolver: zodResolver(createUserSchema),
+    resolver: zodResolver(personalInfoSchema),
     defaultValues:{
       nome: formData ? formData.nome : '',
       sobrenome: formData ? formData.sobrenome : '',
@@ -56,7 +64,7 @@ export default function DadosPessoas({formData,
   
   useEffect(() => {
     setValidateAndSave(() => validateAndSave);
-  }, []);
+  },[]);
 
   async function createUser(data: CreateUserData) {
     try{

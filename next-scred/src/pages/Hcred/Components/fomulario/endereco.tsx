@@ -2,31 +2,17 @@ import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as zod from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { createUserSchema } from '../../../../lib/validationSchemas'
 
-//Realizar as validacoes dos dados aqui.
-const createUserSchema = zod.object({
-  estado: zod.string().nonempty({
-    message: 'Selecione o Estado',
-  }),
-
-  endereco: zod.string().nonempty({
-    message: 'Preencher o endereço',
-  }),
-
-  cidade: zod.string().nonempty({
-    message: 'Preencha com o nome da cidade',
-  }),
-
-  bairro: zod.string().nonempty({
-    message: 'Preencha com o nome do Bairro',
-  }),
-  cep: zod.string().refine(value => {
-    const regex = /^[0-9]{5}-[0-9]{3}$/;
-    return regex.test(value);
-  }, {
-    message:'CEP inválido, o formato correto é 00000-000',
-  }),
-});
+const personalInfoSchema = createUserSchema.pick({
+  estado: true,
+  endereco: true,
+  cidade: true,
+  bairro: true,
+  cep: true,
+})
+//Criando a typagem a partir do Schema de validação
+type CreateUserData = zod.infer<typeof personalInfoSchema>
 
 interface FormularioSolicitacaoProps {
   handleFormDataChangeEndereco: (data: CreateUserData) => void;
@@ -34,8 +20,6 @@ interface FormularioSolicitacaoProps {
   setValidateAndSave: React.Dispatch<React.SetStateAction<(() => Promise<boolean>) | null>>;
 }
 
-//Criando a typagem a partir do Schema de validação
-type CreateUserData = zod.infer<typeof createUserSchema>
 
 export default function EnderecoForm({formDataendereco,
                                     handleFormDataChangeEndereco, //Funcao que recebe os dados
@@ -50,7 +34,7 @@ export default function EnderecoForm({formDataendereco,
     getValues,
     trigger,
   } = useForm<CreateUserData>({
-    resolver: zodResolver(createUserSchema),
+    resolver: zodResolver(personalInfoSchema),
     defaultValues:{
       estado: formDataendereco ? formDataendereco.estado : '',
       endereco: formDataendereco ? formDataendereco.endereco : '',
@@ -76,7 +60,7 @@ export default function EnderecoForm({formDataendereco,
   
   useEffect(() => {
     setValidateAndSave(() => validateAndSave);
-  }, []);
+  },[]);
 
   async function createUser(data: CreateUserData) {
     try{

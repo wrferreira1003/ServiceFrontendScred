@@ -1,28 +1,20 @@
 import { useForm, FormProvider, Controller } from 'react-hook-form'
 import * as zod from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { createUserSchema } from '../../../../lib/validationSchemas'
 import { useEffect, useState } from 'react'
 
-const createUserSchema = zod.object({
-  afiliado: zod
-    .string()
-    .refine(value => value !== 'Selecione um afiliado', {
-    message: 'Selecione um afiliado',
-  }),
-
-  cidadeafiliado: zod
-    .string()
-    .refine(value => value !== 'Selecione uma cidade', {
-    message: 'Selecione uma cidade',
-  }),
+const personalInfoSchema = createUserSchema.pick({
+  cidadeafiliado: true,
+  afiliado: true,
 })
 
-type CreateUserData = zod.infer<typeof createUserSchema>
+type CreateUserData = zod.infer<typeof personalInfoSchema>
 
 interface FormularioAfiliadosProps{
   handleFormDataChangeAfiliados: (data:CreateUserData) => void,
   setValidateAndSave: React.Dispatch<React.SetStateAction<(() => Promise<boolean>) | null>>,
-  formDataAfiliados: CreateUserData | null
+  formDataAfiliados: CreateUserData
 }
 
 export default function Afiliados({ handleFormDataChangeAfiliados,
@@ -36,7 +28,7 @@ export default function Afiliados({ handleFormDataChangeAfiliados,
     getValues,
     trigger,
   } = useForm<CreateUserData>({
-    resolver: zodResolver(createUserSchema),
+    resolver: zodResolver(personalInfoSchema),
     defaultValues:{
       //Colocar os valores default para cada campo.
       cidadeafiliado: formDataAfiliados ? formDataAfiliados.cidadeafiliado: '',
@@ -59,11 +51,21 @@ export default function Afiliados({ handleFormDataChangeAfiliados,
 
   useEffect(() => {
     setValidateAndSave(() => validateAndSave);
-  }, []);
+  },[]);
+
+  async function createUser(data: CreateUserData) {
+    try{
+      setMessage("Dados enviados com sucesso.")
+      handleFormDataChangeAfiliados(data);
+    } catch (erro){
+      console.error(erro)
+      setMessage('Favor revisar os dados da solicitação')
+    }
+  }
 
   return (
     <div className=" w-full">
-      <form action="">
+      <form onSubmit={handleSubmit(createUser)} action="">  
       <h2 className="text-lg font-semibold leading-7
                        text-gray-900 mt-10">
           Dados do Afiliado para acompanhamento do processo
@@ -76,6 +78,7 @@ export default function Afiliados({ handleFormDataChangeAfiliados,
                   </label>
                   <div className="mt-2">
                     <select
+                      required
                       id="cidade-afiliado"
                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 
                                  ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 
@@ -101,6 +104,7 @@ export default function Afiliados({ handleFormDataChangeAfiliados,
                   <div className="mt-2">
                     <select
                       id="afiliado"
+                      required
                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 
                                  ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 
                                  first-letter:first-line:marker:selection:focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"

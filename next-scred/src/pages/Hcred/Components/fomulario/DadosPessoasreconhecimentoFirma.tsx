@@ -2,49 +2,20 @@ import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as zod from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { createUserSchema } from '../../../../lib/validationSchemas'
 
-//Realizar as validacoes dos dados aqui.
-const createUserSchema = zod.object({
-  nome: zod.string().nonempty({
-    message: 'O Nome é obrigatório',
-  }).min(3,{
-    message: 'O Nome precisa ter no mínimo 3 caracteres'
-  }),
-
-  sobrenome: zod.string().nonempty({
-    message: 'O Sobrenome é obrigatório',
-  }).min(3,{
-    message: 'O Sobrenome precisa ter no mínimo 3 caracteres'
-  }),
-
-  email: zod.string().nonempty({
-    message: 'O Email é obrigatório',
-  }).email({
-    message: 'Formato de e-mail inválido',
-  }),
-  telefone: zod.string().refine(value => {
-    const regex = /^\(\d{2}\) \d{5}-\d{4}$/;
-    return regex.test(value);
-  }, {
-    message:'Número de telefone inválido, o formato correto é (XX) XXXXX-XXXX',
-  }),
-
-  estadocivil: zod.string().nonempty({
-    message: 'O Estado Civil é obrigatório',
-  }).min(3,{
-    message: 'O Nome precisa ter no mínimo 3 caracteres'
-  }),
-
-  profissao: zod.string().nonempty({
-    message: 'A profissão é obrigatório',
-  }),
-  nascimento: zod.string().nonempty({
-    message: 'A data de nascimento é obrigatória',
-  })
-});
+const personalInfoSchema = createUserSchema.pick({
+  nome: true,
+  sobrenome: true,
+  email: true,
+  telefone: true,
+  estadocivil: true,
+  profissao: true,
+  nascimento: true,
+})
 
 //Criando a typagem a partir do Schema de validação
-type CreateUserData = zod.infer<typeof createUserSchema>
+type CreateUserData = zod.infer<typeof personalInfoSchema>
 
 interface FormularioSolicitacaoProps {
   handleFormDataChange: (data: CreateUserData) => void;
@@ -64,7 +35,7 @@ export default function DadosPessoasReconhecimentoFirma({formData,
     getValues,
     trigger,
   } = useForm<CreateUserData>({
-    resolver: zodResolver(createUserSchema),
+    resolver: zodResolver(personalInfoSchema),
     defaultValues:{
       nome: formData ? formData.nome : '',
       sobrenome: formData ? formData.sobrenome : '',
@@ -91,7 +62,7 @@ export default function DadosPessoasReconhecimentoFirma({formData,
   
   useEffect(() => {
     setValidateAndSave(() => validateAndSave);
-  }, []);
+  },[]);
 
   async function createUser(data: CreateUserData) {
     try{

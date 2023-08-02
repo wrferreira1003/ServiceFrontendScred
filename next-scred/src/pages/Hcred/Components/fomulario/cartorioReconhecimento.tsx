@@ -6,9 +6,8 @@ import { createUserSchema } from '../../../../lib/validationSchemas'
 
 const personalSchema = createUserSchema.pick({
   cartorio: true,
-  estadolivro: true, 
-  livro: true,
-  folha: true,
+  cidadeCartorio: true, 
+  estadoCartorio: true,
 })
 
 //Criando a typagem a partir do Schema de validação
@@ -21,7 +20,7 @@ interface FormularioCartorioProps {
 }
 
 
-export default function DadosCartorio({handleFormDataChangeCartorio,
+export default function CartorioAutenticacao({handleFormDataChangeCartorio,
                                       formDataCartorio,
                                       setValidateAndSave}: FormularioCartorioProps){
   const { 
@@ -33,9 +32,8 @@ export default function DadosCartorio({handleFormDataChangeCartorio,
     resolver: zodResolver(personalSchema),
     defaultValues:{
       cartorio: formDataCartorio ? formDataCartorio.cartorio: '',
-      estadolivro: formDataCartorio ? formDataCartorio.estadolivro: '',
-      livro: formDataCartorio ? formDataCartorio.livro: '',
-      folha: formDataCartorio ? formDataCartorio.folha: '',
+      cidadeCartorio: formDataCartorio ? formDataCartorio.cidadeCartorio: '',
+      estadoCartorio: formDataCartorio ? formDataCartorio.estadoCartorio: '',
 
     }
   });
@@ -68,7 +66,7 @@ export default function DadosCartorio({handleFormDataChangeCartorio,
               <div className="mt-5 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                 <div className="sm:col-span-3 sm:col-start-1">
                   <label htmlFor="cartorio" className="block text-sm font-medium leading-6 text-gray-900">
-                    Cartorio
+                    Cartório que tem firma reconhecida
                   </label>
                   <div className="mt-2">
                     <input
@@ -88,7 +86,7 @@ export default function DadosCartorio({handleFormDataChangeCartorio,
 
                 <div className="sm:col-span-3">
                   <label htmlFor="estadolivro" className="block text-sm font-medium leading-6 text-gray-900">
-                    Estado
+                    Estado do cartório
                   </label>
                   <div className="mt-2">
                     <input
@@ -98,54 +96,34 @@ export default function DadosCartorio({handleFormDataChangeCartorio,
                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 px-1
                                  ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 
                                  first-letter:first-line:marker:selection:focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      {...register('estadolivro')}
+                      {...register('estadoCartorio')}
                       />
-                      {errors.estadolivro && (
-                      <p className="text-red-500 mt-2 text-sm">{errors.estadolivro.message}</p>
+                      {errors.estadoCartorio && (
+                      <p className="text-red-500 mt-2 text-sm">{errors.estadoCartorio.message}</p>
                     )}
                   </div>
                 </div>
 
                 <div className="sm:col-span-3">
                   <label htmlFor="livro" className="block text-sm font-medium leading-6 text-gray-900">
-                    Livro
+                    Cidade do Cartório
                   </label>
                   <div className="mt-2">
                     <input
                       type="text"
                       id="livro"
-                      placeholder='Digite o livro'
+                      placeholder='Digite a Cidade'
                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 px-1
                                  ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 
                                  first-letter:first-line:marker:selection:focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      {...register('livro')}
+                      {...register('cidadeCartorio')}
                       />
-                      {errors.livro && (
-                      <p className="text-red-500 mt-2 text-sm">{errors.livro.message}</p>
+                      {errors.cidadeCartorio && (
+                      <p className="text-red-500 mt-2 text-sm">{errors.cidadeCartorio.message}</p>
                     )}
                   </div>
                 </div>
-
-                <div className="sm:col-span-3">
-                  <label htmlFor="folha" className="block text-sm font-medium leading-6 text-gray-900">
-                    Folha
-                  </label>
-                  <div className="mt-2">
-                    <input
-                      type="text"
-                      id="folha"
-                      placeholder='Digite a folha'
-                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 px-1
-                                 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 
-                                 first-letter:first-line:marker:selection:focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      {...register('folha')}
-                      />
-                      {errors.folha && (
-                      <p className="text-red-500 mt-2 text-sm">{errors.folha.message}</p>
-                    )}
-                  </div>
-                </div>
-                </div>
+              </div>
 
       </form>
     </div>

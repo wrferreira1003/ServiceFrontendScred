@@ -4,36 +4,18 @@ import { useForm } from 'react-hook-form'
 import * as zod from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import UploadDocumentos from './uploadDocumentos'
+import { createUserSchema } from '../../../../lib/validationSchemas'
 
-//Realizar as validacoes dos dados aqui.
-const createUserSchema = zod.object({
-  rg: zod.string().nonempty({
-    message: 'O RG é obrigatório',
-  }),
-  
-  cpf: zod
-    .string()
-    .nonempty('CPF não pode ser vazio')
-    .refine(
-      cpf => cpf.length === 11,
-    {message: 'CPF precisa ter apenas números'}
-  ),
 
-  rgenvolvido: zod.string().nonempty({
-    message: 'O RG é obrigatório',
-  }),
-  
-  cpfenvolvido: zod
-    .string()
-    .nonempty('CPF não pode ser vazio')
-    .refine(
-      cpf => cpf.length === 11,
-    {message: 'CPF precisa ter apenas números'}
-  ),
-});
+const personaInfoSchema = createUserSchema.pick({
+  rg: true,
+  cpf: true,
+  rgenvolvido: true,
+  cpfenvolvido: true,
+})
 
 //Criando a typagem a partir do Schema de validação
-type CreateUserData = zod.infer<typeof createUserSchema>
+type CreateUserData = zod.infer<typeof personaInfoSchema>
 
 interface FormularioEnderecoProps {
   handleFormDataChangeDocumentos: (data:CreateUserData) => void;
@@ -54,7 +36,7 @@ export default function FormDocumentos({ formDataDocumentos,
     trigger,
     getValues,
   } = useForm<CreateUserData>({
-    resolver: zodResolver(createUserSchema),
+    resolver: zodResolver(personaInfoSchema),
     defaultValues:{
       rg: formDataDocumentos ? formDataDocumentos.rg : '',
       cpf: formDataDocumentos ? formDataDocumentos.cpf : '',
@@ -77,7 +59,7 @@ export default function FormDocumentos({ formDataDocumentos,
   };
   useEffect(() => {
     setValidateAndSave(() => validateAndSave);
-  }, []);
+  },[]);
 
   async function createUser(data: CreateUserData) {
     try{
@@ -187,11 +169,7 @@ export default function FormDocumentos({ formDataDocumentos,
                   </div>
                 </div>
               </div>
-              <div>
-               < UploadDocumentos />
-              </div>
-
-
+          
       </form>
     </div>
   )

@@ -4,6 +4,7 @@ import Afiliados from "./fomulario/afiliados";
 import FormDocumentos from "./fomulario/documentos";
 import EnderecoForm from "./fomulario/endereco";
 import ResumoForm from "./fomulario/resumoform";
+import UploadDocumentos from './fomulario/uploadDocumentos';
 
 export interface FormularioDadosPessoal {
   nome: string;
@@ -211,11 +212,13 @@ export default function NovoServico(){
                                       formDataendereco={formDataendereco} 
                                       handleFormDataChangeEndereco={handleFormDataChangeEndereco}
                                       setValidateAndSave= {setValidateAndSave}/>}
-              {currentStep === 3 && <FormDocumentos 
+              {currentStep === 3 && <><FormDocumentos 
                                      formDataDocumentos={formDataDocumentos}
                                      handleFormDataChangeDocumentos={handleFormDataChangeDocumentos}
                                      setValidateAndSave= {setValidateAndSave}   
-                                    />}
+                                    />
+                                    < UploadDocumentos />
+                                    </>}
               {currentStep === 4 &&   <> 
                                         <Afiliados
                                           handleFormDataChangeAfiliados = {handleFormDataChangeAfiliados} 
@@ -226,7 +229,9 @@ export default function NovoServico(){
                                       
 
               {currentStep === 5 &&  < ResumoForm />}
-       
+              
+              
+
               {!complete && (
               <div className="btn-group flex gap-x-3 mb-5">
                 {currentStep > 1 && (

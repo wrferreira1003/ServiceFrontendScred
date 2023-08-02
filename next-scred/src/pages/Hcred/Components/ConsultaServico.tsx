@@ -12,6 +12,7 @@ import { FormularioDadosPessoal,
          FormularioAfiliados,
          FormularioCartorio,
         } from './NovoServicoGeral';
+import UploadDocumentos from './fomulario/uploadDocumentos';
 //import { Check } from '@phosphor-icons/react';
 
 export default function ConsultaServico(){
@@ -56,7 +57,7 @@ export default function ConsultaServico(){
   });
   
   //stepper
-  const steps = ["Dados Pessoal", "Endereço", "Documentos", "Cartório", "Resumo"];
+  const steps = ["Dados Pessoal", "Endereço", "Documentos", "Cartório","Afiliado", "Resumo"];
   const [currentStep, setCurrentStep] = useState(1);
   const [complete, setComplete] = useState(false);
 
@@ -139,16 +140,17 @@ export default function ConsultaServico(){
         }
 
       } else if (currentStep === 4 && validateAndSave) {
-          const isValidAfiliados = await validateAndSave(); // Validação de Afiliados sempre ocorre
-          let isValidCartorio = true; // Inicialmente, consideramos que o Cartorio é válido
-    
-          if (servico === 'Solicitação de Consulta') { // Se for uma 'Nova solicitação', devemos validar o Cartorio também
-            isValidCartorio = await validateAndSave(); // Chame a função que valida Cartorio
-          }
-        if (isValidAfiliados && isValidCartorio) {
+          const isValidCartorio = await validateAndSave(); // Chame a função que valida Cartorio
+          if (isValidCartorio) {
             setCurrentStep((prev) => prev + 1);
         }
-      } else if (currentStep === 5){      
+      } else if (currentStep === 5 && validateAndSave) {
+        const isValidAfiliados = await validateAndSave(); // Validação de Afiliados sempre ocorre
+          if (isValidAfiliados) {
+          setCurrentStep((prev) => prev + 1);
+      }
+
+      } else if (currentStep === 6){      
         console.log('Aqui colocaremos o formulario parte 3')
         setCurrentStep((prev) => prev + 1);
       }
@@ -167,8 +169,8 @@ export default function ConsultaServico(){
               </p>
             </div>
 
-            <div className="flex flex-col w-full items-center justify-center mx-auto mt-10">            
-              <div className="flex flex-col sm:flex-row items-center justify-center">
+            <div className="bg-slate-100 flex flex-col p-3 rounded-md items-center justify-center mx-auto mt-10 mb-2">
+              <div className="flex flex-col sm:flex-row items-center justify-center mt-5">
                 {steps?.map((step, i) => (
                   <div
                     key={i}
@@ -192,26 +194,32 @@ export default function ConsultaServico(){
                                       formDataendereco={formDataendereco} 
                                       handleFormDataChangeEndereco={handleFormDataChangeEndereco}
                                       setValidateAndSave= {setValidateAndSave}/>}
-              {currentStep === 3 && <FormDocumentos 
+              {currentStep === 3 && 
+                                    <>
+                                    <FormDocumentos 
                                      formDataDocumentos={formDataDocumentos}
                                      handleFormDataChangeDocumentos={handleFormDataChangeDocumentos}
                                      setValidateAndSave= {setValidateAndSave}   
-                                    />}
-              {currentStep === 4 &&   <> 
-                                        < DadosCartorio
+                                    />
+                                    < UploadDocumentos />
+                                    </>}
+              
+              {currentStep === 4 && < DadosCartorio
                                         handleFormDataChangeCartorio= {handleFormDataChangeCartorio}
                                         formDataCartorio= {formDataCartorio}
                                         setValidateAndSave= {setValidateAndSave}
-                                        />
-                                        
-                                        <Afiliados
+                                        />}
+
+              {currentStep === 5 &&  <Afiliados
                                           handleFormDataChangeAfiliados = {handleFormDataChangeAfiliados} 
                                           setValidateAndSave = {setValidateAndSave}
                                           formDataAfiliados = {formDataAfiliados}
-                                        />
-                                      </>}
-              {currentStep === 5 && < ResumoForm />}
+                                        />}
+
+              {currentStep === 6 && < ResumoForm />}
                       
+        
+
                 {!complete && (
                 <div className="btn-group flex gap-x-3 mb-5">
                   {currentStep > 1 && (

@@ -3,11 +3,8 @@ import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as zod from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { createUserSchema } from '../../../../lib/validationSchemas'
 
-//Realizar as validacoes dos dados aqui.
-const createUserSchema = zod.object({
-  fileUpload: zod.any(), // Todo: Criar as validacoes necessaria para os arquivos upload.
-});
 
 //Criando a typagem a partir do Schema de validação
 type CreateUserData = zod.infer<typeof createUserSchema>
@@ -19,9 +16,7 @@ interface FormularioEnderecoProps {
 }
 
 export default function UploadDocumentos(){
-  
-   const [message, setMessage] = useState('');                                          
-  
+  const [message, setMessage] = useState('');                                          
   const { 
     handleSubmit,
     register, 
@@ -30,15 +25,13 @@ export default function UploadDocumentos(){
     getValues,
   } = useForm<CreateUserData>({
     resolver: zodResolver(createUserSchema),
-    defaultValues:{
-      
+    defaultValues:{ 
     }
   });
 
   const validateAndSave = async () => {
     console.log("A função validateAndSave foi chamada componente endereco.");
     const isValid = await trigger();
-  
     // Valida os campos
     if (isValid) {
       //handleFormDataChangeDocumentos(getValues()); // Se for válido, envia os valores para o componente pai

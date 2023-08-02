@@ -4,6 +4,7 @@ import EnderecoForm from "./fomulario/endereco";
 import ResumoForm from "./fomulario/resumoform";
 import DadosPessoasReconhecimentoFirma from './fomulario/DadosPessoasreconhecimentoFirma';
 import FormDocumentosSimples from './fomulario/documentoSimples';
+import UploadDocumentos from './fomulario/uploadDocumentos';
 
 export interface FormularioDadosPessoal {
   nome: string;
@@ -218,11 +219,13 @@ export default function ReconhecimentoVerdadeiro(){
                                       handleFormDataChangeEndereco={handleFormDataChangeEndereco}
                                       setValidateAndSave= {setValidateAndSave}/>}
               
-              {currentStep === 3 && <FormDocumentosSimples 
+              {currentStep === 3 && <><FormDocumentosSimples 
                                      formDataDocumentos={formDataDocumentos}
                                      handleFormDataChangeDocumentos={handleFormDataChangeDocumentos}
                                      setValidateAndSave= {setValidateAndSave}   
-                                    />}
+                                    />
+                                    < UploadDocumentos />
+                                    </>}
               {currentStep === 4 &&   <> 
                                         <Afiliados
                                           handleFormDataChangeAfiliados = {handleFormDataChangeAfiliados} 
@@ -233,7 +236,9 @@ export default function ReconhecimentoVerdadeiro(){
                                       
 
               {currentStep === 5 &&  < ResumoForm />}
-       
+                
+              
+
               {!complete && (
               <div className="btn-group flex gap-x-3 mb-5">
                 {currentStep > 1 && (

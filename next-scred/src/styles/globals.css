@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
 .btn {
   @apply bg-gray-800 hover:bg-gray-600 text-gray-100 font-medium px-7 py-1.5 rounded mt-10;
 }
@@ -39,4 +40,14 @@
 .a:focus{
   outline: none;
 }
+body {
+  @apply font-roboto;
+}
+header {
+  @apply font-roboto;
+}
+footer {
+  @apply font-roboto;
+}
+
 
