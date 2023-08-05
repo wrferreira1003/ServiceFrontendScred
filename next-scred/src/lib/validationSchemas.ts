@@ -19,10 +19,10 @@ export const createUserSchema = zod.object({
     message: 'Formato de e-mail inválido',
   }),
   telefone: zod.string().refine(value => {
-    const regex = /^\(\d{2}\) \d{5}-\d{4}$/;
+    const regex = /^\(?\d{2}\)? ?\d{5}-?\d{4}$/;
     return regex.test(value);
   }, {
-    message:'Número de telefone inválido, o formato correto é (XX) XXXXX-XXXX',
+    message:'Número de telefone inválido, o formato correto é XX XXXXX-XXXX',
   }),
 
   nomeenvolvido: zod.string().nonempty({

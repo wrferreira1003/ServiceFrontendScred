@@ -36,6 +36,13 @@ export interface FormularioAfiliados{
   afiliado: string;
 }
 
+interface CreateUserData {
+  fileUpload: {
+    type: string;
+    size: number;
+  }[];
+}
+
 export interface FormularioCartorio{
   cartorio: string;
   estadolivro: string;
@@ -84,6 +91,8 @@ export default function NovoServico(){
     folha: '',
   });
   
+  const [uploadData, setUploadData] = useState<CreateUserData | null>(null);
+  
   //stepper
   const steps = ["Dados Pessoal", "Endereço", "Documentos", "Cartório", "Resumo"];
   const [currentStep, setCurrentStep] = useState(1);
@@ -117,6 +126,9 @@ export default function NovoServico(){
       ...newData
     }))
   }
+  const handleformDataChangeUpload = (file: CreateUserData) => {
+    setUploadData(file);
+  }
 
   const combineDataForm = () => {
     const combinedData = {
@@ -124,6 +136,7 @@ export default function NovoServico(){
       ...formDataendereco,
       ...formDataDocumentos,
       ...formDataAfiliados,
+      ...uploadData
     }
     console.log(combinedData);
   };
@@ -217,7 +230,8 @@ export default function NovoServico(){
                                      handleFormDataChangeDocumentos={handleFormDataChangeDocumentos}
                                      setValidateAndSave= {setValidateAndSave}   
                                     />
-                                    < UploadDocumentos />
+                                    < UploadDocumentos 
+                                    />
                                     </>}
               {currentStep === 4 &&   <> 
                                         <Afiliados
