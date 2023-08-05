@@ -42,7 +42,7 @@ export default function HeaderService({handleServicoChange,
                             sm:text-sm sm:leading-6"
                   onChange={handleSubServicoChange}
                 > 
-                  <option selected>Tipo de Serviço</option>
+                  <option>Tipo de Serviço</option>
                   <option>Ata Notarial</option>
                   <option>Reconhecimento de Firma por Verdadeiro</option>
                   <option>Reconhecimento de Firma por Semelhança</option>
@@ -70,7 +70,7 @@ export default function HeaderService({handleServicoChange,
                             sm:text-sm sm:leading-6"
                   onChange={handleServicoChange}
                 >
-                  <option selected>Selecione o Tipo de Serviço</option>
+                  <option>Selecione o Tipo de Serviço</option>
                   <option>Nova Solicitação</option>
                   <option>Solicitação de Consulta</option>
                     

@@ -11,7 +11,14 @@ import {
  } from './NovoServicoGeral';
 import DadosCartorio from './fomulario/dadosCartorio';
 import CartorioAutenticacao from './fomulario/cartorioReconhecimento';
-import UploadDocumentos from './fomulario/uploadDocumentos';
+import Upload from './fomulario/uploadDocumentos/uploadDocumentos';
+import UploadDocumentos from './fomulario/uploadDocumentos/uploadDocumentos';
+import ResumoDadosPessoas from './fomulario/Resumo/resumoDadosPessoas';
+import ResumoDadosEnvolvido from './fomulario/Resumo/resumoDadosEnvolvidos';
+import ResumoCartorio from './fomulario/Resumo/resumoCartorio';
+import ResumoAfiliados from './fomulario/Resumo/resumoAfiliado';
+import ResumoDadosReconhecimento from './fomulario/Resumo/resumoDadosReconhecimento';
+import ResumoCartorioReconhecimento from './fomulario/Resumo/resumoCartorioReconhecimento';
 
 export interface FormularioDadosReconhecimentoFirma{
   nome: string;
@@ -219,7 +226,7 @@ export default function ReconhecimentoSemelhanca(){
                                      handleFormDataChangeDocumentos={handleFormDataChangeDocumentos}
                                      setValidateAndSave= {setValidateAndSave}   
                                     />
-                                    < UploadDocumentos />
+                                    < UploadDocumentos/>
                                     </>}
               
               {currentStep === 4 &&   <CartorioAutenticacao
@@ -235,7 +242,19 @@ export default function ReconhecimentoSemelhanca(){
                                         />}
                                       
 
-              {currentStep === 6 &&  < ResumoForm />}
+              {currentStep === 6 && <>    < ResumoDadosReconhecimento 
+                                                          InfoPessoal = {formData} 
+                                                          Documentos = {formDataDocumentos}
+                                                          Endereco = {formDataendereco}
+                                           />
+                                           
+                                           < ResumoCartorioReconhecimento 
+                                                          Cartorio = {formDataCartorio}
+                                           />
+                                            <ResumoAfiliados
+                                                          Afiliados = {formDataAfiliados}
+                                            />
+                                      </>}  
               
               
               

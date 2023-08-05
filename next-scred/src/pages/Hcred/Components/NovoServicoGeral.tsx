@@ -1,10 +1,15 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import DadosPessoas from "./fomulario/DadosPessoas";
 import Afiliados from "./fomulario/afiliados";
 import FormDocumentos from "./fomulario/documentos";
 import EnderecoForm from "./fomulario/endereco";
-import ResumoForm from "./fomulario/resumoform";
-import UploadDocumentos from './fomulario/uploadDocumentos';
+import ResumoDadosPessoas from "./fomulario/Resumo/resumoDadosPessoas";
+import UploadDocumentos from './fomulario/uploadDocumentos/uploadDocumentos';
+import { useFileContext } from './fomulario/uploadDocumentos/FileContext';
+import ResumoDadosEnvolvido from './fomulario/Resumo/resumoDadosEnvolvidos';
+import ResumoCartorio from './fomulario/Resumo/resumoCartorio';
+import ResumoAfiliados from './fomulario/Resumo/resumoAfiliado';
+import EnviarFormularioModal from './enviarFormularioModal';
 
 export interface FormularioDadosPessoal {
   nome: string;
@@ -91,10 +96,9 @@ export default function NovoServico(){
     folha: '',
   });
   
-  const [uploadData, setUploadData] = useState<CreateUserData | null>(null);
   
   //stepper
-  const steps = ["Dados Pessoal", "Endereço", "Documentos", "Cartório", "Resumo"];
+  const steps = ["Dados Pessoal", "Endereço", "Documentos", "Afiliados", "Resumo"];
   const [currentStep, setCurrentStep] = useState(1);
   const [complete, setComplete] = useState(false);
 
@@ -126,9 +130,15 @@ export default function NovoServico(){
       ...newData
     }))
   }
-  const handleformDataChangeUpload = (file: CreateUserData) => {
-    setUploadData(file);
-  }
+  const {parentFiles} = useFileContext();
+
+  const [fileState, setFileState] = useState<File[]>([]);
+
+  useEffect(() => {
+    const onlyFiles = parentFiles.map(item => item.file);
+    setFileState(onlyFiles);
+  }, [parentFiles]);
+    
 
   const combineDataForm = () => {
     const combinedData = {
@@ -136,7 +146,7 @@ export default function NovoServico(){
       ...formDataendereco,
       ...formDataDocumentos,
       ...formDataAfiliados,
-      ...uploadData
+      ...fileState
     }
     console.log(combinedData);
   };
@@ -144,10 +154,13 @@ export default function NovoServico(){
   const onNextStep = () => {
     setIsDisable(true);
   };
+
+  const [showModal, setShowModal] = useState(false);
   //Funcao que Comunica com os componentes de formulario e faz as validacoes 
   const handleNextClick = async () => {      
     if (currentStep === steps.length) {
       setComplete(true);
+      setShowModal(true);
       combineDataForm() //Chamando a funcao para juntar os dados.
     } else {
       //Verificando qual etapa
@@ -180,7 +193,6 @@ export default function NovoServico(){
             setCurrentStep((prev) => prev + 1);
         }
       } else if (currentStep === 5){      
-        console.log('Aqui colocaremos o formulario parte 3')
         setCurrentStep((prev) => prev + 1);
       }
     }
@@ -214,7 +226,7 @@ export default function NovoServico(){
                   <p className="text-gray-500">{step}</p>
                 </div>
                   ))}
-              </div>
+            </div>
               
               {currentStep === 1 && <DadosPessoas 
                                     formData={formData} 
@@ -230,8 +242,8 @@ export default function NovoServico(){
                                      handleFormDataChangeDocumentos={handleFormDataChangeDocumentos}
                                      setValidateAndSave= {setValidateAndSave}   
                                     />
-                                    < UploadDocumentos 
-                                    />
+                                    < UploadDocumentos/>
+                               
                                     </>}
               {currentStep === 4 &&   <> 
                                         <Afiliados
@@ -242,9 +254,26 @@ export default function NovoServico(){
                                       </>}
                                       
 
-              {currentStep === 5 &&  < ResumoForm />}
+              {currentStep === 5 &&   <>   < ResumoDadosPessoas 
+                                                          InfoPessoal = {formData} 
+                                                          Documentos = {formDataDocumentos}
+                                                          Endereco = {formDataendereco}
+                                                           />
+                                            < ResumoDadosEnvolvido 
+                                                          InfoPessoal = {formData} 
+                                                          Documentos = {formDataDocumentos}
+                                                          Endereco = {formDataendereco}
+                                           />
+                                            <ResumoAfiliados 
+                                                          Afiliados = {formDataAfiliados} 
+                                                          />
+                                          
+                                      </>
+              }
+             {showModal && <EnviarFormularioModal onClose={() => setShowModal(false)} />}
+
               
-              
+       
 
               {!complete && (
               <div className="btn-group flex gap-x-3 mb-5">

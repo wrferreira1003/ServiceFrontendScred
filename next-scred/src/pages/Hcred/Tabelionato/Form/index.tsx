@@ -4,6 +4,7 @@ import NovoServico from '../../Components/NovoServicoGeral';
 import ConsultaServico from '../../Components/ConsultaServico';
 import ReconhecimentoVerdadeiro from '../../Components/ReconhecimentoVerdadeiro';
 import ReconhecimentoSemelhanca from '../../Components/ReconhecimentoSemelhanca';
+import { FileProvider } from '../../Components/fomulario/uploadDocumentos/FileContext';
 //import { Check } from '@phosphor-icons/react';
 
 export default function Tabelionato(){
@@ -21,6 +22,7 @@ export default function Tabelionato(){
 
  
   return (
+    <FileProvider>
     <div className=" w-4/5 mx-auto">
       <HeaderService 
         isDisabled = {isDisable}
@@ -58,5 +60,5 @@ export default function Tabelionato(){
       )}
             
     </div> 
-             
+    </FileProvider>   
   )}

@@ -12,7 +12,12 @@ import { FormularioDadosPessoal,
          FormularioAfiliados,
          FormularioCartorio,
         } from './NovoServicoGeral';
-import UploadDocumentos from './fomulario/uploadDocumentos';
+import Upload from './fomulario/uploadDocumentos/uploadDocumentos';
+import UploadDocumentos from './fomulario/uploadDocumentos/uploadDocumentos';
+import ResumoDadosPessoas from './fomulario/Resumo/resumoDadosPessoas';
+import ResumoDadosEnvolvido from './fomulario/Resumo/resumoDadosEnvolvidos';
+import ResumoCartorio from './fomulario/Resumo/resumoCartorio';
+import ResumoAfiliados from './fomulario/Resumo/resumoAfiliado';
 //import { Check } from '@phosphor-icons/react';
 
 export default function ConsultaServico(){
@@ -216,7 +221,24 @@ export default function ConsultaServico(){
                                           formDataAfiliados = {formDataAfiliados}
                                         />}
 
-              {currentStep === 6 && < ResumoForm />}
+              {currentStep === 6 && <>   < ResumoDadosPessoas 
+                                                          InfoPessoal = {formData} 
+                                                          Documentos = {formDataDocumentos}
+                                                          Endereco = {formDataendereco}
+                                                           />
+                                           < ResumoDadosEnvolvido 
+                                                          InfoPessoal = {formData} 
+                                                          Documentos = {formDataDocumentos}
+                                                          Endereco = {formDataendereco}
+                                           />
+                                           < ResumoCartorio 
+                                                          Cartorio = {formDataCartorio}
+                                           />
+                                            <ResumoAfiliados
+                                                          Afiliados = {formDataAfiliados}
+                                            />
+                                          
+                                      </>}
                       
         
 

@@ -4,7 +4,13 @@ import EnderecoForm from "./fomulario/endereco";
 import ResumoForm from "./fomulario/resumoform";
 import DadosPessoasReconhecimentoFirma from './fomulario/DadosPessoasreconhecimentoFirma';
 import FormDocumentosSimples from './fomulario/documentoSimples';
-import UploadDocumentos from './fomulario/uploadDocumentos';
+import Upload from './fomulario/uploadDocumentos/uploadDocumentos';
+import UploadDocumentos from './fomulario/uploadDocumentos/uploadDocumentos';
+import ResumoDadosPessoas from './fomulario/Resumo/resumoDadosPessoas';
+import ResumoDadosEnvolvido from './fomulario/Resumo/resumoDadosEnvolvidos';
+import ResumoCartorio from './fomulario/Resumo/resumoCartorio';
+import ResumoAfiliados from './fomulario/Resumo/resumoAfiliado';
+import ResumoDadosReconhecimento from './fomulario/Resumo/resumoDadosReconhecimento';
 
 export interface FormularioDadosPessoal {
   nome: string;
@@ -224,7 +230,7 @@ export default function ReconhecimentoVerdadeiro(){
                                      handleFormDataChangeDocumentos={handleFormDataChangeDocumentos}
                                      setValidateAndSave= {setValidateAndSave}   
                                     />
-                                    < UploadDocumentos />
+                                    < UploadDocumentos/>
                                     </>}
               {currentStep === 4 &&   <> 
                                         <Afiliados
@@ -235,10 +241,15 @@ export default function ReconhecimentoVerdadeiro(){
                                       </>}
                                       
 
-              {currentStep === 5 &&  < ResumoForm />}
+              {currentStep === 5 &&  <>     < ResumoDadosReconhecimento 
+                                                          InfoPessoal = {formData} 
+                                                          Documentos = {formDataDocumentos}
+                                                          Endereco = {formDataendereco}
+                                                           />
+                                            <ResumoAfiliados
+                                                          Afiliados = {formDataAfiliados}
+                                            /> </>}
                 
-              
-
               {!complete && (
               <div className="btn-group flex gap-x-3 mb-5">
                 {currentStep > 1 && (
