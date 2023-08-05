@@ -17,7 +17,7 @@ type UploadFile = {
 
 export default function UploadDocumentos(){  
   
-  const [files, setFiles] = useState<UploadFile[]>([]); // Estado para armazenar os arquivos
+  const [files, setFiles] = useState<any[]>([]); // Estado para armazenar os arquivos
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     const uploadFiles: UploadFile[] = acceptedFiles.map(file => ({
@@ -49,7 +49,7 @@ export default function UploadDocumentos(){
   } = useDropzone(
     {
       onDrop,
-      maxFiles: 3,
+      maxFiles:3,
       maxSize: 2 * 1024 * 1024, // 2MB
       accept:{
         'docs/pdf': ['.pdf'],
@@ -102,11 +102,17 @@ export default function UploadDocumentos(){
                 >
                   <p>{file.name}</p>
                   <p>Tamanho: {file.readaSize}</p>
+                  <a href={file.preview} 
+                     target="_blank" 
+                     rel="noreferrer"
+                     className='text-blue-300 hover:text-blue-600'
+                  >Visualizar
+                  </a>
                   <button 
                   className='text-blue-300 hover:text-blue-600'
                   onClick={() => removeFile(index)}
                   >
-                    Excluir
+                    Excluir Arquivo
                   </button>
                 </div>
               ))}
