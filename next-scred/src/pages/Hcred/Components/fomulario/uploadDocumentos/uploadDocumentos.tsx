@@ -1,6 +1,6 @@
 import { PhotoIcon } from '@heroicons/react/24/solid'
-import { useCallback, useEffect, useState } from 'react'
-import { DropzoneState, useDropzone } from 'react-dropzone'
+import { useCallback } from 'react'
+import { useDropzone } from 'react-dropzone'
 import {filesize} from "filesize";
 import { useFileContext } from './FileContext';
 

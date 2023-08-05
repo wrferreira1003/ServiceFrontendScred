@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as zod from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import UploadDocumentos from './uploadDocumentos'
 import { createUserSchema } from '../../../../lib/validationSchemas'
 
 
