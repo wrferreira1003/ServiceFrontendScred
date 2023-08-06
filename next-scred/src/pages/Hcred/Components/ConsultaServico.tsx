@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import ResumoForm from './fomulario/resumoform';
 import Afiliados from './fomulario/afiliados';
 import DadosCartorio from './fomulario/dadosCartorio';
 import FormDocumentos from './fomulario/documentos';
@@ -12,7 +11,7 @@ import { FormularioDadosPessoal,
          FormularioAfiliados,
          FormularioCartorio,
         } from './NovoServicoGeral';
-import Upload from './fomulario/uploadDocumentos/uploadDocumentos';
+
 import UploadDocumentos from './fomulario/uploadDocumentos/uploadDocumentos';
 import ResumoDadosPessoas from './fomulario/Resumo/resumoDadosPessoas';
 import ResumoDadosEnvolvido from './fomulario/Resumo/resumoDadosEnvolvidos';
@@ -156,7 +155,6 @@ export default function ConsultaServico(){
       }
 
       } else if (currentStep === 6){      
-        console.log('Aqui colocaremos o formulario parte 3')
         setCurrentStep((prev) => prev + 1);
       }
     }

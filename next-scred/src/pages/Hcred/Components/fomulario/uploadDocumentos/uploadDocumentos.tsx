@@ -2,7 +2,7 @@ import { PhotoIcon } from '@heroicons/react/24/solid'
 import { useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
 import {filesize} from "filesize";
-import { useFileContext } from './FileContext';
+import { useFileContext } from '../../../../../context/FileContext';
 
 type UploadFile = {
   file: File;

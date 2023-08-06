@@ -5,7 +5,7 @@ import FormDocumentos from "./fomulario/documentos";
 import EnderecoForm from "./fomulario/endereco";
 import ResumoDadosPessoas from "./fomulario/Resumo/resumoDadosPessoas";
 import UploadDocumentos from './fomulario/uploadDocumentos/uploadDocumentos';
-import { useFileContext } from './fomulario/uploadDocumentos/FileContext';
+import { useFileContext } from '../../../context/FileContext';
 import ResumoDadosEnvolvido from './fomulario/Resumo/resumoDadosEnvolvidos';
 import ResumoCartorio from './fomulario/Resumo/resumoCartorio';
 import ResumoAfiliados from './fomulario/Resumo/resumoAfiliado';

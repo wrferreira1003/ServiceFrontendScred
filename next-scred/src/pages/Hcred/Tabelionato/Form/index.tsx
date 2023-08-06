@@ -4,7 +4,7 @@ import NovoServico from '../../Components/NovoServicoGeral';
 import ConsultaServico from '../../Components/ConsultaServico';
 import ReconhecimentoVerdadeiro from '../../Components/ReconhecimentoVerdadeiro';
 import ReconhecimentoSemelhanca from '../../Components/ReconhecimentoSemelhanca';
-import { FileProvider } from '../../Components/fomulario/uploadDocumentos/FileContext';
+import { FileProvider } from '../../../../context/FileContext';
 //import { Check } from '@phosphor-icons/react';
 
 export default function Tabelionato(){
