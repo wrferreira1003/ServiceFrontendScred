@@ -4,11 +4,10 @@ import Afiliados from "./fomulario/afiliados";
 import FormDocumentos from "./fomulario/documentos";
 import EnderecoForm from "./fomulario/endereco";
 import ResumoDadosPessoas from "./fomulario/Resumo/resumoDadosPessoas";
-import UploadDocumentos from './fomulario/uploadDocumentos/uploadDocumentos';
-import { useFileContext } from '../../../context/FileContext';
 import ResumoDadosEnvolvido from './fomulario/Resumo/resumoDadosEnvolvidos';
 import ResumoAfiliados from './fomulario/Resumo/resumoAfiliado';
 import EnviarFormularioModal from './enviarFormularioModal';
+import Upload from './fomulario/uploadDocumentos/upload';
 
 export interface FormularioDadosPessoal {
   nome: string;
@@ -60,7 +59,6 @@ export default function NovoServico(){
   const [validateAndSave, setValidateAndSave] = useState<(() => Promise<boolean>) | null>(null);
   const [isDisable, setIsDisable] = useState(false);
   const [fileState, setFileState] = useState<File[]>([]);
-  //const { parentFiles, setParentFiles } = useFileContext();
 
   const [formData, setFormData] = useState<FormularioDadosPessoal>({
     nome: '', 
@@ -132,13 +130,6 @@ export default function NovoServico(){
     }))
   }
   
-
-  //useEffect(() => {
-  //  const onlyFiles = parentFiles.map(item => item.file);
-  //  setFileState(onlyFiles);
-  //}, [parentFiles]);
-    
-
   const combineDataForm = () => {
     const combinedData = {
       ...formData,
@@ -241,7 +232,7 @@ export default function NovoServico(){
                                      handleFormDataChangeDocumentos={handleFormDataChangeDocumentos}
                                      setValidateAndSave= {setValidateAndSave}   
                                     />
-                                    < UploadDocumentos/>
+                                    < Upload/>
                                
                                     </>}
               {currentStep === 4 &&   <> 
