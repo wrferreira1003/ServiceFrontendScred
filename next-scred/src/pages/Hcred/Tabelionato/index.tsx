@@ -3,8 +3,10 @@ import Footer from "../Home/Footer";
 import Header from "../Home/Header";
 import Tabelionato from "./Form";
 
+
 export default function FormTabelionato(){
   return (
+    
     <>
       <Head>
         <title>Tabelionato | HCred</title>

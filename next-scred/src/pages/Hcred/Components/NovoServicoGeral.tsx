@@ -7,7 +7,6 @@ import ResumoDadosPessoas from "./fomulario/Resumo/resumoDadosPessoas";
 import UploadDocumentos from './fomulario/uploadDocumentos/uploadDocumentos';
 import { useFileContext } from '../../../context/FileContext';
 import ResumoDadosEnvolvido from './fomulario/Resumo/resumoDadosEnvolvidos';
-import ResumoCartorio from './fomulario/Resumo/resumoCartorio';
 import ResumoAfiliados from './fomulario/Resumo/resumoAfiliado';
 import EnviarFormularioModal from './enviarFormularioModal';
 
@@ -60,6 +59,8 @@ export default function NovoServico(){
   const [subservico, setSubServico] = useState('');
   const [validateAndSave, setValidateAndSave] = useState<(() => Promise<boolean>) | null>(null);
   const [isDisable, setIsDisable] = useState(false);
+  const [fileState, setFileState] = useState<File[]>([]);
+  //const { parentFiles, setParentFiles } = useFileContext();
 
   const [formData, setFormData] = useState<FormularioDadosPessoal>({
     nome: '', 
@@ -130,14 +131,12 @@ export default function NovoServico(){
       ...newData
     }))
   }
-  const {parentFiles} = useFileContext();
+  
 
-  const [fileState, setFileState] = useState<File[]>([]);
-
-  useEffect(() => {
-    const onlyFiles = parentFiles.map(item => item.file);
-    setFileState(onlyFiles);
-  }, [parentFiles]);
+  //useEffect(() => {
+  //  const onlyFiles = parentFiles.map(item => item.file);
+  //  setFileState(onlyFiles);
+  //}, [parentFiles]);
     
 
   const combineDataForm = () => {

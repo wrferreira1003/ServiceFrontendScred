@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import Afiliados from "./fomulario/afiliados";
 import EnderecoForm from "./fomulario/endereco";
-import ResumoForm from "./fomulario/resumoform";
 import DadosPessoasReconhecimentoFirma from './fomulario/DadosPessoasreconhecimentoFirma';
 import FormDocumentosSimples from './fomulario/documentoSimples';
 

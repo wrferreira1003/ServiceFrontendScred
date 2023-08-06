@@ -1,14 +1,9 @@
 import { useState } from 'react'
 import Afiliados from "./fomulario/afiliados";
 import EnderecoForm from "./fomulario/endereco";
-import ResumoForm from "./fomulario/resumoform";
 import DadosPessoasReconhecimentoFirma from './fomulario/DadosPessoasreconhecimentoFirma';
 import FormDocumentosSimples from './fomulario/documentoSimples';
-import Upload from './fomulario/uploadDocumentos/uploadDocumentos';
 import UploadDocumentos from './fomulario/uploadDocumentos/uploadDocumentos';
-import ResumoDadosPessoas from './fomulario/Resumo/resumoDadosPessoas';
-import ResumoDadosEnvolvido from './fomulario/Resumo/resumoDadosEnvolvidos';
-import ResumoCartorio from './fomulario/Resumo/resumoCartorio';
 import ResumoAfiliados from './fomulario/Resumo/resumoAfiliado';
 import ResumoDadosReconhecimento from './fomulario/Resumo/resumoDadosReconhecimento';
 
