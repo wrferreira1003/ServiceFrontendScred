@@ -51,6 +51,7 @@ export default function Afiliados({ handleFormDataChangeAfiliados,
 
   useEffect(() => {
     setValidateAndSave(() => validateAndSave);
+  //eslint-disable-next-line
   },[]);
 
   async function createUser(data: CreateUserData) {

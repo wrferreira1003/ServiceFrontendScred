@@ -31,8 +31,6 @@ export default function DadosPessoas({formData,
     handleSubmit,
     register, 
     formState: {errors}, 
-    watch,
-    control,
     getValues,
     trigger,
   } = useForm<CreateUserData>({
@@ -64,6 +62,7 @@ export default function DadosPessoas({formData,
   
   useEffect(() => {
     setValidateAndSave(() => validateAndSave);
+  //eslint-disable-next-line
   },[]);
 
   async function createUser(data: CreateUserData) {

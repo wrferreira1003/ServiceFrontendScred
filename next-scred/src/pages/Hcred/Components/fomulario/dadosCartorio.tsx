@@ -53,6 +53,7 @@ export default function DadosCartorio({handleFormDataChangeCartorio,
   
   useEffect(() => {
     setValidateAndSave(() => validateAndSave);
+  //eslint-disable-next-line
   },[]);
   return(
     <div className=" w-full">

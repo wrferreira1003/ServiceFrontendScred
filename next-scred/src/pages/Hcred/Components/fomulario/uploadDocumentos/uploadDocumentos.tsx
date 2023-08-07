@@ -45,7 +45,7 @@ export default function UploadDocumentos({onFilesChange,filesState, removeFile}:
     setParentFiles(newFiles)
 
     onFilesChange(newFiles);
-
+  //eslint-disable-next-line
   }, [parentFiles]);
 
   const {
@@ -56,7 +56,7 @@ export default function UploadDocumentos({onFilesChange,filesState, removeFile}:
   } = useDropzone(
     {
       onDrop,
-      maxFiles:2,
+      maxFiles:6,
       maxSize: 2 * 1024 * 1024, // 2MB
       accept:{
         'application/pdf': ['.pdf'],
@@ -69,7 +69,7 @@ export default function UploadDocumentos({onFilesChange,filesState, removeFile}:
           class: 'text-red-600 border-red-600',
           message:'Arquivo não aceito, por favor, Somente PDF!' 
         };
-      } else if (parentFiles.length >= 3) {
+      } else if (filesState.length >= 6) {
         return {
           message: 'Limite máximo de arquivos atingido!',
           class: 'text-red-600 border-red-600',
@@ -90,9 +90,10 @@ export default function UploadDocumentos({onFilesChange,filesState, removeFile}:
           class: 'text-gray-500 border-gray-300 hover:border-gray-800'
         }
       }
-    }
-    
-    const { class:dragClass, message: dragMessage} = renderDragMessage();
+  }
+  const { class:dragClass, message: dragMessage} = renderDragMessage();
+
+  console.log(filesState)
 
   return (
     <div className=" w-full">
@@ -128,18 +129,18 @@ export default function UploadDocumentos({onFilesChange,filesState, removeFile}:
     {/* Listar os nomes dos arquivos */}
     {filesState && Object.values(filesState).map((file: any, index: number) => (
                 <div key={index}
-                  className='flex justify-between ali text-xs mt-1 ml-4 mr-4'
+                  className='flex flex-col md:flex-row items-start text-xs mt-1 ml-4 mr-4 w-full'
                 >
-                  <p>{file.name}</p>
-                  <p>Tamanho: {file.readaSize}</p>
+                  <p className="w-full md:w-auto md:mr-4">{file.name}</p>
+                  <p className="w-full md:w-auto md:mr-4">Tamanho: {file.readaSize}</p>
                   <a href={file.preview} 
                      target="_blank" 
                      rel="noreferrer"
-                     className='text-blue-300 hover:text-blue-600'
+                     className='text-blue-300 hover:text-blue-600 w-full md:w-auto md:mr-4'
                   >Visualizar
                   </a>
                   <button 
-                  className='text-blue-300 hover:text-blue-600'
+                  className='text-blue-300 hover:text-blue-600 w-full md:w-auto'
                   onClick={() => removeFile(index)}
                   >
                     Excluir Arquivo

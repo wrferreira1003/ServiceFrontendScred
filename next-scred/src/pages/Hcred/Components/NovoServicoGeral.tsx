@@ -8,6 +8,7 @@ import ResumoDadosEnvolvido from './fomulario/Resumo/resumoDadosEnvolvidos';
 import ResumoAfiliados from './fomulario/Resumo/resumoAfiliado';
 import EnviarFormularioModal from './enviarFormularioModal';
 import UploadDocumentos from './fomulario/uploadDocumentos/uploadDocumentos';
+import ResumoUploadDocumentos from './fomulario/Resumo/resumoUploadDocumentos';
 
 export interface FormularioDadosPessoal {
   nome: string;
@@ -71,6 +72,7 @@ export default function NovoServico(){
   const [validateAndSave, setValidateAndSave] = useState<(() => Promise<boolean>) | null>(null);
   const [isDisable, setIsDisable] = useState(false);
   const [fileState, setFileState] = useState<FileData[]>([]);
+  const [showModal, setShowModal] = useState(false);
 
   const [formData, setFormData] = useState<FormularioDadosPessoal>({
     nome: '', 
@@ -141,6 +143,7 @@ export default function NovoServico(){
       ...newData
     }))
   }
+  //Funcao que trata os uploads
   const handleFilesChange = (files: any) => {
     const newFilesArray: FileData[] = Object.values(files);
     setFileState(prevDataUpload => {
@@ -152,8 +155,8 @@ export default function NovoServico(){
         });
         return uniqueFiles;
     });
-};
-
+  };
+  //Funcao para Remover um arquivo
   const removeFile = (indexToRemove: number) => {
     setFileState(prevFiles => {
         const updatedFiles = [...prevFiles];
@@ -177,7 +180,8 @@ export default function NovoServico(){
     setIsDisable(true);
   };
 
-  const [showModal, setShowModal] = useState(false);
+  
+  
   //Funcao que Comunica com os componentes de formulario e faz as validacoes 
   const handleNextClick = async () => {      
     if (currentStep === steps.length) {
@@ -291,6 +295,8 @@ export default function NovoServico(){
                                             <ResumoAfiliados 
                                                           Afiliados = {formDataAfiliados} 
                                                           />
+                                            < ResumoUploadDocumentos 
+                                                          fileState = {fileState}/>
                                           
                                       </>
               }

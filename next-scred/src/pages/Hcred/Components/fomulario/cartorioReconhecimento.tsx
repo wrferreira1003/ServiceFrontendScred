@@ -51,6 +51,7 @@ export default function CartorioAutenticacao({handleFormDataChangeCartorio,
   
   useEffect(() => {
     setValidateAndSave(() => validateAndSave);
+  //eslint-disable-next-line  
   },[]);
   return(
     <div className=" w-full">

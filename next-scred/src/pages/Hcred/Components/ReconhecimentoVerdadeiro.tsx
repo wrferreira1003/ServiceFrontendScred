@@ -3,10 +3,12 @@ import Afiliados from "./fomulario/afiliados";
 import EnderecoForm from "./fomulario/endereco";
 import DadosPessoasReconhecimentoFirma from './fomulario/DadosPessoasreconhecimentoFirma';
 import FormDocumentosSimples from './fomulario/documentoSimples';
-import UploadDocumentos from './fomulario/uploadDocumentos/uploadDocumentos';
 import ResumoAfiliados from './fomulario/Resumo/resumoAfiliado';
 import ResumoDadosReconhecimento from './fomulario/Resumo/resumoDadosReconhecimento';
-
+import { FileData } from './NovoServicoGeral'
+import UploadDocumentos from './fomulario/uploadDocumentos/uploadDocumentos';
+import EnviarFormularioModal from './enviarFormularioModal';
+import ResumoUploadDocumentos from './fomulario/Resumo/resumoUploadDocumentos';
 export interface FormularioDadosPessoal {
   nome: string;
   sobrenome: string;
@@ -53,6 +55,8 @@ export default function ReconhecimentoVerdadeiro(){
   const [servico, setServico] = useState('');
   const [validateAndSave, setValidateAndSave] = useState<(() => Promise<boolean>) | null>(null);
   const [isDisable, setIsDisable] = useState(false);
+  const [fileState, setFileState] = useState<FileData[]>([]);
+  const [showModal, setShowModal] = useState(false);
 
   const [formData, setFormData] = useState<FormularioDadosReconhecimentoFirma>({
     nome: '', 
@@ -124,6 +128,28 @@ export default function ReconhecimentoVerdadeiro(){
     }))
   }
 
+  const handleFilesChange = (files: any) => {
+    const newFilesArray: FileData[] = Object.values(files);
+    setFileState(prevDataUpload => {
+        const uniqueFiles = [...prevDataUpload];
+        newFilesArray.forEach(newFile => {
+            if (!prevDataUpload.some(prevFile => prevFile.id === newFile.id)) {
+                uniqueFiles.push(newFile);
+            }
+        });
+        return uniqueFiles;
+    });
+};
+
+  const removeFile = (indexToRemove: number) => {
+    setFileState(prevFiles => {
+        const updatedFiles = [...prevFiles];
+        updatedFiles.splice(indexToRemove, 1);
+        return updatedFiles;
+    });
+  }
+
+
   const combineDataForm = () => {
     const combinedData = {
       ...formData,
@@ -141,6 +167,7 @@ export default function ReconhecimentoVerdadeiro(){
   const handleNextClick = async () => {      
     if (currentStep === steps.length) {
       setComplete(true);
+      setShowModal(true);
       combineDataForm() //Chamando a funcao para juntar os dados.
     } else {
       //Verificando qual etapa
@@ -225,6 +252,9 @@ export default function ReconhecimentoVerdadeiro(){
                                      handleFormDataChangeDocumentos={handleFormDataChangeDocumentos}
                                      setValidateAndSave= {setValidateAndSave}   
                                     />
+                                    < UploadDocumentos onFilesChange={handleFilesChange}
+                                                      filesState = {fileState}
+                                                      removeFile = {removeFile}/>
                                    
                                     </>}
               {currentStep === 4 &&   <> 
@@ -243,8 +273,12 @@ export default function ReconhecimentoVerdadeiro(){
                                                            />
                                             <ResumoAfiliados
                                                           Afiliados = {formDataAfiliados}
-                                            /> </>}
-                
+                                            /> 
+                                            < ResumoUploadDocumentos 
+                                                          fileState = {fileState}/>
+                                            </>}
+              {showModal && <EnviarFormularioModal onClose={() => setShowModal(false)} />}
+
               {!complete && (
               <div className="btn-group flex gap-x-3 mb-5">
                 {currentStep > 1 && (

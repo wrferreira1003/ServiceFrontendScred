@@ -62,6 +62,7 @@ export default function DadosPessoasReconhecimentoFirma({formData,
   
   useEffect(() => {
     setValidateAndSave(() => validateAndSave);
+  //eslint-disable-next-line
   },[]);
 
   async function createUser(data: CreateUserData) {

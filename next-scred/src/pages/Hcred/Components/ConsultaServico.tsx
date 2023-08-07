@@ -5,11 +5,13 @@ import FormDocumentos from './fomulario/documentos';
 import EnderecoForm from './fomulario/endereco';
 import DadosPessoas from './fomulario/DadosPessoas';
 
+
 import { FormularioDadosPessoal,
          FormularioEndereco,
          FormularioDocumentos,
          FormularioAfiliados,
          FormularioCartorio,
+         FileData
         } from './NovoServicoGeral';
 
 import UploadDocumentos from './fomulario/uploadDocumentos/uploadDocumentos';
@@ -17,6 +19,8 @@ import ResumoDadosPessoas from './fomulario/Resumo/resumoDadosPessoas';
 import ResumoDadosEnvolvido from './fomulario/Resumo/resumoDadosEnvolvidos';
 import ResumoCartorio from './fomulario/Resumo/resumoCartorio';
 import ResumoAfiliados from './fomulario/Resumo/resumoAfiliado';
+import EnviarFormularioModal from './enviarFormularioModal';
+import ResumoUploadDocumentos from './fomulario/Resumo/resumoUploadDocumentos';
 //import { Check } from '@phosphor-icons/react';
 
 export default function ConsultaServico(){
@@ -24,6 +28,8 @@ export default function ConsultaServico(){
   const [subservico, setSubServico] = useState('');
   const [validateAndSave, setValidateAndSave] = useState<(() => Promise<boolean>) | null>(null);
   const [isDisable, setIsDisable] = useState(false);
+  const [ fileState, setFileState] = useState<FileData[]>([]);
+  const [showModal, setShowModal] = useState(false);
 
   const [formData, setFormData] = useState<FormularioDadosPessoal>({
     nome: '', 
@@ -101,6 +107,27 @@ export default function ConsultaServico(){
       ...newData
     }))
   }
+  //Funcao que trata os uploads
+  const handleFilesChange = (files: any) => {
+    const newFilesArray: FileData[] = Object.values(files);
+    setFileState(prevDataUpload => {
+        const uniqueFiles = [...prevDataUpload];
+        newFilesArray.forEach(newFile => {
+            if (!prevDataUpload.some(prevFile => prevFile.id === newFile.id)) {
+                uniqueFiles.push(newFile);
+            }
+        });
+        return uniqueFiles;
+    });
+  };
+  //Funcao para Remover um arquivo
+  const removeFile = (indexToRemove: number) => {
+    setFileState(prevFiles => {
+        const updatedFiles = [...prevFiles];
+        updatedFiles.splice(indexToRemove, 1);
+        return updatedFiles;
+    });
+  }
 
   const combineDataForm = () => {
     const combinedData = {
@@ -110,7 +137,8 @@ export default function ConsultaServico(){
       ...formDataendereco,
       ...formDataDocumentos,
       ...formDataAfiliados,
-      ...formDataCartorio
+      ...formDataCartorio,
+      ...fileState
     }
     console.log(combinedData);
   };
@@ -122,6 +150,7 @@ export default function ConsultaServico(){
   const handleNextClick = async () => {      
     if (currentStep === steps.length) {
       setComplete(true);
+      setShowModal(true)
       combineDataForm() //Chamando a funcao para juntar os dados.
     } else {
       //Verificando qual etapa
@@ -204,7 +233,11 @@ export default function ConsultaServico(){
                                      handleFormDataChangeDocumentos={handleFormDataChangeDocumentos}
                                      setValidateAndSave= {setValidateAndSave}   
                                     />
-                                    
+                                    < UploadDocumentos 
+                                      onFilesChange={handleFilesChange}
+                                      filesState = {fileState}
+                                      removeFile = {removeFile}
+                                    /> 
                                     </>}
               
               {currentStep === 4 && < DadosCartorio
@@ -235,11 +268,12 @@ export default function ConsultaServico(){
                                             <ResumoAfiliados
                                                           Afiliados = {formDataAfiliados}
                                             />
+                                            < ResumoUploadDocumentos 
+                                                          fileState = {fileState}/>
                                           
                                       </>}
-                      
+                {showModal && <EnviarFormularioModal onClose={() => setShowModal(false)} />}      
         
-
                 {!complete && (
                 <div className="btn-group flex gap-x-3 mb-5">
                   {currentStep > 1 && (

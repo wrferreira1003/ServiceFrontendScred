@@ -7,10 +7,10 @@ import FormDocumentosSimples from './fomulario/documentoSimples';
 import { 
   FormularioEndereco,
   FormularioAfiliados,
+  FileData,
  } from './NovoServicoGeral';
 import DadosCartorio from './fomulario/dadosCartorio';
 import CartorioAutenticacao from './fomulario/cartorioReconhecimento';
-import Upload from './fomulario/uploadDocumentos/uploadDocumentos';
 import UploadDocumentos from './fomulario/uploadDocumentos/uploadDocumentos';
 import ResumoDadosPessoas from './fomulario/Resumo/resumoDadosPessoas';
 import ResumoDadosEnvolvido from './fomulario/Resumo/resumoDadosEnvolvidos';
@@ -18,6 +18,8 @@ import ResumoCartorio from './fomulario/Resumo/resumoCartorio';
 import ResumoAfiliados from './fomulario/Resumo/resumoAfiliado';
 import ResumoDadosReconhecimento from './fomulario/Resumo/resumoDadosReconhecimento';
 import ResumoCartorioReconhecimento from './fomulario/Resumo/resumoCartorioReconhecimento';
+import EnviarFormularioModal from './enviarFormularioModal';
+import ResumoUploadDocumentos from './fomulario/Resumo/resumoUploadDocumentos';
 
 export interface FormularioDadosReconhecimentoFirma{
   nome: string;
@@ -40,9 +42,11 @@ export interface FormularioCartorio{
 }
 
 export default function ReconhecimentoSemelhanca(){
-  const [servico, setServico] = useState('');
+  //const [servico, setServico] = useState('');
   const [validateAndSave, setValidateAndSave] = useState<(() => Promise<boolean>) | null>(null);
   const [isDisable, setIsDisable] = useState(false);
+  const [fileState, setFileState] = useState<FileData[]>([]);
+  const [showModal, setShowModal] = useState(false);
 
   const [formData, setFormData] = useState<FormularioDadosReconhecimentoFirma>({
     nome: '', 
@@ -123,6 +127,28 @@ export default function ReconhecimentoSemelhanca(){
     }))
   }
 
+  const handleFilesChange = (files: any) => {
+    const newFilesArray: FileData[] = Object.values(files);
+    setFileState(prevDataUpload => {
+        const uniqueFiles = [...prevDataUpload];
+        newFilesArray.forEach(newFile => {
+            if (!prevDataUpload.some(prevFile => prevFile.id === newFile.id)) {
+                uniqueFiles.push(newFile);
+            }
+        });
+        return uniqueFiles;
+    });
+  };
+
+  const removeFile = (indexToRemove: number) => {
+    setFileState(prevFiles => {
+        const updatedFiles = [...prevFiles];
+        updatedFiles.splice(indexToRemove, 1);
+        return updatedFiles;
+    });
+  }
+
+
   const combineDataForm = () => {
     const combinedData = {
       ...formData,
@@ -130,6 +156,7 @@ export default function ReconhecimentoSemelhanca(){
       ...formDataDocumentos,
       ...formDataCartorio,
       ...formDataAfiliados,
+      ...fileState,
     }
     console.log(combinedData);
   };
@@ -141,6 +168,7 @@ export default function ReconhecimentoSemelhanca(){
   const handleNextClick = async () => {      
     if (currentStep === steps.length) {
       setComplete(true);
+      setShowModal(true);
       combineDataForm() //Chamando a funcao para juntar os dados.
     } else {
       //Verificando qual etapa
@@ -226,6 +254,11 @@ export default function ReconhecimentoSemelhanca(){
                                      setValidateAndSave= {setValidateAndSave}   
                                     />
                                     
+                                    < UploadDocumentos onFilesChange={handleFilesChange}
+                                                      filesState = {fileState}
+                                                      removeFile = {removeFile}
+                                    />
+                                    
                                     </>}
               
               {currentStep === 4 &&   <CartorioAutenticacao
@@ -253,8 +286,10 @@ export default function ReconhecimentoSemelhanca(){
                                             <ResumoAfiliados
                                                           Afiliados = {formDataAfiliados}
                                             />
+                                            < ResumoUploadDocumentos 
+                                                          fileState = {fileState}/>
                                       </>}  
-              
+              {showModal && <EnviarFormularioModal onClose={() => setShowModal(false)} />}
               
               
               {!complete && (
