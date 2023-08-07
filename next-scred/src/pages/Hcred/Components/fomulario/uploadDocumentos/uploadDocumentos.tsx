@@ -69,7 +69,7 @@ export default function UploadDocumentos({onFilesChange,filesState, removeFile}:
           class: 'text-red-600 border-red-600',
           message:'Arquivo não aceito, por favor, Somente PDF!' 
         };
-      } else if (filesState.length >= 6) {
+      } else if (filesState && filesState.length >= 6) {
         return {
           message: 'Limite máximo de arquivos atingido!',
           class: 'text-red-600 border-red-600',
@@ -92,8 +92,6 @@ export default function UploadDocumentos({onFilesChange,filesState, removeFile}:
       }
   }
   const { class:dragClass, message: dragMessage} = renderDragMessage();
-
-  console.log(filesState)
 
   return (
     <div className=" w-full">

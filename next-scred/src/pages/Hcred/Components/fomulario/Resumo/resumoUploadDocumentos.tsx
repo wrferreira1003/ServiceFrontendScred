@@ -17,7 +17,7 @@ export default function ResumoUploadDocumentos({ fileState }: UploadDocumentosPr
             <dt className="text-sm font-roboto font-bold leading-6 text-gray-900">Nome Arquivo:</dt>
             {fileState && fileState.map((file: any, index: number) => (
               <div key={index}>
-                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:mt-1">{`-${file.name}`}</dd>
+                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:mt-1">{`-${file?.name}`}</dd>
               </div>
             ))}
           </div>
