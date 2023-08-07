@@ -225,7 +225,7 @@ export default function ReconhecimentoVerdadeiro(){
                                      handleFormDataChangeDocumentos={handleFormDataChangeDocumentos}
                                      setValidateAndSave= {setValidateAndSave}   
                                     />
-                                    < UploadDocumentos/>
+                                   
                                     </>}
               {currentStep === 4 &&   <> 
                                         <Afiliados

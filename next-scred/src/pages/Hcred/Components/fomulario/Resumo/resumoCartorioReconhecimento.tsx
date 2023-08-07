@@ -10,15 +10,15 @@ export default function ResumoCartorioReconhecimento({Cartorio}:any){
         <dl className="grid grid-cols-1 sm:grid-cols-5 ">
           <div className="border-t border-gray-100 px-4 sm:col-span-1 sm:px-0">
             <dt className="text-sm font-roboto font-bold leading-6 text-gray-900">Nome Cartório:</dt>
-            <dd className="mt-1 text-sm leading-6 text-gray-700 sm:mt-1">{Cartorio.cartorio}</dd>
+            <dd className="mt-1 text-sm leading-6 text-gray-700 sm:mt-1">{Cartorio?.cartorio}</dd>
           </div>
           <div className="border-t border-gray-100 px-4 sm:col-span-1 sm:px-0">
             <dt className="text-sm font-roboto font-bold leading-6 text-gray-900">Cidade do Cartório:</dt>
-            <dd className="mt-1 text-sm leading-6 text-gray-700 sm:mt-1">{Cartorio.cidadeCartorio}</dd>
+            <dd className="mt-1 text-sm leading-6 text-gray-700 sm:mt-1">{Cartorio?.cidadeCartorio}</dd>
           </div>
           <div className="border-t border-gray-100 px-4 sm:col-span-1 sm:px-0">
             <dt className="text-sm font-roboto font-bold leading-6 text-gray-900">Estado do Cartório:</dt>
-            <dd className="mt-1 text-sm leading-6 text-gray-700 sm:mt-1">{Cartorio.estadoCartorio}</dd>
+            <dd className="mt-1 text-sm leading-6 text-gray-700 sm:mt-1">{Cartorio?.estadoCartorio}</dd>
           </div>
           </dl>
         

@@ -1,8 +1,8 @@
 import { PhotoIcon } from '@heroicons/react/24/solid'
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 import {filesize} from "filesize";
-import { useFileContext } from '../../../../../context/FileContext';
+import {FileData} from '../../NovoServicoGeral'
 
 
 type UploadFile = {
@@ -17,9 +17,16 @@ type UploadFile = {
   url: null;
 };
 
-export default function UploadDocumentos(){  
+
+interface UploadDocumentosProps {
+  onFilesChange: (files: any[]) => void;
+  removeFile: (index: number) => void;
+  filesState:FileData[];
+}
+
+export default function UploadDocumentos({onFilesChange,filesState, removeFile}: UploadDocumentosProps){  
   
-  const {parentFiles, setParentFiles} = useFileContext();
+  const [parentFiles, setParentFiles] = useState<any[]>([]);
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     const uploadFiles: UploadFile[] = acceptedFiles.map(file => ({
@@ -34,8 +41,12 @@ export default function UploadDocumentos(){
       url: null,
     }));
     // Concatenar os novos arquivos com os existentes
-    setParentFiles(prevFiles => [...prevFiles, ...uploadFiles]);
-  }, []);
+    const newFiles = [...parentFiles, ...uploadFiles]
+    setParentFiles(newFiles)
+
+    onFilesChange(newFiles);
+
+  }, [parentFiles]);
 
   const {
     getRootProps,
@@ -51,11 +62,6 @@ export default function UploadDocumentos(){
         'application/pdf': ['.pdf'],
       }
     })
-
-    //Funcao que exclui o arquivo anexo
-    const removeFile = (indexToRemove: number) => {
-      setParentFiles(prevFiles => prevFiles.filter((file, index) => index !== indexToRemove));
-    };
     
     const renderDragMessage = () => {
       if (isDragReject) {
@@ -120,7 +126,7 @@ export default function UploadDocumentos(){
       </div>    
     </div>
     {/* Listar os nomes dos arquivos */}
-    {parentFiles.map((file, index) => (
+    {filesState && Object.values(filesState).map((file: any, index: number) => (
                 <div key={index}
                   className='flex justify-between ali text-xs mt-1 ml-4 mr-4'
                 >

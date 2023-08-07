@@ -204,7 +204,7 @@ export default function ConsultaServico(){
                                      handleFormDataChangeDocumentos={handleFormDataChangeDocumentos}
                                      setValidateAndSave= {setValidateAndSave}   
                                     />
-                                    < UploadDocumentos />
+                                    
                                     </>}
               
               {currentStep === 4 && < DadosCartorio

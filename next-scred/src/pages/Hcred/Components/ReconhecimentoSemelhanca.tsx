@@ -225,7 +225,7 @@ export default function ReconhecimentoSemelhanca(){
                                      handleFormDataChangeDocumentos={handleFormDataChangeDocumentos}
                                      setValidateAndSave= {setValidateAndSave}   
                                     />
-                                    < UploadDocumentos/>
+                                    
                                     </>}
               
               {currentStep === 4 &&   <CartorioAutenticacao

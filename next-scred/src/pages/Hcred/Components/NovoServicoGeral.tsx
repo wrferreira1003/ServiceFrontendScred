@@ -7,7 +7,7 @@ import ResumoDadosPessoas from "./fomulario/Resumo/resumoDadosPessoas";
 import ResumoDadosEnvolvido from './fomulario/Resumo/resumoDadosEnvolvidos';
 import ResumoAfiliados from './fomulario/Resumo/resumoAfiliado';
 import EnviarFormularioModal from './enviarFormularioModal';
-import Upload from './fomulario/uploadDocumentos/upload';
+import UploadDocumentos from './fomulario/uploadDocumentos/uploadDocumentos';
 
 export interface FormularioDadosPessoal {
   nome: string;
@@ -52,13 +52,25 @@ export interface FormularioCartorio{
   livro: string;
   folha: string;
 }
+export type FileData = {
+  error: boolean;
+  file: File;
+  id: string;
+  name: string;
+  preview: string;
+  progress: number;
+  readaSize: string;
+  upload: boolean;
+  url: string | null;
+};
 
 export default function NovoServico(){
+  
   const [servico, setServico] = useState('');
   const [subservico, setSubServico] = useState('');
   const [validateAndSave, setValidateAndSave] = useState<(() => Promise<boolean>) | null>(null);
   const [isDisable, setIsDisable] = useState(false);
-  const [fileState, setFileState] = useState<File[]>([]);
+  const [fileState, setFileState] = useState<FileData[]>([]);
 
   const [formData, setFormData] = useState<FormularioDadosPessoal>({
     nome: '', 
@@ -128,6 +140,26 @@ export default function NovoServico(){
       ...prevDataAfiliados,
       ...newData
     }))
+  }
+  const handleFilesChange = (files: any) => {
+    const newFilesArray: FileData[] = Object.values(files);
+    setFileState(prevDataUpload => {
+        const uniqueFiles = [...prevDataUpload];
+        newFilesArray.forEach(newFile => {
+            if (!prevDataUpload.some(prevFile => prevFile.id === newFile.id)) {
+                uniqueFiles.push(newFile);
+            }
+        });
+        return uniqueFiles;
+    });
+};
+
+  const removeFile = (indexToRemove: number) => {
+    setFileState(prevFiles => {
+        const updatedFiles = [...prevFiles];
+        updatedFiles.splice(indexToRemove, 1);
+        return updatedFiles;
+    });
   }
   
   const combineDataForm = () => {
@@ -232,8 +264,10 @@ export default function NovoServico(){
                                      handleFormDataChangeDocumentos={handleFormDataChangeDocumentos}
                                      setValidateAndSave= {setValidateAndSave}   
                                     />
-                                    < Upload/>
-                               
+                                    < UploadDocumentos onFilesChange={handleFilesChange}
+                                                      filesState = {fileState}
+                                                      removeFile = {removeFile}/>
+
                                     </>}
               {currentStep === 4 &&   <> 
                                         <Afiliados
