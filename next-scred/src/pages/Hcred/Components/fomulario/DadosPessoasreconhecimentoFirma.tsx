@@ -190,9 +190,11 @@ export default function DadosPessoasReconhecimentoFirma({formData,
                 {...register('estadocivil')}
               >
                 <option value="">Estado Civil</option>
-                <option value="casado">Casado</option>
-                <option value="solteiro">Solteiro</option>
-                <option value="divorciado">Divorciado</option>
+                <option value="Casado">Casado(a)</option>
+                <option value="Solteiro">Solteiro(a)</option>
+                <option value="Divorciado">Divorciado(a)</option>
+                <option value="Viuvo">Viúvo(a)</option>
+
               </select>
             </div>
             {errors.estadocivil && (

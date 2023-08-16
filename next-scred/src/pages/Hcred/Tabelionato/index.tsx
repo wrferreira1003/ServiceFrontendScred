@@ -2,12 +2,15 @@ import Head from "next/head";
 import Footer from "../Home/Footer";
 import Header from "../Home/Header";
 import Tabelionato from "./Form";
+import {ServicoProvider} from "../../../context/servicocontext";
+
 
 
 export default function FormTabelionato(){
   return (
     
     <>
+    <ServicoProvider>
       <Head>
         <title>Tabelionato | HCred</title>
       </Head>
@@ -18,6 +21,7 @@ export default function FormTabelionato(){
         </div>
         <Footer />
       </div>
+    </ServicoProvider>
     </>
 )
 }

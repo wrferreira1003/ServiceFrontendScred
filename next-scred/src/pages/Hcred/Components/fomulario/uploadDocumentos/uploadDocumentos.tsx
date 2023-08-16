@@ -1,9 +1,8 @@
 import { PhotoIcon } from '@heroicons/react/24/solid'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 import {filesize} from "filesize";
 import {FileData} from '../../NovoServicoGeral'
-
 
 type UploadFile = {
   file: File;
@@ -27,6 +26,7 @@ interface UploadDocumentosProps {
 export default function UploadDocumentos({onFilesChange,filesState, removeFile}: UploadDocumentosProps){  
   
   const [parentFiles, setParentFiles] = useState<any[]>([]);
+  
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     const uploadFiles: UploadFile[] = acceptedFiles.map(file => ({

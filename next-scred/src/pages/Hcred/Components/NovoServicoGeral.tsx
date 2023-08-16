@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import DadosPessoas from "./fomulario/DadosPessoas";
 import Afiliados from "./fomulario/afiliados";
 import FormDocumentos from "./fomulario/documentos";
@@ -9,6 +9,47 @@ import ResumoAfiliados from './fomulario/Resumo/resumoAfiliado';
 import EnviarFormularioModal from './enviarFormularioModal';
 import UploadDocumentos from './fomulario/uploadDocumentos/uploadDocumentos';
 import ResumoUploadDocumentos from './fomulario/Resumo/resumoUploadDocumentos';
+import { useServico } from '../../../context/servicocontext';
+import LoadingIndicator from '../../../componentesGeral/LoadingIndicator';
+import api from '../../api/api'
+
+interface Documentos {
+  arquivo: File;
+  descricao: string;
+}
+
+export type combineData = {
+  [key: string]: any,
+  nome: string,
+  sobrenome: string,
+  email:string,
+  telefone:string,
+  RegistroGeral:string,
+  cpf: string,
+  estado_civil: string,
+  profissao: string,
+  data_nascimento: string,
+  estado: string,
+  endereco:string,
+  cidade:string,
+  bairro:string,
+  cep:string,
+  afiliado: number,
+  servico: string | null,
+  subservico: string | null,
+  nomeEnvolvido: string,
+  sobrenomeEnvolvido:string,
+  RegistroGeralEnvolvido: string,
+  cpfEnvolvido: string,
+  nomeCartorio:string,
+  estadoCartorio:string,
+  livroCartorio:string,
+  folhaCartorio:string,
+  nomeCartorioFirmaReconhecida:string,
+  estadoCartorioFirmaReconhecida:string,
+  livroCartorioFirmaReconhecida:string,
+  documentos: Array<{ arquivo: File, descricao: string }>,
+}
 
 export interface FormularioDadosPessoal {
   nome: string;
@@ -38,6 +79,7 @@ export interface FormularioDocumentos{
 export interface FormularioAfiliados{
   cidadeafiliado: string;
   afiliado: string;
+  afiliadoId:number;
 }
 
 interface CreateUserData {
@@ -67,12 +109,13 @@ export type FileData = {
 
 export default function NovoServico(){
   
-  const [servico, setServico] = useState('');
-  const [subservico, setSubServico] = useState('');
   const [validateAndSave, setValidateAndSave] = useState<(() => Promise<boolean>) | null>(null);
   const [isDisable, setIsDisable] = useState(false);
   const [fileState, setFileState] = useState<FileData[]>([]);
   const [showModal, setShowModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const { servico, subservico } = useServico();
 
   const [formData, setFormData] = useState<FormularioDadosPessoal>({
     nome: '', 
@@ -101,6 +144,7 @@ export default function NovoServico(){
   const [formDataAfiliados, setformDataAfiliados] = useState<FormularioAfiliados>({
     cidadeafiliado: '',
     afiliado: '',
+    afiliadoId: 0,
   });
   const [formDataCartorio, setformDataCartorio] = useState<FormularioCartorio>({
     cartorio: '',
@@ -143,6 +187,8 @@ export default function NovoServico(){
       ...newData
     }))
   }
+
+
   //Funcao que trata os uploads
   const handleFilesChange = (files: any) => {
     const newFilesArray: FileData[] = Object.values(files);
@@ -156,6 +202,7 @@ export default function NovoServico(){
         return uniqueFiles;
     });
   };
+
   //Funcao para Remover um arquivo
   const removeFile = (indexToRemove: number) => {
     setFileState(prevFiles => {
@@ -165,29 +212,115 @@ export default function NovoServico(){
     });
   }
   
-  const combineDataForm = () => {
-    const combinedData = {
-      ...formData,
-      ...formDataendereco,
-      ...formDataDocumentos,
-      ...formDataAfiliados,
-      ...fileState
+  //Funcao que pepara e enviar os dados ao servidor
+  const handleSendApi = () => {
+  
+    const combinedData:combineData = {
+      nome: formData.nome,
+      sobrenome: formData.sobrenome,
+      email:formData.email,
+      telefone:formData.telefone,
+      RegistroGeral:formDataDocumentos.rg,
+      cpf: formDataDocumentos.cpf,
+      estado_civil: '',
+      profissao: '',
+      data_nascimento: '',
+      estado: formDataendereco.estado,
+      endereco:formDataendereco.endereco,
+      cidade:formDataendereco.cidade,
+      bairro:formDataendereco.bairro,
+      cep:formDataendereco.cep,
+      afiliado: formDataAfiliados.afiliadoId,
+      servico: servico,
+      subservico: subservico,
+      nomeEnvolvido: formData.nomeenvolvido,
+      sobrenomeEnvolvido:formData.sobrenomeenvolvido,
+      RegistroGeralEnvolvido: formDataDocumentos.rgenvolvido,
+      cpfEnvolvido: formDataDocumentos.cpfenvolvido,
+
+      nomeCartorio:'',
+      estadoCartorio:'',
+      livroCartorio:'',
+      folhaCartorio:'',
+
+      nomeCartorioFirmaReconhecida:'',
+      estadoCartorioFirmaReconhecida:'',
+      livroCartorioFirmaReconhecida:'',
+      
+      documentos: []
     }
-    console.log(combinedData);
-  };
+
+    fileState.forEach((fileobj, index) =>{
+      combinedData.documentos.push({
+        arquivo: fileobj.file,
+        descricao: fileobj.name
+      });
+    });
+
+    const formDataToSend = new FormData();
+
+    //Preparando o que nao é documentos para ter a chave e valor.
+    Object.keys(combinedData).forEach((key) => {
+      if (key !== 'documentos') {
+        formDataToSend.append(key, combinedData[key]);
+      } else {
+        combinedData.documentos.forEach((documento, index) => {
+          console.log(`documentos[${index}].descricao:`, documento.descricao);
+          console.log(`documentos[${index}].arquivo:`, documento.arquivo);
+          formDataToSend.append(`documentos[${index}].descricao`, documento.descricao);
+          formDataToSend.append(`documentos[${index}].arquivo`, documento.arquivo);
+        });
+      }
+    });
+  
+    const sendDataToServer = async (formDataToSend: any) => {
+      setIsLoading(true)
+      //Funcao apenas para simular uma demora para os dados ir ao servidor
+      return new Promise((resolve, reject) => {
+        setTimeout(async () => {
+      try {
+          const response = await api.post('criar_cliente/', formDataToSend, {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+        });
+
+        console.log('Dados enviados com sucesso:', response.data);
+        setIsLoading(false);
+        setShowModal(true);
+        return response.data;
+      } catch (error) {
+        console.error('Erro ao enviar os dados');
+        setIsLoading(false);
+        throw error;
+        
+      }
+    }, 10000);
+    })
+    };
+    
+    sendDataToServer(formDataToSend)
+      .then(data => {
+        console.log('Dados recebidos:');
+        // Faça algo após receber uma resposta bem-sucedida, como mostrar uma mensagem de sucesso.
+      })
+      .catch(error => {
+        console.error('Erro ao enviar os dados:');
+        // Faça algo em caso de erro, como mostrar uma mensagem de erro.
+      });
+    }
+  
 
   const onNextStep = () => {
     setIsDisable(true);
   };
 
-  
-  
   //Funcao que Comunica com os componentes de formulario e faz as validacoes 
   const handleNextClick = async () => {      
     if (currentStep === steps.length) {
       setComplete(true);
-      setShowModal(true);
-      combineDataForm() //Chamando a funcao para juntar os dados.
+      setIsLoading(true);
+      handleSendApi() //Chamando a funcao para enviar os dados.
     } else {
       //Verificando qual etapa
       if (currentStep === 1 && validateAndSave) {
@@ -300,12 +433,15 @@ export default function NovoServico(){
                                           
                                       </>
               }
-             {showModal && <EnviarFormularioModal onClose={() => setShowModal(false)} />}
+              {isLoading && <LoadingIndicator/>}
+              {showModal && <EnviarFormularioModal onClose={() => setShowModal(false)} />}
 
               
        
 
               {!complete && (
+              <>
+              
               <div className="btn-group flex gap-x-3 mb-5">
                 {currentStep > 1 && (
                   <button
@@ -319,11 +455,12 @@ export default function NovoServico(){
                   <button
                     className="btn w-24 flex items-center justify-center text-center"
                     onClick={handleNextClick}
+                    disabled={isLoading}
                   >
                     {currentStep === steps.length ? "Finalizar" : "Avançar"}
                   </button>
               </div>
-              
+              </>
               )}
             </div>
       </div>

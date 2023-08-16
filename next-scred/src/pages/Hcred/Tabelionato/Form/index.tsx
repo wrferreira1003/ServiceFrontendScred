@@ -4,11 +4,11 @@ import NovoServico from '../../Components/NovoServicoGeral';
 import ConsultaServico from '../../Components/ConsultaServico';
 import ReconhecimentoVerdadeiro from '../../Components/ReconhecimentoVerdadeiro';
 import ReconhecimentoSemelhanca from '../../Components/ReconhecimentoSemelhanca';
+import { useServico } from '@/context/servicocontext';
 
 
 export default function Tabelionato(){
-  const [servico, setServico] = useState('');
-  const [subservico, setSubServico] = useState('');
+  const { servico, setServico, subservico, setSubServico } = useServico();
   const [isDisable, setIsDisable] = useState(false);
 
   

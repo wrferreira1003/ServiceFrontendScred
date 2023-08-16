@@ -3,23 +3,24 @@ import Afiliados from "./fomulario/afiliados";
 import EnderecoForm from "./fomulario/endereco";
 import DadosPessoasReconhecimentoFirma from './fomulario/DadosPessoasreconhecimentoFirma';
 import FormDocumentosSimples from './fomulario/documentoSimples';
+import { useServico } from '../../../context/servicocontext';
+import LoadingIndicator from '../../../componentesGeral/LoadingIndicator';
+import moment from 'moment';
 
 import { 
   FormularioEndereco,
   FormularioAfiliados,
   FileData,
+  combineData,
  } from './NovoServicoGeral';
-import DadosCartorio from './fomulario/dadosCartorio';
 import CartorioAutenticacao from './fomulario/cartorioReconhecimento';
 import UploadDocumentos from './fomulario/uploadDocumentos/uploadDocumentos';
-import ResumoDadosPessoas from './fomulario/Resumo/resumoDadosPessoas';
-import ResumoDadosEnvolvido from './fomulario/Resumo/resumoDadosEnvolvidos';
-import ResumoCartorio from './fomulario/Resumo/resumoCartorio';
 import ResumoAfiliados from './fomulario/Resumo/resumoAfiliado';
 import ResumoDadosReconhecimento from './fomulario/Resumo/resumoDadosReconhecimento';
 import ResumoCartorioReconhecimento from './fomulario/Resumo/resumoCartorioReconhecimento';
 import EnviarFormularioModal from './enviarFormularioModal';
 import ResumoUploadDocumentos from './fomulario/Resumo/resumoUploadDocumentos';
+import api from '@/pages/api/api';
 
 export interface FormularioDadosReconhecimentoFirma{
   nome: string;
@@ -42,11 +43,13 @@ export interface FormularioCartorio{
 }
 
 export default function ReconhecimentoSemelhanca(){
-  //const [servico, setServico] = useState('');
+
   const [validateAndSave, setValidateAndSave] = useState<(() => Promise<boolean>) | null>(null);
   const [isDisable, setIsDisable] = useState(false);
   const [fileState, setFileState] = useState<FileData[]>([]);
   const [showModal, setShowModal] = useState(false);
+  const { servico, subservico } = useServico();
+  const [isLoading, setIsLoading] = useState(false);
 
   const [formData, setFormData] = useState<FormularioDadosReconhecimentoFirma>({
     nome: '', 
@@ -79,6 +82,7 @@ export default function ReconhecimentoSemelhanca(){
   const [formDataAfiliados, setformDataAfiliados] = useState<FormularioAfiliados>({
     cidadeafiliado: '',
     afiliado: '',
+    afiliadoId: 0,
   });
 
   //stepper
@@ -150,15 +154,94 @@ export default function ReconhecimentoSemelhanca(){
 
 
   const combineDataForm = () => {
-    const combinedData = {
-      ...formData,
-      ...formDataendereco,
-      ...formDataDocumentos,
-      ...formDataCartorio,
-      ...formDataAfiliados,
-      ...fileState,
+    const combinedData:combineData = {
+      nome: formData.nome,
+      sobrenome: formData.sobrenome,
+      email:formData.email,
+      telefone:formData.telefone,
+      RegistroGeral:formDataDocumentos.rg,
+      cpf: formDataDocumentos.cpf,
+      estado_civil: formData.estadocivil,
+      profissao: formData.profissao,
+      data_nascimento: moment(formData.nascimento, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+      estado: formDataendereco.estado,
+      endereco:formDataendereco.endereco,
+      cidade:formDataendereco.cidade,
+      bairro:formDataendereco.bairro,
+      cep:formDataendereco.cep,
+      afiliado: formDataAfiliados.afiliadoId,
+      servico: servico,
+      subservico: subservico,
+      nomeEnvolvido: '',
+      sobrenomeEnvolvido:'',
+      RegistroGeralEnvolvido: '',
+      cpfEnvolvido: '',
+
+      nomeCartorio:'',
+      estadoCartorio:'',
+      livroCartorio:'',
+      folhaCartorio:'',
+
+      nomeCartorioFirmaReconhecida:formDataCartorio.cartorio,
+      estadoCartorioFirmaReconhecida:formDataCartorio.estadoCartorio,
+      livroCartorioFirmaReconhecida:formDataCartorio.cidadeCartorio,
+      
+      documentos: []
     }
-    console.log(combinedData);
+    
+    fileState.forEach((fileobj, index) =>{
+      combinedData.documentos.push({
+        arquivo: fileobj.file,
+        descricao: fileobj.name
+      });
+    });
+
+    const formDataToSend = new FormData();
+
+    //Preparando o que nao é documentos para ter a chave e valor.
+    Object.keys(combinedData).forEach((key) => {
+      if (key !== 'documentos') {
+        formDataToSend.append(key, combinedData[key]);
+      } else {
+        combinedData.documentos.forEach((documento, index) => {
+          console.log(`documentos[${index}].descricao:`, documento.descricao);
+          console.log(`documentos[${index}].arquivo:`, documento.arquivo);
+          formDataToSend.append(`documentos[${index}].descricao`, documento.descricao);
+          formDataToSend.append(`documentos[${index}].arquivo`, documento.arquivo);
+        });
+      }
+    });
+  
+    const sendDataToServer = async (formDataToSend: any) => {
+      setIsLoading(true)
+      try {
+          const response = await api.post('criar_cliente/', formDataToSend, {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+        });
+
+        console.log('Dados enviados com sucesso:', response.data);
+        setIsLoading(false);
+        setShowModal(true);
+        return response.data;
+      } catch (error) {
+        console.error('Erro ao enviar os dados');
+        throw error;
+        
+      }
+    };
+    
+    sendDataToServer(formDataToSend)
+      .then(data => {
+        console.log('Dados recebidos:');
+        // Faça algo após receber uma resposta bem-sucedida, como mostrar uma mensagem de sucesso.
+      })
+      .catch(error => {
+        console.error('Erro ao enviar os dados:');
+        setIsLoading(false);
+        // Faça algo em caso de erro, como mostrar uma mensagem de erro.
+      });
   };
 
   const onNextStep = () => {
@@ -168,7 +251,7 @@ export default function ReconhecimentoSemelhanca(){
   const handleNextClick = async () => {      
     if (currentStep === steps.length) {
       setComplete(true);
-      setShowModal(true);
+      setIsLoading(true);
       combineDataForm() //Chamando a funcao para juntar os dados.
     } else {
       //Verificando qual etapa
@@ -289,6 +372,7 @@ export default function ReconhecimentoSemelhanca(){
                                             < ResumoUploadDocumentos 
                                                           fileState = {fileState}/>
                                       </>}  
+              {isLoading && <LoadingIndicator/>}
               {showModal && <EnviarFormularioModal onClose={() => setShowModal(false)} />}
               
               

@@ -44,7 +44,6 @@ export default function FormDocumentos({ formDataDocumentos,
   });
 
   const validateAndSave = async () => {
-    console.log("A função validateAndSave foi chamada componente endereco.");
     const isValid = await trigger();
   
     // Valida os campos

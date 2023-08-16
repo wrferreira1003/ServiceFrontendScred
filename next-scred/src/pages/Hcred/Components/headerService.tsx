@@ -1,5 +1,7 @@
-import { useState } from "react";
-
+import api from "@/pages/api/api";
+import { useEffect, useState } from "react";
+import { useServico } from "../../../context/servicocontext";
+ 
 type HandleChange = (event: React.ChangeEvent<HTMLSelectElement>) => void;
 
 interface ChildComponentProps {
@@ -7,11 +9,25 @@ interface ChildComponentProps {
   handleSubServicoChange: HandleChange;
   isDisabled: boolean
 }
+interface ApiServido {
+  id: number,
+  nome_servico: string,
+  tipo: string
+}
 export default function HeaderService({handleServicoChange, 
                                       handleSubServicoChange,
                                       isDisabled}: ChildComponentProps){
   
-  
+  const [dadosServicoApi, setDadosServicoApi] = useState<ApiServido[]>([]);
+
+  useEffect ( () => {
+    api.get('servicos')
+    .then((res) => {
+      setDadosServicoApi(res.data);
+    })
+    .catch((error) => console.log(error))
+                                  
+   }, [])
   
   return (
         <div>
@@ -43,12 +59,13 @@ export default function HeaderService({handleServicoChange,
                   onChange={handleSubServicoChange}
                 > 
                   <option>Tipo de Serviço</option>
-                  <option>Ata Notarial</option>
-                  <option>Reconhecimento de Firma por Verdadeiro</option>
-                  <option>Reconhecimento de Firma por Semelhança</option>
-                  <option>Emissão de Certidão</option>
-                  <option>Escritura</option>
-                    
+                  {
+                    dadosServicoApi.map( servico => (
+                      <option key={servico.id} value={servico.nome_servico}>
+                      {servico.nome_servico}
+                      </option>
+                    ))
+                  }                    
                 </select>
               </div>
             </div>

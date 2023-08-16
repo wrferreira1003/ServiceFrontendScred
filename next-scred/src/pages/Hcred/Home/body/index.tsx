@@ -1,7 +1,3 @@
-import { Fragment } from 'react'
-import { Menu, Transition } from '@headlessui/react'
-import { EllipsisVerticalIcon } from '@heroicons/react/20/solid'
-import Image from 'next/image'
 import Link from 'next/link'
 
 const statuses = {

@@ -54,9 +54,9 @@ export const createUserSchema = zod.object({
     .string()
     .nonempty({
       message: 'Selecione um afiliado',
-    })
-    .refine(value => value !== '' && value !== 'Selecione um afiliado', {
-    message: 'Selecione um afiliado',
+  })
+    .refine(value => value !== '' && value !== 'Selecione a cidade', {
+    message: 'Selecione uma cidade',
   }),
 
   cidadeafiliado: zod
@@ -64,9 +64,10 @@ export const createUserSchema = zod.object({
     .nonempty({
       message: 'Selecione uma cidade',
     })
-    .refine(value => value !== '' && value !== 'Selecione uma cidade', {
-    message: 'Selecione uma cidade',
+    .refine(value => value !== '' && value !== 'Selecione o afiliado', {
+    message: 'Selecione o afiliado',
   }),
+  idAfiliado: zod.number(),
 
   cartorio: zod
     .string()
