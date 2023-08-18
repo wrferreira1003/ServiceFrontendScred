@@ -14,7 +14,6 @@ export default function Home() {
         <div className="mb-auto pt-28">
           <Header />
           <HomeComponents />
-          <Footer />
         </div>
       </div>
       

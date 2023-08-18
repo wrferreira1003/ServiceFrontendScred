@@ -3,6 +3,7 @@ import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
+import Link from 'next/link'
 
 const user = {
   name: 'Tom Cook',
@@ -57,7 +58,7 @@ export default function HeaderDash() {
                     </div>
                     <div className="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
                       {navigation.map((item) => (
-                        <a
+                        <Link
                           key={item.name}
                           href={item.href}
                           className={classNames(
@@ -69,7 +70,7 @@ export default function HeaderDash() {
                           aria-current={item.current ? 'page' : undefined}
                         >
                           {item.name}
-                        </a>
+                        </Link>
                       ))}
                     </div>
                   </div>
@@ -105,7 +106,7 @@ export default function HeaderDash() {
                           {userNavigation.map((item) => (
                             <Menu.Item key={item.name}>
                               {({ active }) => (
-                                <a
+                                <Link
                                   href={item.href}
                                   className={classNames(
                                     active ? 'bg-gray-100' : '',
@@ -113,7 +114,7 @@ export default function HeaderDash() {
                                   )}
                                 >
                                   {item.name}
-                                </a>
+                                </Link>
                               )}
                             </Menu.Item>
                           ))}

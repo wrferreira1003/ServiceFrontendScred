@@ -1,5 +1,6 @@
 import Image from "next/image";
 import logoimg from '../../../assets/logo.png';
+import Link from "next/link";
 
 export default function LoginAfiliado(){
   return (
@@ -46,9 +47,9 @@ export default function LoginAfiliado(){
                   Password
                 </label>
                 <div className="text-sm">
-                  <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
+                  <Link href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
                     Forgot password?
-                  </a>
+                  </Link>
                 </div>
               </div>
               <div className="mt-2">
@@ -76,13 +77,13 @@ export default function LoginAfiliado(){
               
               {/*Campo criado apenas para acessar sem esta logado */ }
               <div className="py-6">
-                <a
+                <Link
                   href="/afiliados/home"
                   className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
                   Entrar
                 
-                </a>
+                </Link>
               </div>
             
             </div>

@@ -2,6 +2,7 @@ import { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import { EllipsisVerticalIcon } from '@heroicons/react/20/solid'
 import { CheckCircleIcon } from '@heroicons/react/24/outline'
+import Link from 'next/link'
 
 const statuses = {
   Complete: 'text-green-700 bg-green-50 ring-green-600/20',
@@ -86,7 +87,7 @@ export default function ProcessList() {
                 <p className="text-sm font-semibold leading-6 text-gray-900">{project.name}</p>
                 <p
                   className={classNames(
-                    statuses[project.status],
+                    statuses[project.status as keyof typeof statuses],
                     'rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset'
                   )}
                 >
@@ -104,12 +105,12 @@ export default function ProcessList() {
               </div>
             </div>
             <div className="flex flex-none items-center gap-x-4">
-              <a
+              <Link
                 href={project.href}
                 className="hidden rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:block"
               >
                 View project<span className="sr-only">, {project.name}</span>
-              </a>
+              </Link>
               <Menu as="div" className="relative flex-none">
                 <Menu.Button className="-m-2.5 block p-2.5 text-gray-500 hover:text-gray-900">
                   <span className="sr-only">Open options</span>
@@ -127,7 +128,7 @@ export default function ProcessList() {
                   <Menu.Items className="absolute right-0 z-10 mt-2 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
                     <Menu.Item>
                       {({ active }) => (
-                        <a
+                        <Link
                           href="#"
                           className={classNames(
                             active ? 'bg-gray-50' : '',
@@ -135,12 +136,12 @@ export default function ProcessList() {
                           )}
                         >
                           Edit<span className="sr-only">, {project.name}</span>
-                        </a>
+                        </Link>
                       )}
                     </Menu.Item>
                     <Menu.Item>
                       {({ active }) => (
-                        <a
+                        <Link
                           href="#"
                           className={classNames(
                             active ? 'bg-gray-50' : '',
@@ -148,12 +149,12 @@ export default function ProcessList() {
                           )}
                         >
                           Move<span className="sr-only">, {project.name}</span>
-                        </a>
+                        </Link>
                       )}
                     </Menu.Item>
                     <Menu.Item>
                       {({ active }) => (
-                        <a
+                        <Link
                           href="#"
                           className={classNames(
                             active ? 'bg-gray-50' : '',
@@ -161,7 +162,7 @@ export default function ProcessList() {
                           )}
                         >
                           Delete<span className="sr-only">, {project.name}</span>
-                        </a>
+                        </Link>
                       )}
                     </Menu.Item>
                   </Menu.Items>
