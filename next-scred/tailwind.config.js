@@ -1,4 +1,3 @@
-
 /** @type {import('tailwindcss').Config} */
 
 module.exports = {
@@ -16,9 +15,10 @@ module.exports = {
 
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+        'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+        'my_bg_image' : "url('/src/assets/backgroud.png')",
       },
+
     },
   },
   plugins: [],
