@@ -1,20 +1,12 @@
-import { Fragment } from 'react'
+import { Fragment, useContext } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
 import Link from 'next/link'
 
-const user = {
-  name: 'Tom Cook',
-  email: 'tom@example.com',
-  imageUrl:
-    'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-}
-
 const userNavigation = [
-  { name: 'Meu perfil', href: '#' },
-  { name: 'Meus dados', href: '#' },
+  { name: 'Meus dados', href: '/afiliados/account' },
   { name: 'Sai da Plataforma', href: '#' },
 ]
 
@@ -22,8 +14,15 @@ function classNames(...classes: any) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function HeaderDash() {
+type dataType = {
+  avatar: string
+  name: string
+  email: string
+}
+
+export default function HeaderAfiliado({avatar, name, email}: dataType) {
   const router = useRouter();
+
 
   const navigation = [
     { name: 'Home', href: '/afiliados/home', current: router.pathname === '/' },
@@ -43,14 +42,14 @@ export default function HeaderDash() {
                     <div className="flex flex-shrink-0 items-center">
                       <Image
                         className="block h-8 w-auto lg:hidden"
-                        src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+                        src={avatar}
                         alt="Your Company"
                         width={100}
                         height={100}
                       />
                       <Image
                         className="hidden h-8 w-auto lg:block"
-                        src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+                        src=""
                         alt="Your Company"
                         width={100}
                         height={100}
@@ -89,8 +88,12 @@ export default function HeaderDash() {
                       <div>
                         <Menu.Button className="relative flex max-w-xs items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                           <span className="absolute -inset-1.5" />
-                          <span className="sr-only">Open user menu</span>
-                          <Image width={100} height={100}  className="h-8 w-8 rounded-full" src={user.imageUrl} alt="" />
+                          <span className="sr-only">Abra o menu do usuário</span>
+                          <Image 
+                            width={100} 
+                            height={100}  
+                            className="h-8 w-8 rounded-full" 
+                            src={avatar} alt="" />
                         </Menu.Button>
                       </div>
                       <Transition
@@ -126,7 +129,7 @@ export default function HeaderDash() {
                     {/* Mobile menu button */}
                     <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                       <span className="absolute -inset-0.5" />
-                      <span className="sr-only">Open main menu</span>
+                      <span className="sr-only">Abra o menu do usuário</span>
                       {open ? (
                         <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
                       ) : (
@@ -159,18 +162,18 @@ export default function HeaderDash() {
                 <div className="border-t border-gray-200 pb-3 pt-4">
                   <div className="flex items-center px-4">
                     <div className="flex-shrink-0">
-                      <Image width={100} height={100} className="h-10 w-10 rounded-full" src={user.imageUrl} alt="" />
+                      <Image width={100} height={100} className="h-10 w-10 rounded-full" src={avatar} alt="" />
                     </div>
                     <div className="ml-3">
-                      <div className="text-base font-medium text-gray-800">{user.name}</div>
-                      <div className="text-sm font-medium text-gray-500">{user.email}</div>
+                      <div className="text-base font-medium text-gray-800">{name}</div>
+                      <div className="text-sm font-medium text-gray-500">{email}</div>
                     </div>
                     <button
                       type="button"
                       className="relative ml-auto flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     >
                       <span className="absolute -inset-1.5" />
-                      <span className="sr-only">View notifications</span>
+                      <span className="sr-only">Ver notificações</span>
                       <BellIcon className="h-6 w-6" aria-hidden="true" />
                     </button>
                   </div>

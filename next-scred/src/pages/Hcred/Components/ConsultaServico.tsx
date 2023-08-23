@@ -6,7 +6,7 @@ import EnderecoForm from './fomulario/endereco';
 import DadosPessoas from './fomulario/DadosPessoas';
 import { useServico } from '../../../context/servicocontext';
 import LoadingIndicator from '../../../componentesGeral/LoadingIndicator';
-import api from '../../api/api'
+import api from '@/services/api';
 
 import { FormularioDadosPessoal,
          FormularioEndereco,

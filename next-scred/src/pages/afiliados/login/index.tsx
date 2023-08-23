@@ -1,8 +1,28 @@
 import Image from "next/image";
 import logoimg from '../../../assets/logo.png';
 import Link from "next/link";
+import { useForm } from 'react-hook-form'
+import { useContext } from "react";
+import { AuthContext } from "@/context/AuthContext";
+
+type usersType = {
+  email: string,
+  password: string,
+}
 
 export default function LoginAfiliado(){
+
+  const { register, handleSubmit } = useForm()
+  
+  const { signIn } = useContext(AuthContext)
+
+
+  async function handleSignIn(data) {
+    //Aqui precisamos fazer um cath com tratativa caso de algum erro no beckend
+    //Mostrar alguma mensagem de erro caso a validacao falhar
+    await signIn(data);
+  }
+
   return (
   
     <div className="h-screen flex items-center justify-center bg-slate-200">
@@ -21,13 +41,14 @@ export default function LoginAfiliado(){
         </div>
 
         <div className="mt-6 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form className="space-y-6" action="#" method="POST">
+          <form className="space-y-6" onSubmit={handleSubmit(handleSignIn)} >
             <div>
               <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
                 Email
               </label>
               <div className="mt-2">
                 <input
+                  {...register('email')}
                   id="email"
                   name="email"
                   type="email"
@@ -54,6 +75,7 @@ export default function LoginAfiliado(){
               </div>
               <div className="mt-2">
                 <input
+                  {...register('password')}
                   id="password"
                   name="password"
                   type="password"
@@ -74,18 +96,6 @@ export default function LoginAfiliado(){
               >
                 Sign in
               </button>
-              
-              {/*Campo criado apenas para acessar sem esta logado */ }
-              <div className="py-6">
-                <Link
-                  href="/afiliados/home"
-                  className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                >
-                  Entrar
-                
-                </Link>
-              </div>
-            
             </div>
           </form>
         </div>

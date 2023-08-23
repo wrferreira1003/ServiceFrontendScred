@@ -6,6 +6,7 @@ const nextConfig = {
     domains: [
       'images.unsplash.com',
       'tailwindui.com',
+      'github.com',
     ]
   },
   

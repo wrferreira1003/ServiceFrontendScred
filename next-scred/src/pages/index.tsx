@@ -6,6 +6,7 @@ import Head from 'next/head';
 export default function Home() {
   return (
     <>
+
       <Head>
         <title>Serviço | HCred</title>
       </Head>
@@ -16,7 +17,7 @@ export default function Home() {
           <HomeComponents />
         </div>
       </div>
-      
+    
     </>
 
   )

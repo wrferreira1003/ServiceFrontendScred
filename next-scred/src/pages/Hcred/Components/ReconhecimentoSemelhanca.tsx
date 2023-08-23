@@ -20,7 +20,7 @@ import ResumoDadosReconhecimento from './fomulario/Resumo/resumoDadosReconhecime
 import ResumoCartorioReconhecimento from './fomulario/Resumo/resumoCartorioReconhecimento';
 import EnviarFormularioModal from './enviarFormularioModal';
 import ResumoUploadDocumentos from './fomulario/Resumo/resumoUploadDocumentos';
-import api from '@/pages/api/api';
+import api from '@/services/api';
 
 export interface FormularioDadosReconhecimentoFirma{
   nome: string;

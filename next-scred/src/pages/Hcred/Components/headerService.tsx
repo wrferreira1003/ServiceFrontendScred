@@ -1,4 +1,4 @@
-import api from "@/pages/api/api";
+import api from '@/services/api';
 import { useEffect, useState } from "react";
 import { useServico } from "../../../context/servicocontext";
  

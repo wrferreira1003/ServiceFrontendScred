@@ -11,7 +11,7 @@ import EnviarFormularioModal from './enviarFormularioModal';
 import ResumoUploadDocumentos from './fomulario/Resumo/resumoUploadDocumentos';
 import { useServico } from '../../../context/servicocontext';
 import LoadingIndicator from '../../../componentesGeral/LoadingIndicator';
-import api from '@/pages/api/api';
+import api from '@/services/api';
 import moment from 'moment';
 
 
