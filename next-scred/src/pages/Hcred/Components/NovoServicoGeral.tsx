@@ -11,7 +11,7 @@ import UploadDocumentos from './fomulario/uploadDocumentos/uploadDocumentos';
 import ResumoUploadDocumentos from './fomulario/Resumo/resumoUploadDocumentos';
 import { useServico } from '../../../context/servicocontext';
 import LoadingIndicator from '../../../componentesGeral/LoadingIndicator';
-import api from '@/services/api';
+import { api } from '@/services/api';
 
 
 interface Documentos {

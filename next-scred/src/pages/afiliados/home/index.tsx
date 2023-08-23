@@ -1,7 +1,6 @@
 import { useContext, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { AuthContext } from '@/context/AuthContext'
-import Header from '@/pages/Hcred/Home/Header';
 import HeaderAfiliado from '../componentes/HeaderAfiliados';
 import { api } from '@/services/api';
 import { GetServerSideProps } from 'next';

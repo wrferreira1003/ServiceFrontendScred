@@ -1,6 +1,7 @@
-import api from '@/services/api';
+
 import { useEffect, useState } from "react";
 import { useServico } from "../../../context/servicocontext";
+import { api } from "@/services/api";
  
 type HandleChange = (event: React.ChangeEvent<HTMLSelectElement>) => void;
 

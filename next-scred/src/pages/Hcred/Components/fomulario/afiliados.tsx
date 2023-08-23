@@ -3,8 +3,8 @@ import * as zod from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { createUserSchema } from '../../../../lib/validationSchemas'
 import { useEffect, useState } from 'react'
-import api from '@/services/api/api'
 import { ApiAfiliados } from '../../../../types/Hred/types';
+import { api } from '@/services/api'
 
 const personalInfoSchema = createUserSchema.pick({
   afiliado: true,

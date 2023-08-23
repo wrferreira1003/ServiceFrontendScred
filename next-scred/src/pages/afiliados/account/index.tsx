@@ -1,11 +1,9 @@
 import MeusDados from "@/componentesGeral/MeusDados";
-import HeaderDash from "../components/headerDash";
 import PerfilDados from "@/componentesGeral/PerfilDados";
 
 export default function Request(){
   return (
    <>
-     <HeaderDash />
      <div className="mx-auto flex flex-col lg:flex-row w-full max-w-7xl items-start 
                     gap-x-8 px-4 py-10 sm:px-6 lg:px-8">
         

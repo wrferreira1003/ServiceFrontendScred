@@ -17,7 +17,7 @@ export default function LoginAfiliado(){
   const { signIn } = useContext(AuthContext)
 
 
-  async function handleSignIn(data) {
+  async function handleSignIn(data: any) {
     //Aqui precisamos fazer um cath com tratativa caso de algum erro no beckend
     //Mostrar alguma mensagem de erro caso a validacao falhar
     await signIn(data);

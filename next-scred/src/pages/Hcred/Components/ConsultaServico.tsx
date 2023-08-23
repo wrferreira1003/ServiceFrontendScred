@@ -6,7 +6,7 @@ import EnderecoForm from './fomulario/endereco';
 import DadosPessoas from './fomulario/DadosPessoas';
 import { useServico } from '../../../context/servicocontext';
 import LoadingIndicator from '../../../componentesGeral/LoadingIndicator';
-import api from '@/services/api';
+
 
 import { FormularioDadosPessoal,
          FormularioEndereco,
@@ -24,6 +24,7 @@ import ResumoCartorio from './fomulario/Resumo/resumoCartorio';
 import ResumoAfiliados from './fomulario/Resumo/resumoAfiliado';
 import EnviarFormularioModal from './enviarFormularioModal';
 import ResumoUploadDocumentos from './fomulario/Resumo/resumoUploadDocumentos';
+import { api } from '@/services/api';
 //import { Check } from '@phosphor-icons/react';
 
 export default function ConsultaServico(){

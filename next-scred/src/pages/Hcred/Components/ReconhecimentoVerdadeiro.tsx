@@ -10,9 +10,9 @@ import UploadDocumentos from './fomulario/uploadDocumentos/uploadDocumentos';
 import EnviarFormularioModal from './enviarFormularioModal';
 import ResumoUploadDocumentos from './fomulario/Resumo/resumoUploadDocumentos';
 import { useServico } from '../../../context/servicocontext';
-import LoadingIndicator from '../../../componentesGeral/LoadingIndicator';
-import api from '@/services/api';
+
 import moment from 'moment';
+import { api } from '@/services/api';
 
 
 export interface FormularioDadosPessoal {
