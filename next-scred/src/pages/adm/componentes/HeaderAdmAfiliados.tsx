@@ -22,23 +22,10 @@ interface IAfiliado {
 }
 
 export default function HeaderAdmAfiliado() {
+
   const router = useRouter();
   const { signOut } = useContext(AuthContext);
   const [afiliadoData, setAfiliadoData] = useState<IAfiliado | null>(null);
-
-  const navigation = [
-    { name: "Home", href: "/adm/home", current: router.pathname === "/" },
-    {
-      name: "Processos",
-      href: "/adm/request",
-      current: router.pathname === "/request",
-    },
-  ];
-
-  const userNavigation = [
-    { name: "Meus dados", href: "/adm/account" },
-    { name: "Sai da Plataforma", href: "#", onClick: signOut },
-  ];
 
   //Assim que usuario fazer login eu faco uma requisao dos dados ao meu backend
   useEffect(() => {
@@ -54,6 +41,21 @@ export default function HeaderAdmAfiliado() {
   }, []);
 
   const { foto, nome, email, user_type } = afiliadoData || {};
+
+  const navigation = [
+    { name: "Home", href: "/adm/home", current: router.pathname === "/" },
+    {name: "Processos",href: "/adm/request",current: router.pathname === "/request",},
+    { name: "Afiliados", href: "/adm/signup", current: router.pathname === "/signup", visible: user_type === 'ADMIN' },
+    {name: "Financeiro",href: "",current: router.pathname === "",},
+  ];
+  const visibleNavigation = navigation.filter(item => item.visible !== false);
+
+  const userNavigation = [
+    { name: "Meus dados", href: "/adm/account" },
+    { name: "Sai da Plataforma", href: "#", onClick: signOut },
+  ];
+
+  
 
   return (
     <>
@@ -81,7 +83,7 @@ export default function HeaderAdmAfiliado() {
                       />
                     </div>
                     <div className="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
-                      {navigation.map((item) => (
+                      {visibleNavigation.map((item) => (
                         <Link
                           key={item.name}
                           href={item.href}

@@ -165,4 +165,10 @@ export const createUserSchema = zod.object({
   //Realizar as validacoes dos dados aqui.
   fileUpload: zod.any(),
   // Todo: Criar as validacoes necessaria para os arquivos upload.
+
+  //Apenas para o cadastro de usuarios
+  userType: zod.enum(['ADM', 'AFILIADO']),
+  CPFSigup: zod.string().optional(),
+  CNPJSigup: zod.string().optional(),
+
 });
