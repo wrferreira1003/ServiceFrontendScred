@@ -2,17 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
-
 .btn {
-  @apply bg-gray-800 hover:bg-gray-600 text-gray-100 font-medium px-7 py-1.5 rounded mt-10;
+  @apply mt-10 rounded bg-gray-800 px-7 py-1.5 font-medium text-gray-100 hover:bg-gray-600;
 }
 
 .step-item {
-  @apply relative flex flex-col justify-center items-center w-36;
+  @apply relative flex w-36 flex-col items-center justify-center;
 }
 
 .step-item:not(:first-child):before {
-  @apply content-[''] bg-slate-200 absolute w-full h-[3px] right-2/4 top-1/3 -translate-y-2/4;
+  @apply absolute right-2/4 top-1/3 h-[3px] w-full -translate-y-2/4 bg-slate-200 content-[''];
 }
 
 @media (max-width: 640px) {
@@ -22,7 +21,7 @@
 }
 
 .step {
-  @apply w-10 h-10 flex items-center justify-center z-10 relative bg-slate-700 rounded-full font-semibold text-white;
+  @apply relative z-10 flex h-10 w-10 items-center justify-center rounded-full bg-slate-700 font-semibold text-white;
 }
 .active .step {
   @apply bg-sky-600;
@@ -37,7 +36,7 @@
 .active:not(:first-child):before {
   @apply bg-green-600;
 }
-.a:focus{
+.a:focus {
   outline: none;
 }
 body {
@@ -49,5 +48,3 @@ header {
 footer {
   @apply font-roboto;
 }
-
-

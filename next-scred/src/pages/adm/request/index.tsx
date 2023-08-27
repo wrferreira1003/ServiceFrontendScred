@@ -1,11 +1,9 @@
-
 import ProcessList from "./components/processList";
 
-export default function Request(){
+export default function Request() {
   return (
     <div>
-  
-     <ProcessList />
+      <ProcessList />
     </div>
-  )
+  );
 }

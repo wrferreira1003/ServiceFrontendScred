@@ -1,4 +1,11 @@
-import React, { createContext, useState, ReactNode, Dispatch, SetStateAction, useContext } from 'react';
+import React, {
+  createContext,
+  useState,
+  ReactNode,
+  Dispatch,
+  SetStateAction,
+  useContext,
+} from "react";
 
 interface ServicoContextType {
   servico: string | null;
@@ -11,7 +18,7 @@ const ServicoContext = createContext<ServicoContextType>({
   servico: null,
   setServico: () => {},
   subservico: null,
-  setSubServico: () => {}
+  setSubServico: () => {},
 });
 
 export function useServico() {
@@ -30,9 +37,10 @@ export function ServicoProvider({ children }: ProviderProps) {
     servico,
     setServico,
     subservico,
-    setSubServico
+    setSubServico,
   };
 
-  return <ServicoContext.Provider value={value}>{children}</ServicoContext.Provider>;
+  return (
+    <ServicoContext.Provider value={value}>{children}</ServicoContext.Provider>
+  );
 }
-
