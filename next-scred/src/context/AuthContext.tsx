@@ -1,6 +1,6 @@
 import { recoverUserInformation, signInRequest } from "@/services/auth";
 import { createContext, use, useEffect, useState } from "react";
-import { setCookie, parseCookies } from 'nookies';
+import { setCookie, parseCookies, destroyCookie } from 'nookies';
 import Router from 'next/router';
 import { api } from "@/services/api";
 
@@ -19,13 +19,14 @@ type useData = {
 }
 type signInData = {
   email: string;
-  password: string;
+  senha: string;
 }
 
 type AuthContextType = {
   isAuthenticated: boolean;
   user: useData | null;
   signIn: (data: signInData) => Promise<void>;
+  signOut: () => Promise<void>;
 }
 
 export const AuthContext = createContext({} as AuthContextType)
@@ -55,29 +56,52 @@ export function AuthProvider({ children }: any) {
   }, [])
 
   //Funcao de autenticacao
-  async function signIn({email, password}: signInData) {
-    // TODO:Aqui dentro fazemos a chamada para api, enviar os dados de email e senha do afiliado, trazer o token
-    // e salvar no localstorage juntamente com as informacoes do afiliado retornada pela api.
-    const { token, user} = await signInRequest({
-      email,
-      password,
-    })
-    //Aqui eu guardo o token do afiliado com um secao de 1hora
-    setCookie(undefined, 'tokenAfiliado', token, {
-      maxAge: 60 * 60 * 1 //1 hours //numeros em segundo para e expiracao do cookies(Secao)
-    })
-    //Aqui eu ja passo o token de validacao para minha api ja ficar com a informacao atualizada para realizar as requisicoes
-    api.defaults.headers['authorization'] = `Bearer ${token}`;
+  async function signIn({email, senha}: signInData) {
+    try {
+      const response = await api.post('login/', {
+          email,
+          senha
+      });
 
-    //Aqui eu guardo os dados do usuario para utilizar na aplicacao
-    setUser(user)
+      const { token, user } = response.data;
+    
+      //Aqui eu guardo o token do afiliado com um secao de 1hora
+      setCookie(undefined, 'tokenAfiliado', token, {
+        maxAge: 60 * 60 * 1 //1 hours //numeros em segundo para e expiracao do cookies(Secao)
+      })
+      //Aqui eu ja passo o token de validacao para minha api ja ficar com a informacao atualizada para realizar as requisicoes
+      api.defaults.headers['authorization'] = `Bearer ${token}`;
 
-    //Redirecionando caso tenha dado certo
-    Router.push('/afiliados/home')
+      //Aqui eu guardo os dados do usuario para utilizar na aplicacao
+      setUser(user)
+
+      //Redirecionando caso tenha dado certo
+      Router.push('/adm/home')
+    } catch (error) {
+      if (error && typeof error === 'object' && 'response' in error) {
+        const responseData = (error.response as { data: { error: string } }).data;
+          if (responseData && responseData.error) {
+            throw new Error('Erro ao fazer login, ' + responseData.error)
+          } else {
+            throw new Error('Erro ao fazer login, ' + error)
+        }
+      } else {
+        throw new Error('Erro ao fazer login, ' + error)
+    }
+      throw new Error('Erro ao tentar se autenticar. Por favor, tente novamente.');
+        // Você pode querer mostrar uma mensagem de erro para o usuário aqui.
+    }
+  }
+
+  //Funcao para sair do sistema e destroi o Token
+  async function signOut(){
+    destroyCookie(undefined, 'tokenAfiliado', { path: '/' })
+    setUser(null)
+    Router.push('/login')
   }
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, signIn}} >
+    <AuthContext.Provider value={{ user, isAuthenticated, signIn, signOut}} >
       { children }
     </AuthContext.Provider>
   )

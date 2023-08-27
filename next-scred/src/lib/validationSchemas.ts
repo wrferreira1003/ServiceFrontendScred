@@ -102,6 +102,14 @@ export const createUserSchema = zod.object({
     {message: 'CPF precisa ter apenas números'}
   ),
 
+  cnpj: zod
+    .string()
+    .nonempty('CNPJ não pode ser vazio')
+    .refine(
+      cnpj => cnpj.length === 11,
+    {message: 'CNPJ precisa ter apenas números'}
+  ),
+
   rgenvolvido: zod.string().nonempty({
     message: 'O RG é obrigatório',
   }),
@@ -144,7 +152,7 @@ export const createUserSchema = zod.object({
   estadoCartorio: zod.string().nonempty({
     message: 'Selecione o Estado do Cartório',
   }),
-
+  user_type: zod.string(),
   //Realizar as validacoes dos dados aqui.
   fileUpload: zod.any(),
   // Todo: Criar as validacoes necessaria para os arquivos upload.

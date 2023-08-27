@@ -19,7 +19,7 @@ export default function FormTabelionato(){
           <Header />
           <Tabelionato />
         </div>
-        <Footer />
+
       </div>
     </ServicoProvider>
     </>

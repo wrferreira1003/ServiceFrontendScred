@@ -17,7 +17,6 @@
     "@types/react-dom": "18.2.7",
     "autoprefixer": "10.4.14",
     "axios": "^1.4.0",
-    "eslint": "8.45.0",
     "eslint-config-next": "13.4.12",
     "filesize": "^10.0.8",
     "moment": "^2.29.4",
@@ -36,7 +35,11 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
+    "@rocketseat/eslint-config": "^2.1.0",
     "@types/cookie": "^0.5.1",
-    "@types/uuid": "^9.0.2"
+    "@types/uuid": "^9.0.2",
+    "eslint": "^8.48.0",
+    "prettier": "^3.0.2",
+    "prettier-plugin-tailwindcss": "^0.5.3"
   }
 }

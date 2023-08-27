@@ -2,25 +2,31 @@ import Image from "next/image";
 import logoimg from '../../../assets/logo.png';
 import Link from "next/link";
 import { useForm } from 'react-hook-form'
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "@/context/AuthContext";
 
 type usersType = {
   email: string,
-  password: string,
+  senha: string,
 }
 
 export default function LoginAfiliado(){
 
   const { register, handleSubmit } = useForm()
-  
   const { signIn } = useContext(AuthContext)
+  const [loginError, setLoginError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
 
 
   async function handleSignIn(data: any) {
-    //Aqui precisamos fazer um cath com tratativa caso de algum erro no beckend
-    //Mostrar alguma mensagem de erro caso a validacao falhar
-    await signIn(data);
+    try {
+      await signIn(data);
+      setLoginError(null); // Limpa qualquer erro anterior
+    } catch (error) {
+      const err = error as { message?: string };
+      setLoginError(err.message || 'Ocorreu um erro durante o login.');
+    }
+    
   }
 
   return (
@@ -36,7 +42,7 @@ export default function LoginAfiliado(){
         <div className="sm:mx-auto sm:w-full sm:max-w-sm mt-8">
         
           <h4 className="mt-10 text-center text-xl font-bold leading-9 tracking-tight text-gray-500">
-            ÁREA DOS AFILIADOS
+          Faça seu login na plataforma
           </h4>
         </div>
 
@@ -68,17 +74,17 @@ export default function LoginAfiliado(){
                   Password
                 </label>
                 <div className="text-sm">
-                  <Link href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
-                    Forgot password?
+                  <Link href="ForgotPassword" className="font-semibold text-indigo-600 hover:text-indigo-500">
+                    Esqueceu sua senha?
                   </Link>
                 </div>
               </div>
-              <div className="mt-2">
+              <div className="mt-2 relative">
                 <input
-                  {...register('password')}
-                  id="password"
-                  name="password"
-                  type="password"
+                  {...register('senha')}
+                  id="senha"
+                  name="senha"
+                  type={showPassword ? 'text' : 'password'}
                   autoComplete="current-password"
                   required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 
@@ -86,15 +92,25 @@ export default function LoginAfiliado(){
                             focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6
                             p-2"
                 />
+                <div
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer"
+                >
+                  {showPassword ? (
+                    <span>🙈</span>  // ícone de "esconder senha"
+                  ) : (
+                    <span>👁️</span>  // ícone de "mostrar senha"
+                  )}
+                </div>
               </div>
             </div>
-
+            {loginError && <div className="text-red-500 mt-2 text-xs text-center">{loginError}</div>}
             <div>
               <button
                 type="submit"
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
-                Sign in
+              ENTRAR
               </button>
             </div>
           </form>

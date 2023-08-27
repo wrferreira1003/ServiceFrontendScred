@@ -7,6 +7,7 @@ const nextConfig = {
       'images.unsplash.com',
       'tailwindui.com',
       'github.com',
+      '127.0.0.1',
     ]
   },
   

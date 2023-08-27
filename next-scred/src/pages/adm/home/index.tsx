@@ -1,28 +1,19 @@
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { AuthContext } from '@/context/AuthContext'
-import HeaderAfiliado from '../componentes/HeaderAfiliados';
-import { api } from '@/services/api';
 import { GetServerSideProps } from 'next';
 import { parseCookies } from 'nookies';
-
+import HeaderAdmAfiliado from '../componentes/HeaderAdmAfiliados';
 
 export default function HomeAfiliado() {
   const router = useRouter();
   const { user } = useContext(AuthContext)
-
-  //Assim que usuario fazer login eu faco uma requisao dos dados ao meu backend
-  //useEffect(() => {
-  //  api.get('/users/')
-  //})
-
+  
   return (
     <>
-      {user && user.avatar ? <HeaderAfiliado 
-        avatar={user.avatar} 
-        name={user.name}
-        email={user.email}
-        /> : null}
+        <HeaderAdmAfiliado 
+        /> 
+
     </>
   )
 }
@@ -34,7 +25,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   if (!token) {
     return {
       redirect: {
-        destination: '/afiliados',
+        destination: '/login',
         permanent: false,
       }
     }

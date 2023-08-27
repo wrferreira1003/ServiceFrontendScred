@@ -156,7 +156,7 @@ export default function NovoServico(){
   
   
   //stepper
-  const steps = ["Dados Pessoal", "Endereço", "Documentos", "Afiliados", "Resumo"];
+  const steps = ["Dados Pessoal", "Endereço", "Documentos", "Afiliado", "Resumo"];
   const [currentStep, setCurrentStep] = useState(1);
   const [complete, setComplete] = useState(false);
 

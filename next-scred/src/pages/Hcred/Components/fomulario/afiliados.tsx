@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { createUserSchema } from '../../../../lib/validationSchemas'
 import { useEffect, useState } from 'react'
 import { ApiAfiliados } from '../../../../types/Hred/types';
-import { api } from '@/services/api'
+import { apipublic } from '@/services/apipublic'
 
 const personalInfoSchema = createUserSchema.pick({
   afiliado: true,
@@ -71,7 +71,7 @@ export default function Afiliados({ handleFormDataChangeAfiliados,
   }
 
   useEffect ( () => {
-    api.get('afiliado')
+    apipublic.get('afiliados-publicos/')
       .then((res) => {
         setDadosAfiliadosApi(res.data);
       })

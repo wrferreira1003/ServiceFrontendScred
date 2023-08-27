@@ -1,33 +1,57 @@
-import { Fragment, useContext } from 'react'
+import { Fragment, useContext, useEffect, useState } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { useRouter } from 'next/router'
+import logoimg from '../../../assets/logo.png';
 import Image from 'next/image'
 import Link from 'next/link'
+import { AuthContext } from '@/context/AuthContext';
+import { CameraIcon } from '@heroicons/react/20/solid';
+import { api } from '@/services/api';
 
-const userNavigation = [
-  { name: 'Meus dados', href: '/afiliados/account' },
-  { name: 'Sai da Plataforma', href: '#' },
-]
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(' ')
 }
 
-type dataType = {
-  avatar: string
-  name: string
-  email: string
+interface IAfiliado {
+  foto?: string;
+  nome?: string;
+  email?: string;
+  user_type?: string;
+  // ... qualquer outra propriedade que você espera
 }
 
-export default function HeaderAfiliado({avatar, name, email}: dataType) {
+export default function HeaderAdmAfiliado() {
   const router = useRouter();
-
+  const { signOut } = useContext(AuthContext)
+  const [afiliadoData, setAfiliadoData] = useState<IAfiliado | null >(null);
 
   const navigation = [
-    { name: 'Home', href: '/afiliados/home', current: router.pathname === '/' },
-    { name: 'Processos', href: '/afiliados/request', current: router.pathname === '/request' },
+    { name: 'Home', href: '/adm/home', current: router.pathname === '/' },
+    { name: 'Processos', href: '/adm/request', current: router.pathname === '/request' },
   ];
+
+  const userNavigation = [
+    { name: 'Meus dados', href: '/adm/account' },
+    { name: 'Sai da Plataforma', href: '#', onClick: signOut },
+  ]
+
+  //Assim que usuario fazer login eu faco uma requisao dos dados ao meu backend
+  useEffect(() => {
+    async function fetchAfiliado() {
+      try {
+        const response = await api.get('afiliado');
+        setAfiliadoData(response.data);
+      } catch (error) {
+        console.error('Erro ao buscar dados do afiliado:', error);
+      }
+    }
+    fetchAfiliado();
+  }, []);
+  
+  const { foto, nome, email, user_type } = afiliadoData || {};
+
 
   return (
     <>
@@ -42,15 +66,15 @@ export default function HeaderAfiliado({avatar, name, email}: dataType) {
                     <div className="flex flex-shrink-0 items-center">
                       <Image
                         className="block h-8 w-auto lg:hidden"
-                        src={avatar}
+                        src={logoimg}
                         alt="Your Company"
                         width={100}
                         height={100}
                       />
                       <Image
                         className="hidden h-8 w-auto lg:block"
-                        src=""
-                        alt="Your Company"
+                        src={logoimg}
+                        alt="RC-Facil"
                         width={100}
                         height={100}
                       />
@@ -79,7 +103,7 @@ export default function HeaderAfiliado({avatar, name, email}: dataType) {
                       className="relative rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     >
                       <span className="absolute -inset-1.5" />
-                      <span className="sr-only">View notifications</span>
+                      <span className="sr-only">Notificações</span>
                       <BellIcon className="h-6 w-6" aria-hidden="true" />
                     </button>
 
@@ -89,13 +113,20 @@ export default function HeaderAfiliado({avatar, name, email}: dataType) {
                         <Menu.Button className="relative flex max-w-xs items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                           <span className="absolute -inset-1.5" />
                           <span className="sr-only">Abra o menu do usuário</span>
-                          <Image 
-                            width={100} 
-                            height={100}  
-                            className="h-8 w-8 rounded-full" 
-                            src={avatar} alt="" />
+                          {foto ? (
+                            <Image 
+                              width={100} 
+                              height={100}  
+                              className="h-12 w-12 rounded-full" 
+                              src={foto} alt="" 
+                            />
+                          ) : (
+                            <CameraIcon className="h-12 w-12" />
+                          )}
                         </Menu.Button>
+                        
                       </div>
+                      
                       <Transition
                         as={Fragment}
                         enter="transition ease-out duration-200"
@@ -106,9 +137,20 @@ export default function HeaderAfiliado({avatar, name, email}: dataType) {
                         leaveTo="transform opacity-0 scale-95"
                       >
                         <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                          {userNavigation.map((item) => (
-                            <Menu.Item key={item.name}>
-                              {({ active }) => (
+                        {userNavigation.map((item) => (
+                          <Menu.Item key={item.name}>
+                            {({ active }) => (
+                              item.onClick ? (
+                                <button
+                                  onClick={item.onClick}
+                                  className={classNames(
+                                    active ? 'bg-gray-100' : '',
+                                    'block px-4 py-2 text-sm text-gray-700'
+                                  )}
+                                >
+                                  {item.name}
+                                </button>
+                              ) : (
                                 <Link
                                   href={item.href}
                                   className={classNames(
@@ -118,14 +160,21 @@ export default function HeaderAfiliado({avatar, name, email}: dataType) {
                                 >
                                   {item.name}
                                 </Link>
-                              )}
-                            </Menu.Item>
-                          ))}
+                              )
+                            )}
+                          </Menu.Item>
+                        ))}
                         </Menu.Items>
                       </Transition>
                     </Menu>
+                    <div className="ml-3">
+                      <div className="text-sm font-medium text-gray-800">{nome}</div>
+                      <div className="text-xs font-medium text-gray-600">{email}</div>
+                      <div className="text-xs font-medium text-gray-400">{user_type}</div>
+                    </div>
                   </div>
                   <div className="-mr-2 flex items-center sm:hidden">
+                    
                     {/* Mobile menu button */}
                     <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                       <span className="absolute -inset-0.5" />
@@ -162,15 +211,26 @@ export default function HeaderAfiliado({avatar, name, email}: dataType) {
                 <div className="border-t border-gray-200 pb-3 pt-4">
                   <div className="flex items-center px-4">
                     <div className="flex-shrink-0">
-                      <Image width={100} height={100} className="h-10 w-10 rounded-full" src={avatar} alt="" />
+                      {foto ? (
+                        <Image 
+                        width={100} 
+                        height={100} 
+                        className="h-10 w-10 rounded-full" 
+                        src={foto} alt="" 
+                        />
+                      ) : (
+                        <CameraIcon className="h-10 w-10" />
+                      )}
                     </div>
                     <div className="ml-3">
-                      <div className="text-base font-medium text-gray-800">{name}</div>
+                      <div className="text-base font-medium text-gray-800">{nome}</div>
                       <div className="text-sm font-medium text-gray-500">{email}</div>
                     </div>
                     <button
                       type="button"
-                      className="relative ml-auto flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                      className="relative ml-auto flex-shrink-0 rounded-full bg-white p-1
+                               text-gray-400 hover:text-gray-500 focus:outline-none 
+                               focus:ring-2focus:ring-indigo-500 focus:ring-offset-2"
                     >
                       <span className="absolute -inset-1.5" />
                       <span className="sr-only">Ver notificações</span>
@@ -183,7 +243,8 @@ export default function HeaderAfiliado({avatar, name, email}: dataType) {
                         key={item.name}
                         as="a"
                         href={item.href}
-                        className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800"
+                        className="block px-4 py-2 text-base font-medium text-gray-500
+                                   hover:bg-gray-100 hover:text-gray-800"
                       >
                         {item.name}
                       </Disclosure.Button>

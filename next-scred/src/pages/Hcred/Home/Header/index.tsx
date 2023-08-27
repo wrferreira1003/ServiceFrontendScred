@@ -7,7 +7,7 @@ import {
 } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, PhoneIcon } from '@heroicons/react/20/solid'
 import Image from 'next/image'
-import logoimg from '../../../../assets/logo.png';
+import logoimg from '../../../../assets/logo.png'
 import Link from 'next/link'
 
 
@@ -29,7 +29,7 @@ export default function Header() {
   return (
     <header className="bg-slate-100 fixed w-full top-0 z-50">
 
-      <nav className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
+      <nav className="mx-auto max-w-7xl items-center justify-between p-6 lg:px-8 flex" aria-label="Global">
         <div className="flex lg:flex-1">
           <Link href="#" className="-m-1.5 p-1.5">
             <span className="sr-only">HCRED CORRESPONDENTE BANCÁRIO</span>
@@ -108,19 +108,20 @@ export default function Header() {
             Equipe
           </Link>
           <Link href="#" className="text-sm font-semibold leading-6 text-gray-900">
-            Afiliados
+            Seja Afiliado
           </Link>
         </Popover.Group>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          <Link href="/afiliados" className="text-sm font-semibold leading-6 text-gray-900">
-            Login Afiliados <span aria-hidden="true">&rarr;</span>
+          <Link href="login" className="text-sm font-semibold leading-6 text-gray-900">
+            Entrar <span aria-hidden="true">&rarr;</span>
           </Link>
         </div>
       </nav>
 
       <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
         <div className="fixed inset-0 z-10" />
-        <Dialog.Panel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+        <Dialog.Panel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto
+                               bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
           <div className="flex items-center justify-between">
             <Link href="#" className="-m-1.5 p-1.5">
               <span className="sr-only">HCRED CORRESPONDENTE BANCÁRIO</span>
@@ -145,7 +146,10 @@ export default function Header() {
                 <Disclosure as="div" className="-mx-3">
                   {({ open }) => (
                     <>
-                      <Disclosure.Button className="flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
+                      <Disclosure.Button className="flex w-full items-center 
+                                                  justify-between rounded-lg py-2 
+                                                  pl-3 pr-3.5 text-base font-semibold 
+                                                  leading-7 text-gray-900 hover:bg-gray-50">
                         Serviços
                         <ChevronDownIcon
                           className={classNames(open ? 'rotate-180' : '', 'h-5 w-5 flex-none')}
@@ -188,10 +192,10 @@ export default function Header() {
               </div>
               <div className="py-6">
                 <Link
-                  href="/afiliados"
+                  href="login"
                   className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
-                  Log in Afiliados
+                  Entrar
                 </Link>
               </div>
             </div>

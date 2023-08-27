@@ -1,6 +1,6 @@
 import { PhotoIcon, UserCircleIcon } from '@heroicons/react/24/solid'
 
-export default function MeusDados() {
+export default function AdmAfiliado() {
   return (
     <form>
       
