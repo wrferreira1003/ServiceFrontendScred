@@ -61,7 +61,7 @@ function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function ProcessList() {
+export default function AdmProcessos() {
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div className="mb-6 mt-8 flex items-start justify-between">

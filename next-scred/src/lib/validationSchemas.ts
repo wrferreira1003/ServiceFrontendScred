@@ -113,7 +113,7 @@ export const createUserSchema = zod.object({
   cnpj: zod
     .string()
     .nonempty("CNPJ não pode ser vazio")
-    .refine((cnpj) => cnpj.length === 11, {
+    .refine((cnpj) => cnpj.length === 14, {
       message: "CNPJ precisa ter apenas números",
     }),
 

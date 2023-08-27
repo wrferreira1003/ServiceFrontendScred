@@ -18,6 +18,7 @@ const personalSchema = createUserSchema.pick({
   cidade: true,
   estado: true,
   cep: true,
+  cnpj: true,
   cpf: true,
   user_type: true,
 });
@@ -46,7 +47,6 @@ export default function AdmAccount({
     register,
     formState: { errors },
     handleSubmit,
-    setValue,
   } = useForm<CreateUserData>({
     resolver: zodResolver(personalSchema),
     defaultValues: {
@@ -58,7 +58,7 @@ export default function AdmAccount({
       estado: estado,
       cep: cep,
       user_type: user_type,
-      cpf: cnpj,
+      cnpj: cnpj,
     },
   });
 
@@ -90,6 +90,7 @@ export default function AdmAccount({
                   {...register("nome")}
                   type="text"
                   name="nome"
+                  disabled
                   id="nome"
                   autoComplete="given-name"
                   className="block w-full rounded-md border-0 px-2 py-1.5 
@@ -118,6 +119,7 @@ export default function AdmAccount({
                   {...register("email")}
                   id="email"
                   name="email"
+                  disabled
                   type="email"
                   autoComplete="email"
                   className="block w-full rounded-md border-0 px-2 py-1.5 
@@ -147,6 +149,7 @@ export default function AdmAccount({
                   id="telefone"
                   name="telefone"
                   type="number"
+                  disabled
                   autoComplete="telefone"
                   className="block w-full rounded-md border-0 px-2 py-1.5 
                             text-gray-900 shadow-sm ring-1 ring-inset
@@ -173,6 +176,7 @@ export default function AdmAccount({
                   {...register("endereco")}
                   type="text"
                   name="endereco"
+                  disabled
                   id="endereco"
                   autoComplete="endereco"
                   className="block w-full rounded-md border-0 px-2 py-1.5 
@@ -199,6 +203,7 @@ export default function AdmAccount({
                 <input
                   {...register("cidade")}
                   type="cidade"
+                  disabled
                   name="cidade"
                   id="cidade"
                   autoComplete="address-level2"
@@ -227,6 +232,7 @@ export default function AdmAccount({
                   {...register("estado")}
                   type="text"
                   name="estado"
+                  disabled
                   id="estado"
                   autoComplete="address-level1"
                   className="block w-full rounded-md border-0 px-2 py-1.5 
@@ -254,6 +260,7 @@ export default function AdmAccount({
                   {...register("cep")}
                   type="text"
                   name="cep"
+                  disabled
                   id="cep"
                   autoComplete="address-level1"
                   className="block w-full rounded-md border-0 px-2 py-1.5 
@@ -298,26 +305,27 @@ export default function AdmAccount({
             </div>
             <div className="sm:col-span-2">
               <label
-                htmlFor="cpf"
+                htmlFor="cnpj"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
-                CPF
+                CNPJ
               </label>
               <div className="mt-2">
                 <input
-                  {...register("cpf")}
+                  {...register("cnpj")}
                   type="text"
-                  name="cpf"
-                  id="cpf"
-                  autoComplete="cpf"
+                  disabled
+                  name="cnpj"
+                  id="cnpj"
+                  autoComplete="cnpj"
                   className="block w-full rounded-md border-0 px-2 py-1.5 
                               text-gray-900 shadow-sm ring-1 ring-inset 
                               ring-gray-300 placeholder:text-gray-400 focus:ring-2 
                               focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
-                {errors.cpf && (
+                {errors.cnpj && (
                   <p className="mt-2 text-sm text-red-500">
-                    {errors.cpf.message}
+                    {errors.cnpj.message}
                   </p>
                 )}
               </div>

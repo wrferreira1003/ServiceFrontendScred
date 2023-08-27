@@ -15,6 +15,7 @@ type useData = {
   estado: string;
   cep: string;
   avatar: string;
+  user_type: string;
 };
 type signInData = {
   email: string;

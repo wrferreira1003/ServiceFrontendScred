@@ -12,4 +12,5 @@ export interface InfoDataType {
   cep: string
   foto: string
   user_type: string
+  cpf: string
 }

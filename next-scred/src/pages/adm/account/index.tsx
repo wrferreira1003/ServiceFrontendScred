@@ -1,7 +1,6 @@
 import { useContext, useState } from "react";
-import { AuthContext } from "@/context/AuthContext";
 import AdmAccount, {
-  CreateUserData,
+CreateUserData,
 } from "./componentes/AdmAccount/AdmAccount";
 import PerfilDados from "./componentes/PerfilDados";
 import { GetServerSideProps } from "next";
@@ -10,6 +9,8 @@ import HeaderAdmAfiliado from "../componentes/HeaderAdmAfiliados";
 import { InfoDataType } from "@/types/Adm/types";
 import { api } from "@/services/api";
 import { getApiClient } from "@/services/apiservidor";
+import AfiliadoAccount from "./componentes/AfiliadoAccount/AfiliadoAccount";
+import PasswordValid from "../componentes/PasswordValid";
 
 interface RequestProps {
   InfoData: InfoDataType;
@@ -61,7 +62,26 @@ export default function Request({ InfoData }: RequestProps) {
         </aside>
 
         <main className="flex-1 rounded-lg bg-slate-200 p-4">
-          <AdmAccount infoData={InfoData} onUpdateData={handleUpdateData} />
+        {
+        InfoData.user_type === 'ADMIN' ? 
+          <AdmAccount 
+            infoData={InfoData} 
+            onUpdateData={handleUpdateData} 
+          /> 
+        :
+        InfoData.user_type === 'AFILIADO' ? 
+          < AfiliadoAccount 
+            infoData={InfoData} 
+            onUpdateData={handleUpdateData} 
+            /> 
+        :
+        null
+      }
+
+        <PasswordValid
+          InfoId={{ id: InfoData.id }} 
+        />
+
         </main>
       </div>
     </>
