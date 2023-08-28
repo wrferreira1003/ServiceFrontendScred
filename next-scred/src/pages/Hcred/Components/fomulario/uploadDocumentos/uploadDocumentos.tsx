@@ -47,8 +47,9 @@ export default function UploadDocumentos({
       setParentFiles(newFiles);
 
       onFilesChange(newFiles);
-      //eslint-disable-next-line
+      
     },
+    //eslint-disable-next-line
     [parentFiles],
   );
 

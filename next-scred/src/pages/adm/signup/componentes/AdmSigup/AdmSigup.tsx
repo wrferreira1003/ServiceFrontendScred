@@ -1,10 +1,10 @@
-import { Fragment, useState } from 'react'
-import { Menu, Transition } from '@headlessui/react'
+import { useState } from 'react'
 import { CheckCircleIcon, EllipsisVerticalIcon } from '@heroicons/react/20/solid'
 import ModalSigup from '../ModalSigup'
 import { InfoDataType } from '@/types/Adm/types'
 import { GetServerSideProps } from 'next'
 import { parseCookies } from 'nookies'
+import Image from 'next/image'
 
 
 interface RequestProps {
@@ -35,7 +35,7 @@ export default function AdmSigup({InfoData}:RequestProps) {
         {InfoData.map((person) => (
           <li key={person.id} className="flex justify-between gap-x-6 py-5">
             <div className="flex min-w-0 gap-x-4">
-              <img className="h-12 w-12 flex-none rounded-full bg-gray-50" src={person.foto} alt="" />
+              <Image className="h-12 w-12 flex-none rounded-full bg-gray-50" src={person.foto} alt="" />
               <div className="min-w-0 flex-auto">
                 <p className="text-sm font-semibold leading-6 text-gray-900">
                   <a href={person.bairro} className="hover:underline">
