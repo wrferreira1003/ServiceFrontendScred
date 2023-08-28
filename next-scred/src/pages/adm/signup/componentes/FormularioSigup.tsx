@@ -1,3 +1,5 @@
+import LoadingComponent from "@/componentesGeral/ReactLoading";
+import UploadStatus from "@/componentesGeral/UploadStatus";
 import { createUserSchema } from "@/lib/validationSchemas";
 import { api } from "@/services/api";
 import { getApiClient } from "@/services/apiservidor";
@@ -9,10 +11,6 @@ import { useEffect, useId, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as zod from "zod";
 
-interface ChildComponentProps {
-  infoData: InfoDataType;
-  onUpdateData: (data: CreateUserData, id: number) => void;
-}
 
 const personalSchema = createUserSchema.pick({
   nome: true,
@@ -23,7 +21,7 @@ const personalSchema = createUserSchema.pick({
   bairro: true,
   estado: true,
   cep: true,
-  cpf: true,
+  cpfUsuario: true,
   user_type: true,
 });
 
@@ -32,13 +30,14 @@ export type CreateUserData = zod.infer<typeof personalSchema>;
 
 type TypeProps = {
   userId : number | null
+  setOpenModal: (value: boolean) => void;
 };
 
-export default function FormularioSigup({userId}:TypeProps) {
+export default function FormularioSigup({userId, setOpenModal }:TypeProps) {
 
   const [dataInfo, setDataInfo] = useState<InfoDataType | null >(null)
-  const [loading, setLoading] = useState(true);
-
+  const [uploadStatus, setUploadStatus] = useState(''); // null, 'success', 'error'
+  
   const {
     register,
     formState: { errors },
@@ -47,13 +46,13 @@ export default function FormularioSigup({userId}:TypeProps) {
   } = useForm<CreateUserData>({
     resolver: zodResolver(personalSchema),
     defaultValues: {
-      nome: dataInfo ? dataInfo.nome : "",
     },
   });
 
   useEffect(() => {
     async function fetchAfiliado() {
-      setLoading(true);
+    
+
       try {
         const response = await api.get(`afiliado/${userId}`);
         setDataInfo(response.data);
@@ -68,14 +67,11 @@ export default function FormularioSigup({userId}:TypeProps) {
         setValue('estado', response.data.estado);
         setValue('cep', response.data.cep);
         setValue('user_type', response.data.user_type);
-        setValue('cpf', response.data.cnpj);
+        setValue('cpfUsuario', response.data.cnpj);
         // Faça o mesmo para os outros campos, conforme necessário.
       } catch (error) {
         console.error("Erro ao buscar dados do afiliado:", error);
-      } finally {
-        setLoading(false)
       }
-
     }
     if (userId){
       fetchAfiliado()
@@ -83,21 +79,32 @@ export default function FormularioSigup({userId}:TypeProps) {
   }, [userId, setValue]);
 
   const onSubmitData = async (data: CreateUserData) => {
-    
+    const { cpfUsuario, ...resrOfData} = data
+    const transformeData = {
+      ...resrOfData,
+      cnpj: data.cpfUsuario,
+    }
+    // Adicione um estado de loading aqui, se você tiver um.    
+      try {
+      const response = await api.patch(`afiliado/${userId}`, transformeData);
+          
+      alert('Seus dados foram enviados e processados com sucesso.')
+    } catch (error) {
+      setUploadStatus('error');
+
+    } finally {
+      setOpenModal(false) //Fecha a modal
+    }
+  
   };
 
-  if (loading) {
-    return <p>Carregando dados do afiliado...</p>;
-  }
+
   
   return (
     <form onSubmit={handleSubmit(onSubmitData)}>
+     
       <div className="space-y-12">
         <div className="border-gray-900/10 pb-5">
-          <h2 className="text-base font-semibold leading-7 text-gray-900">
-            Informações Pessoal
-          </h2>
-
           <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
             <div className="col-span-full">
               <label
@@ -326,18 +333,21 @@ export default function FormularioSigup({userId}:TypeProps) {
                 Função
               </label>
               <div className="mt-2">
-                <input
-                  {...register("user_type")}
-                  type="text"
-                  name="user_type"
+                <select
+                  {...register("user_type", {
+                    required: "Selecione uma função."
+                  })}
                   id="user_type"
-                  disabled
-                  autoComplete="address-level1"
+                  name="user_type"
                   className="block w-full rounded-md border-0 px-2 py-1.5 
                               text-gray-900 shadow-sm ring-1 ring-inset 
                               ring-gray-300 placeholder:text-gray-400 focus:ring-2 
                               focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
+                >
+                  <option value="" disabled >Selecione uma função</option>
+                  <option value="ADMIN">ADMIN</option>
+                  <option value="AFILIADO">AFILIADO</option>
+                </select>
                 {errors.user_type && (
                   <p className="mt-2 text-sm text-red-500">
                     {errors.user_type.message}
@@ -347,32 +357,33 @@ export default function FormularioSigup({userId}:TypeProps) {
             </div>
             <div className="sm:col-span-2">
               <label
-                htmlFor="cpf"
+                htmlFor="cpfcpfUsuario"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
-                CPF
+                CPF/CNPJ
               </label>
               <div className="mt-2">
                 <input
-                  {...register("cpf")}
+                  {...register("cpfUsuario")}
                   type="text"
-                  name="cpf"
-                  id="cpf"
-                  autoComplete="cpf"
+                  name="cpfUsuario"
+                  id="cpfUsuario"
+                  autoComplete="cpfUsuario"
                   className="block w-full rounded-md border-0 px-2 py-1.5 
                               text-gray-900 shadow-sm ring-1 ring-inset 
                               ring-gray-300 placeholder:text-gray-400 focus:ring-2 
                               focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
-                {errors.cpf && (
+                {errors.cpfUsuario && (
                   <p className="mt-2 text-sm text-red-500">
-                    {errors.cpf.message}
+                    {errors.cpfUsuario.message}
                   </p>
                 )}
               </div>
             </div>
           </div>
-        </div>       
+        </div>
+       
       </div>
     
       <button
@@ -383,9 +394,8 @@ export default function FormularioSigup({userId}:TypeProps) {
                   focus-visible:outline-indigo-600"
         >
           Atualizar Informações
-      </button>
-
-    </form>
+      </button> 
+  </form>        
   );
 }
 //Aqui estou fazendo verificaoes pelo lado do servidor next se existe o token

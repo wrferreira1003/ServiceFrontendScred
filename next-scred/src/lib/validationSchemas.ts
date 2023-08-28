@@ -171,4 +171,10 @@ export const createUserSchema = zod.object({
   CPFSigup: zod.string().optional(),
   CNPJSigup: zod.string().optional(),
 
+  cpfUsuario: zod
+    .string()
+    .nonempty("CPF não pode ser vazio")
+    .refine((cpf) => cpf.length <= 14, {
+      message: "CPF precisa ter apenas números",
+    }),
 });

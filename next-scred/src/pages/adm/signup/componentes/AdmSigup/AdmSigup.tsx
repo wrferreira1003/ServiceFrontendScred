@@ -28,7 +28,7 @@ export default function AdmSigup({InfoData}:RequestProps) {
                  focus-visible:outline-indigo-600"
         >
           <CheckCircleIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
-          Nova Solicitação
+          Criar Usuário
         </button>
       </div>
       <ul role="list" className="divide-y divide-gray-100">
@@ -69,7 +69,8 @@ export default function AdmSigup({InfoData}:RequestProps) {
                 <CheckCircleIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
                 Editar
               </button>
-              <ModalSigup userId={selectedUserId} open={openModal} onClose={() => {
+              <ModalSigup userId={selectedUserId} open={openModal} setOpenModal={() => setOpenModal(false)}
+                          onClose={() => {
                           setOpenModal(false);
                           setSelectedUserId(null);  // Reset selected user ID when closing modal
                           }} 
