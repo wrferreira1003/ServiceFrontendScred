@@ -15,7 +15,7 @@ export default function Request({ InfoData }: RequestProps) {
     <>
     <HeaderAdmAfiliado />
       
-    {
+     {
         InfoData.user_type === 'ADMIN' ? 
           <AdmProcessos /> 
         :

@@ -9,7 +9,7 @@ import { AuthContext } from "@/context/AuthContext";
 import { CameraIcon } from "@heroicons/react/20/solid";
 import { api } from "@/services/api";
 
-function classNames(...classes: any) {
+function  classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
 }
 
@@ -60,26 +60,26 @@ export default function HeaderAdmAfiliado() {
   return (
     <>
       <div className="min-h-full">
-        <Disclosure as="nav" className="border-b border-gray-200 bg-white">
+        <Disclosure as="nav" className=" bg-blue-800 text-white font-roboto">
           {({ open }) => (
             <>
               <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                <div className="flex h-16 justify-between">
+                <div className="flex h-24 justify-between">
                   <div className="flex">
                     <div className="flex flex-shrink-0 items-center">
                       <Image
-                        className="block h-8 w-auto lg:hidden"
+                        className="block h-16 w-auto lg:hidden"
                         src={logoimg}
                         alt="Your Company"
-                        width={100}
-                        height={100}
+                        width={520}
+                        height={480}
                       />
                       <Image
-                        className="hidden h-8 w-auto lg:block"
+                        className="hidden h-16 w-auto lg:block"
                         src={logoimg}
                         alt="RC-Facil"
-                        width={100}
-                        height={100}
+                        width={520}
+                        height={480}
                       />
                     </div>
                     <div className="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
@@ -89,9 +89,9 @@ export default function HeaderAdmAfiliado() {
                           href={item.href}
                           className={classNames(
                             item.current
-                              ? "border-indigo-500 text-gray-900"
-                              : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700",
-                            "inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium",
+                              ? "border-indigo-200 text-gray-100"
+                              : "border-transparent hover:border-gray-300 hover:text-gray-200",
+                            "inline-flex items-center border-b-2 px-1 pt-1",
                           )}
                           aria-current={item.current ? "page" : undefined}
                         >
@@ -101,19 +101,11 @@ export default function HeaderAdmAfiliado() {
                     </div>
                   </div>
                   <div className="hidden sm:ml-6 sm:flex sm:items-center">
-                    <button
-                      type="button"
-                      className="relative rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                    >
-                      <span className="absolute -inset-1.5" />
-                      <span className="sr-only">Notificações</span>
-                      <BellIcon className="h-6 w-6" aria-hidden="true" />
-                    </button>
 
                     {/* Profile dropdown */}
                     <Menu as="div" className="relative ml-3">
                       <div>
-                        <Menu.Button className="relative flex max-w-xs items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                        <Menu.Button className="relative flex max-w-xs items-center rounded-full bg-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                           <span className="absolute -inset-1.5" />
                           <span className="sr-only">
                             Abra o menu do usuário
@@ -122,12 +114,12 @@ export default function HeaderAdmAfiliado() {
                             <Image
                               width={100}
                               height={100}
-                              className="h-12 w-12 rounded-full"
+                              className="h-16 w-16 rounded-full"
                               src={foto}
                               alt=""
                             />
                           ) : (
-                            <CameraIcon className="h-12 w-12" />
+                            <CameraIcon className="h-16 w-16" />
                           )}
                         </Menu.Button>
                       </div>
@@ -141,7 +133,7 @@ export default function HeaderAdmAfiliado() {
                         leaveFrom="transform opacity-100 scale-100"
                         leaveTo="transform opacity-0 scale-95"
                       >
-                        <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                        <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-slate-50 ring-opacity-5 focus:outline-none">
                           {userNavigation.map((item) => (
                             <Menu.Item key={item.name}>
                               {({ active }) =>
@@ -150,7 +142,7 @@ export default function HeaderAdmAfiliado() {
                                     onClick={item.onClick}
                                     className={classNames(
                                       active ? "bg-gray-100" : "",
-                                      "block px-4 py-2 text-sm text-gray-700",
+                                      "block px-4 py-2 text-sm text-white",
                                     )}
                                   >
                                     {item.name}
@@ -160,7 +152,7 @@ export default function HeaderAdmAfiliado() {
                                     href={item.href}
                                     className={classNames(
                                       active ? "bg-gray-100" : "",
-                                      "block px-4 py-2 text-sm text-gray-700",
+                                      "block px-4 py-2 text-sm text-gray-100",
                                     )}
                                   >
                                     {item.name}
@@ -173,20 +165,20 @@ export default function HeaderAdmAfiliado() {
                       </Transition>
                     </Menu>
                     <div className="ml-3">
-                      <div className="text-sm font-medium text-gray-800">
+                      <div className="text-sm  font-medium text-gray-100">
                         {nome}
                       </div>
-                      <div className="text-xs font-medium text-gray-600">
+                      <div className="text-xs mt-1 font-medium text-gray-200">
                         {email}
                       </div>
-                      <div className="text-xs font-medium text-gray-400">
+                      <div className="text-xs mt-1 font-medium text-gray-200">
                         {user_type}
                       </div>
                     </div>
                   </div>
                   <div className="-mr-2 flex items-center sm:hidden">
                     {/* Mobile menu button */}
-                    <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                    <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md  p-2 text-white hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                       <span className="absolute -inset-0.5" />
                       <span className="sr-only">Abra o menu do usuário</span>
                       {open ? (
@@ -215,7 +207,7 @@ export default function HeaderAdmAfiliado() {
                       className={classNames(
                         item.current
                           ? "border-indigo-500 bg-indigo-50 text-indigo-700"
-                          : "border-transparent text-gray-600 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-800",
+                          : "border-transparent text-gray-100 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-800",
                         "block border-l-4 py-2 pl-3 pr-4 text-base font-medium",
                       )}
                       aria-current={item.current ? "page" : undefined}
@@ -231,7 +223,7 @@ export default function HeaderAdmAfiliado() {
                         <Image
                           width={100}
                           height={100}
-                          className="h-10 w-10 rounded-full"
+                          className="h-14 w-14 rounded-full"
                           src={foto}
                           alt=""
                         />
@@ -240,23 +232,14 @@ export default function HeaderAdmAfiliado() {
                       )}
                     </div>
                     <div className="ml-3">
-                      <div className="text-base font-medium text-gray-800">
+                      <div className="text-base font-medium text-gray-100">
                         {nome}
                       </div>
-                      <div className="text-sm font-medium text-gray-500">
+                      <div className="text-sm font-medium text-gray-200">
                         {email}
                       </div>
                     </div>
-                    <button
-                      type="button"
-                      className="focus:ring-2focus:ring-indigo-500 relative ml-auto flex-shrink-0 rounded-full bg-white
-                               p-1 text-gray-400 hover:text-gray-500 
-                               focus:outline-none focus:ring-offset-2"
-                    >
-                      <span className="absolute -inset-1.5" />
-                      <span className="sr-only">Ver notificações</span>
-                      <BellIcon className="h-6 w-6" aria-hidden="true" />
-                    </button>
+                   
                   </div>
                   <div className="mt-3 space-y-1">
                     {userNavigation.map((item) => (
@@ -264,8 +247,8 @@ export default function HeaderAdmAfiliado() {
                         key={item.name}
                         as="a"
                         href={item.href}
-                        className="block px-4 py-2 text-base font-medium text-gray-500
-                                   hover:bg-gray-100 hover:text-gray-800"
+                        className="block px-4 py-2 text-base font-medium text-gray-100
+                                   hover:bg-gray-100 hover:text-gray-500"
                       >
                         {item.name}
                       </Disclosure.Button>

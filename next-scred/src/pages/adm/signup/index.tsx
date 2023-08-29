@@ -10,7 +10,7 @@ interface RequestProps {
 }
 
 export default function Signup({InfoData}: RequestProps){
-
+  console.log(InfoData)
   return(
     <>
     <HeaderAdmAfiliado/>

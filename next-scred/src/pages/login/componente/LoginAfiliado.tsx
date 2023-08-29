@@ -27,21 +27,25 @@ export default function LoginAfiliado() {
   }
 
   return (
-    <div className="flex h-screen items-center justify-center bg-slate-200">
-      <div className="mt-12 rounded-xl bg-white p-8 sm:w-full sm:max-w-sm">
-        <div className="mt-2 flex flex-col items-center">
-          <Image
-            className="h-12 w-auto"
-            src={logoimg}
-            width={520}
-            height={480}
-            alt=""
-          />
-        </div>
-        <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-sm">
-          <h4 className="mt-10 text-center text-xl font-bold leading-9 tracking-tight text-gray-500">
+    <div className=" flex flex-col md:flex-row h-screen gap-10 items-center justify-center bg-blue-800">
+      <div className="flex flex-col items-center justify-center">
+        
+        <Image
+          className="h-48 w-auto"
+          src={logoimg}
+          width={520}
+          height={480}
+          alt=""
+        />
+
+        <h1 className="mr-2 ml-2 mt-10 text-3xl font-roboto text-center break-words text-white">
             Faça seu login na plataforma
-          </h4>
+        </h1>
+      </div>
+      
+      <div className="mt-12 rounded-xl bg-white p-8 sm:w-full sm:max-w-sm">
+        <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-sm">
+        
         </div>
 
         <div className="mt-6 sm:mx-auto sm:w-full sm:max-w-sm">
@@ -77,14 +81,7 @@ export default function LoginAfiliado() {
                 >
                   Password
                 </label>
-                <div className="text-sm">
-                  <Link
-                    href="ForgotPassword"
-                    className="font-semibold text-indigo-600 hover:text-indigo-500"
-                  >
-                    Esqueceu sua senha?
-                  </Link>
-                </div>
+               
               </div>
               <div className="relative mt-2">
                 <input
@@ -124,6 +121,14 @@ export default function LoginAfiliado() {
                 ENTRAR
               </button>
             </div>
+            <div className="text-sm text-center"> 
+                  <Link
+                    href="ForgotPassword"
+                    className="font-semibold text-indigo-600 hover:text-indigo-500"
+                  >
+                    Esqueceu sua senha?
+                  </Link>
+                </div>
           </form>
         </div>
       </div>

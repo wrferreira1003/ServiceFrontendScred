@@ -31,7 +31,7 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="fixed top-0 z-50 w-full bg-slate-100">
+    <header className="text-white fixed top-0 z-50 w-full bg-blue-800 font-roboto">
       <nav
         className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
         aria-label="Global"
@@ -40,7 +40,7 @@ export default function Header() {
           <Link href="#" className="-m-1.5 p-1.5">
             <span className="sr-only">HCRED CORRESPONDENTE BANCÁRIO</span>
             <Image
-              className="h-12 w-auto"
+              className="h-16 w-auto"
               src={logoimg}
               width={520}
               height={480}
@@ -60,10 +60,10 @@ export default function Header() {
         </div>
         <Popover.Group className="hidden lg:flex lg:gap-x-12">
           <Popover className="relative">
-            <Popover.Button className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900">
+            <Popover.Button className="flex items-center gap-x-1 leading-6">
               Serviços
               <ChevronDownIcon
-                className="h-5 w-5 flex-none text-gray-400"
+                className="h-5 w-5 flex-none text-gray-100"
                 aria-hidden="true"
               />
             </Popover.Button>
@@ -86,7 +86,7 @@ export default function Header() {
                     >
                       <div className="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
                         <item.icon
-                          className="h-6 w-6 text-gray-600 group-hover:text-indigo-600"
+                          className="h-6 w-6 text-white group-hover:text-indigo-600"
                           aria-hidden="true"
                         />
                       </div>
@@ -124,19 +124,19 @@ export default function Header() {
 
           <Link
             href="#"
-            className="text-sm font-semibold leading-6 text-gray-900"
+            className="leading-6"
           >
             Quem Somos
           </Link>
           <Link
             href="#"
-            className="text-sm font-semibold leading-6 text-gray-900"
+            className=" leading-6"
           >
             Equipe
           </Link>
           <Link
             href="#"
-            className="text-sm font-semibold leading-6 text-gray-900"
+            className="leading-6"
           >
             Seja Afiliado
           </Link>
@@ -144,7 +144,7 @@ export default function Header() {
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
           <Link
             href="login"
-            className="text-sm font-semibold leading-6 text-gray-900"
+            className="leading-6"
           >
             Entrar <span aria-hidden="true">&rarr;</span>
           </Link>

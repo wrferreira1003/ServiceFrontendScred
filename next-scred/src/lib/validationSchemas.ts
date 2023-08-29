@@ -177,4 +177,6 @@ export const createUserSchema = zod.object({
     .refine((cpf) => cpf.length <= 14, {
       message: "CPF precisa ter apenas números",
     }),
+
+  razao_social: zod.string()
 });

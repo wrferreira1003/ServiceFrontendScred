@@ -51,8 +51,6 @@ export default function FormularioSigup({userId, setOpenModal }:TypeProps) {
 
   useEffect(() => {
     async function fetchAfiliado() {
-    
-
       try {
         const response = await api.get(`afiliado/${userId}`);
         setDataInfo(response.data);
