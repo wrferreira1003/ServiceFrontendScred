@@ -1,9 +1,6 @@
-import { PaperClipIcon } from "@heroicons/react/20/solid";
-
 export default function ResumoDadosEnvolvido({
   InfoPessoal,
   Documentos,
-  Endereco,
 }: any) {
   return (
     <div className="w-full">

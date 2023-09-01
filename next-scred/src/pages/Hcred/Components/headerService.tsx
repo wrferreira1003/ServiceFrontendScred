@@ -30,11 +30,11 @@ export default function HeaderService({
   }, []);
 
   return (
-    <div>
-      <h1 className="text-2xl font-semibold leading-7 text-gray-900">
+    <div className="font-roboto">
+      <h1 className="text-2xl  leading-7 text-gray-900 mt-10">
         Solicitação de Serviços
       </h1>
-      <p className="mt-2 text-sm leading-6 text-gray-600">
+      <p className="mt-4 mb-4 text-sm leading-6 text-gray-600">
         Por gentileza, selecione o tipo de serviço que atenda às suas
         necessidades, seja para a solicitação de um novo documento ou para a
         consulta de um documento preexistente. Além disso, indique o tipo de
@@ -46,7 +46,7 @@ export default function HeaderService({
         <div className="mt-5 sm:col-span-3">
           <label
             htmlFor="solicitacao"
-            className="block text-lg font-bold leading-6 text-gray-900"
+            className="block text-lg leading-6 text-gray-900"
           >
             Selecione o Serviço
           </label>
@@ -75,7 +75,7 @@ export default function HeaderService({
         <div className="mt-5 sm:col-span-3">
           <label
             htmlFor="solicitacao"
-            className="block text-lg font-bold leading-6 text-gray-900"
+            className="block text-lg  leading-6 text-gray-900"
           >
             Tipo de Solicitação
           </label>

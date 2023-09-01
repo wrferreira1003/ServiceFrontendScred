@@ -1,7 +1,9 @@
 import { createUserSchema } from "@/lib/validationSchemas";
 import { api } from "@/services/api";
 import { InfoDataType } from "@/types/Adm/types";
+import { ArrowLongLeftIcon } from "@heroicons/react/24/solid";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
 import { useForm } from "react-hook-form";
 import * as zod from "zod";
 
@@ -75,10 +77,23 @@ export default function AdmAccount({
     <form onSubmit={handleSubmit(onSubmitData)}>
       <div className="space-y-12">
         <div className="border-gray-900/10 pb-5">
-          <h2 className="text-base font-semibold leading-7 text-gray-900">
-            Informações Pessoal
-          </h2>
+          <div className="mb-6 mt-8 flex flex-col md:flex-row items-center justify-between">
+            <h2 className="text-base font-semibold leading-7 text-gray-900">
+             Informações Pessoal
+           </h2>
 
+          <Link
+              href={'/adm/home'}
+              type="button"
+              className="inline-flex items-center gap-x-2 rounded-md bg-indigo-600 
+                  px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 
+                  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
+                 focus-visible:outline-indigo-600"
+              >
+                <ArrowLongLeftIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
+                  Voltar
+            </Link>
+          </div>
           <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
             <div className="col-span-full">
               <label

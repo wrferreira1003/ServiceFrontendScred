@@ -9,7 +9,7 @@ export default function FormTabelionato() {
     <>
       <ServicoProvider>
         <Head>
-          <title>Tabelionato | HCred</title>
+          <title>Tabelionato | RC Fácil</title>
         </Head>
         <div className="flex min-h-screen flex-col">
           <div className="mb-auto flex-grow pt-28">

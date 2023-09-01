@@ -37,8 +37,8 @@ export default function Header() {
         aria-label="Global"
       >
         <div className="flex lg:flex-1">
-          <Link href="#" className="-m-1.5 p-1.5">
-            <span className="sr-only">HCRED CORRESPONDENTE BANCÁRIO</span>
+          <Link href="/" className="-m-1.5 p-1.5">
+            <span className="sr-only">RC Fácil Documentos e Serviços</span>
             <Image
               className="h-16 w-auto"
               src={logoimg}
@@ -54,7 +54,7 @@ export default function Header() {
             className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
             onClick={() => setMobileMenuOpen(true)}
           >
-            <span className="sr-only">Open main menu</span>
+            <span className="sr-only">Abrir menu principal</span>
             <Bars3Icon className="h-6 w-6" aria-hidden="true" />
           </button>
         </div>
@@ -84,7 +84,7 @@ export default function Header() {
                       key={item.name}
                       className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50"
                     >
-                      <div className="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
+                      <div className="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-500 group-hover:bg-slate-200">
                         <item.icon
                           className="h-6 w-6 text-white group-hover:text-indigo-600"
                           aria-hidden="true"
@@ -192,7 +192,8 @@ export default function Header() {
                         <ChevronDownIcon
                           className={classNames(
                             open ? "rotate-180" : "",
-                            "h-5 w-5 flex-none",
+                            "h-5 w-5 flex-none text-gray-400",
+
                           )}
                           aria-hidden="true"
                         />

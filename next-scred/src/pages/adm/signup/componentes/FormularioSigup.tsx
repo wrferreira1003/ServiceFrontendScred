@@ -1,5 +1,3 @@
-import LoadingComponent from "@/componentesGeral/ReactLoading";
-import UploadStatus from "@/componentesGeral/UploadStatus";
 import { createUserSchema } from "@/lib/validationSchemas";
 import { api } from "@/services/api";
 import { getApiClient } from "@/services/apiservidor";
@@ -9,6 +7,7 @@ import { GetServerSideProps } from "next";
 import { parseCookies } from "nookies";
 import { useEffect, useId, useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 import * as zod from "zod";
 
 
@@ -68,7 +67,8 @@ export default function FormularioSigup({userId, setOpenModal }:TypeProps) {
         setValue('cpfUsuario', response.data.cnpj);
         // Faça o mesmo para os outros campos, conforme necessário.
       } catch (error) {
-        console.error("Erro ao buscar dados do afiliado:", error);
+        toast.success('Erro ao buscar dados do afiliado!')
+        //console.error("Erro ao buscar dados do afiliado:", error);
       }
     }
     if (userId){
@@ -76,6 +76,7 @@ export default function FormularioSigup({userId, setOpenModal }:TypeProps) {
     }
   }, [userId, setValue]);
 
+  //Atualiza os dados no servidor
   const onSubmitData = async (data: CreateUserData) => {
     const { cpfUsuario, ...resrOfData} = data
     const transformeData = {
@@ -85,13 +86,12 @@ export default function FormularioSigup({userId, setOpenModal }:TypeProps) {
     // Adicione um estado de loading aqui, se você tiver um.    
       try {
       const response = await api.patch(`afiliado/${userId}`, transformeData);
-          
-      alert('Seus dados foram enviados e processados com sucesso.')
+      toast.success('Dados enviados e processados com sucesso.') 
     } catch (error) {
       setUploadStatus('error');
 
     } finally {
-      setOpenModal(false) //Fecha a modal
+      //setOpenModal(false) //Fecha a modal
     }
   
   };

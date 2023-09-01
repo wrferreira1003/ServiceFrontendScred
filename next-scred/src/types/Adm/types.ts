@@ -13,4 +13,5 @@ export interface InfoDataType {
   foto: string
   user_type: string
   cpf: string
+  last_login: string
 }

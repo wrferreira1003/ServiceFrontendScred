@@ -1,16 +1,17 @@
 import Image from "next/image";
-import logoimg from "../../../assets/logo.png";
+import logoimg from "../../../../assets/logo.png";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { useContext, useState } from "react";
 import { AuthContext } from "@/context/AuthContext";
+import { ArrowLongRightIcon, UserIcon, UserPlusIcon } from "@heroicons/react/24/solid";
 
 type usersType = {
   email: string;
   senha: string;
 };
 
-export default function LoginAfiliado() {
+export default function LoginUsuarios() {
   const { register, handleSubmit } = useForm();
   const { signIn } = useContext(AuthContext);
   const [loginError, setLoginError] = useState<string | null>(null);
@@ -39,12 +40,8 @@ export default function LoginAfiliado() {
         />
 
         <h1 className="mr-2 ml-2 mt-10 text-3xl font-roboto text-center break-words text-white">
-        Área Restrita Afiliados
+            Faça seu login na plataforma
         </h1>
-        <span 
-          className="mt-5 font-roboto text-white text-center"
-        >
-          Utilize os campos para efetuar seu login e acessar os serviços RCFÁCIL</span>
       </div>
       
       <div className="mt-12 rounded-xl bg-white p-8 sm:w-full sm:max-w-sm">
@@ -55,17 +52,13 @@ export default function LoginAfiliado() {
         <div className="mt-6 sm:mx-auto sm:w-full sm:max-w-sm">
           <form className="space-y-6" onSubmit={handleSubmit(handleSignIn)}>
             <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Email
-              </label>
+             
               <div className="mt-2">
                 <input
                   {...register("email")}
                   id="email"
                   name="email"
+                  placeholder="E-mail"
                   type="email"
                   autoComplete="email"
                   required
@@ -78,20 +71,13 @@ export default function LoginAfiliado() {
             </div>
 
             <div>
-              <div className="flex items-center justify-between">
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Password
-                </label>
-               
-              </div>
+              
               <div className="relative mt-2">
                 <input
                   {...register("senha")}
                   id="senha"
                   name="senha"
+                  placeholder="Senha"
                   type={showPassword ? "text" : "password"}
                   autoComplete="current-password"
                   required
@@ -125,15 +111,43 @@ export default function LoginAfiliado() {
                 ENTRAR
               </button>
             </div>
-            <div className="text-sm text-center"> 
-                  <Link
-                    href="ForgotPassword"
-                    className="font-semibold text-indigo-600 hover:text-indigo-500"
-                  >
-                    Esqueceu sua senha?
-                  </Link>
+            <div className="text-sm text-center flex justify-between "> 
+                  <div className="flex justify-between items-center">
+                        <ArrowLongRightIcon className="h-6 w-4 text-indigo-600"/>
+                        <Link
+                          href="ForgotPassword"
+                          className="font-semibold text-indigo-600 hover:text-indigo-500"
+                        >
+                          Esqueci minha senha
+                        </Link>
+                  </div> 
+                     
+                  <div className="flex justify-between items-center">
+                  <ArrowLongRightIcon className="h-6 w-4 text-indigo-600"/>
+                    <Link
+                      href={'/user/register'}
+                      className="font-semibold text-indigo-600 hover:text-indigo-500"
+                    >
+                      Cadastra-se
+                    </Link>
+                    
+                  </div>
+                  
                 </div>
-          </form>
+              
+                <Link
+                href={'/login'}
+                className="flex w-full justify-center rounded-md bg-indigo-900 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              >
+                <div className="flex items-center text-center ">
+                    <UserIcon className="h-8 w-8"/>
+                    <div className="flex-col items-start ml-3"> {/* Você pode ajustar o espaço com ml-3 conforme necessário */}
+                        <span>ACESSO AFILIADO</span>
+                        <p>Acesse a área restrita</p>
+                    </div>
+                </div>
+              </Link>
+          </form> 
         </div>
       </div>
     </div>

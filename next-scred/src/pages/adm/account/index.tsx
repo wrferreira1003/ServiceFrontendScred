@@ -11,6 +11,7 @@ import { api } from "@/services/api";
 import { getApiClient } from "@/services/apiservidor";
 import AfiliadoAccount from "./componentes/AfiliadoAccount/AfiliadoAccount";
 import PasswordValid from "../componentes/PasswordValid";
+import { toast } from "react-toastify";
 
 interface RequestProps {
   InfoData: InfoDataType;
@@ -39,10 +40,9 @@ export default function Request({ InfoData }: RequestProps) {
           "Content-Type": "multipart/form-data",
         },
       });
-      alert("Dados atualizados com sucesso!");
+      toast.success("Cadastro atualizado com sucesso.");
     } catch (error) {
-      console.error("Erro ao enviar dados", error);
-      alert("Erro ao atualizar os dados. Por favor, tente novamente.");
+      toast.error("Erro ao tentar atualizar.");
     }
   };
 
