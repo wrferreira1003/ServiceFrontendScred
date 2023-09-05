@@ -88,6 +88,7 @@ export default function DadosPessoas({
           Dados do Solicitante
         </h2>
         <div className="mt-5 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+          
           {/* Campo Nome */}
           <div className="sm:col-span-3">
             <label

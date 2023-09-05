@@ -19,14 +19,6 @@ export const createUserSchema = zod.object({
       message: "O Sobrenome precisa ter no mínimo 3 caracteres",
     }),
 
-  email: zod
-    .string()
-    .nonempty({
-      message: "O Email é obrigatório",
-    })
-    .email({
-      message: "Formato de e-mail inválido",
-    }),
   telefone: zod.string().refine(
     (value) => {
       const regex = /^\(?\d{2}\)? ?\d{5}-?\d{4}$/;
@@ -36,6 +28,7 @@ export const createUserSchema = zod.object({
       message: "Número de telefone inválido, o formato correto é XX XXXXX-XXXX",
     },
   ),
+  telefone2: zod.string(),
 
   nomeenvolvido: zod
     .string()
@@ -144,15 +137,20 @@ export const createUserSchema = zod.object({
   bairro: zod.string().nonempty({
     message: "Preencha com o nome do Bairro",
   }),
-  cep: zod.string().refine(
-    (value) => {
-      const regex = /^[0-9]{5}-[0-9]{3}$/;
-      return regex.test(value);
-    },
-    {
-      message: "CEP inválido, o formato correto é 00000-000",
-    },
-  ),
+  cep: zod.string()
+        .nonempty("CEP não pode ser vazio")
+        .refine((cep) => cep.length === 8, {
+        message: "CPF precisa ter apenas números e 8 Dígitos",
+  }),
+  complemento: zod.string(),
+
+  numero: zod.string().nonempty({
+    message: "Preencha o numero da residencia"
+  }),
+  
+  logradouro: zod.string().nonempty({
+    message: "Preencha o Logradouro"
+  }),
 
   cidadeCartorio: zod.string().nonempty({
     message: "Preencha com o nome da cidade do Cartório",
@@ -178,5 +176,43 @@ export const createUserSchema = zod.object({
       message: "CPF precisa ter apenas números",
     }),
 
-  razao_social: zod.string()
-});
+  razao_social: zod.string(),
+
+  password: zod
+    .string()
+    .min(8, {
+      message: "A senha precisa ter no mínimo 8 caracteres",
+    })
+    .nonempty({
+      message: "A senha é obrigatório",
+    }),
+    
+    confirmapassword: zod
+    .string()
+    .min(8, {
+      message: "A senha precisa ter no mínimo 8 caracteres",
+    })
+    .nonempty({
+      message: "A confirmaão da senha é obrigatório",
+    }),
+
+  
+  email: zod
+    .string()
+    .nonempty({
+      message: "O Email é obrigatório",
+    })
+    .email({
+      message: "Formato de e-mail inválido",
+    }),
+
+  confirmaemail: zod
+    .string()
+    .nonempty({
+      message: "A confimação do Email é obrigatório",
+    })
+    .email({
+      message: "Formato de e-mail inválido",
+    })
+})
+
