@@ -160,8 +160,8 @@ export default function FormUser() {
     }
 }
 
+  //funcao que tras as informacoes do Endereco na API Viacep
   const cep = watch('cep');
-
   useEffect(() => {
     if (cep && cep.length === 8) {
       axios.get(`https://viacep.com.br/ws/${cep}/json/`)
@@ -182,8 +182,26 @@ export default function FormUser() {
 
   //Funcao de preparacao para enviar os dados ao servidor
   function createUser(data: CreateUserData){
-    console.log(data)
+    if (step === 3) {
+    const register = {
+      nome: data.nome,
+      cpf: data.cpf,
+      email: data.email,
+      password: data.password,
+      cep: data.cep,
+      logradouro: data.logradouro,
+      cidade: data.cidade,
+      bairro: data.bairro,
+      complemento: data.complemento,
+      estado: data.estado,
+      numero: data.numero,
+      telefone: data.telefone,
+      telefone2: data.telefone2
+    }
+    console.log(register)
+    }
   }
+ 
   
 
   return (
@@ -358,7 +376,7 @@ export default function FormUser() {
             
               <div className="mt-2">
                 <input
-                type="confirmapassword"
+                type="password"
                 id="confirmapassword"
                 style={{ paddingLeft: '1rem', paddingRight: '1rem' }}
                 className="block w-full rounded-2xl border-0 px-5 py-2 text-base
@@ -607,44 +625,38 @@ export default function FormUser() {
         </>
           )}
           </div>
+           
+        <div className="mx-auto mt-10 max-w-3xl flex items-center justify-between"> 
           {step === 3 && (
-            <>
-             
-            </>
-          )}      
+            <CheckboxComponent
+              name="terms"
+              validation={{
+              required: "Você deve concordar com os termos para continuar."
+              }}
+              />
+            )}
+          
+        </div>  
         
-
-      <div className="mx-auto mt-10 max-w-3xl flex items-center justify-between"> 
-        {step === 3 && (
-          <CheckboxComponent
-            name="terms"
-            validation={{
-            required: "Você deve concordar com os termos para continuar."
-            }}
+        <div className="mx-auto max-w-3xl flex items-center justify-between z-50 mb-5">
+          {step === 1 && (
+            <ButtonComponent
+              nome="VOLTAR"
+              onClick={handleConfirm} 
+              className=" border-blue-950 text-sm text-blue-950  
+                          hover:bg-yellow-400 hover:border-yellow-400 hover:text-white"
+              />
+                    
+          )}
+          {step > 1 && (
+            <ButtonComponent
+              nome="VOLTAR"
+              onClick={prevStep} 
+              className=" border-blue-950 text-sm text-blue-950  
+                          hover:bg-yellow-400 hover:border-yellow-400 hover:text-white"
             />
           )}
-          
-      </div>  
-        
-      <div className="mx-auto max-w-3xl flex items-center justify-between z-50 mb-5">
-        {step === 1 && (
-          <ButtonComponent
-            nome="VOLTAR"
-            onClick={handleConfirm} 
-            className=" border-blue-950 text-sm text-blue-950  
-                        hover:bg-yellow-400 hover:border-yellow-400 hover:text-white"
-            />
-                  
-        )}
-        {step > 1 && (
-          <ButtonComponent
-            nome="VOLTAR"
-            onClick={prevStep} 
-            className=" border-blue-950 text-sm text-blue-950  
-                         hover:bg-yellow-400 hover:border-yellow-400 hover:text-white"
-          />
-        )}
-        {step === 1 && (
+          {step === 1 && (
          
                <ButtonComponent 
                 nome="CONTINUAR"
@@ -652,28 +664,26 @@ export default function FormUser() {
                 className="mt-2 border-2 bg-blue-500 border-blue-500 text-sm text-white p-2 rounded-2xl 
                             w-40 h-12 hover:bg-yellow-400 hover:border-yellow-400 hover:text-white"
                />
-        )}
+          )}
 
-        {step === 2 && (
-                  
-                <ButtonComponent 
-                  nome="CONTINUAR"
-                  onClick={handleClick}
-                  className="mt-2 border-2 bg-blue-500 border-blue-500 text-sm text-white p-2 rounded-2xl 
-                                w-40 h-12 hover:bg-yellow-400 hover:border-yellow-400 hover:text-white"
-                />
-        )}
+          {step === 2 && (
+                    
+                  <ButtonComponent 
+                    nome="CONTINUAR"
+                    onClick={handleClick}
+                    className="mt-2 border-2 bg-blue-500 border-blue-500 text-sm text-white p-2 rounded-2xl 
+                                  w-40 h-12 hover:bg-yellow-400 hover:border-yellow-400 hover:text-white"
+                  />
+          )}
 
-        {step === 3 && (
-          <button
-            className="mt-2 border-2 bg-blue-500 border-blue-500 text-sm text-white p-2 rounded-2xl 
-                        w-40 h-12 hover:bg-yellow-400 hover:border-yellow-400 hover:text-white"
-          >SALVAR</button>
-        )}
+          {step === 3 && (
+            <button
+              className="mt-2 border-2 bg-blue-500 border-blue-500 text-sm text-white p-2 rounded-2xl 
+                          w-40 h-12 hover:bg-yellow-400 hover:border-yellow-400 hover:text-white"
+            >SALVAR</button>
+          )}
        
-      </div>
-
-     
+          </div>
         </form>
       </div>    
     </div>
