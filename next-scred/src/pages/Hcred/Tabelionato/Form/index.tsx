@@ -1,10 +1,10 @@
 import { useState } from "react";
 import HeaderService from "../../Components/headerService";
-import NovoServico from "../../Components/NovoServicoGeral";
-import ConsultaServico from "../../Components/ConsultaServico";
-import ReconhecimentoVerdadeiro from "../../Components/ReconhecimentoVerdadeiro";
-import ReconhecimentoSemelhanca from "../../Components/ReconhecimentoSemelhanca";
 import { useServico } from "@/context/servicocontext";
+import NovoServico from "@/pages/user/servicosOnline/atanotarial/components/NovoServicoGeral";
+import ReconhecimentoVerdadeiro from "@/pages/user/servicosOnline/firmaverdadeiro/components/ReconhecimentoVerdadeiro";
+import ReconhecimentoSemelhanca from "@/pages/user/servicosOnline/firmasemelhancia/components/ReconhecimentoSemelhanca";
+import ConsultaServico from "@/pages/user/servicosOnline/atanotarial/components/ConsultaServico";
 
 export default function Tabelionato() {
   const { servico, setServico, subservico, setSubServico } = useServico();

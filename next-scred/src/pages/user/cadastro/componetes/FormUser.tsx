@@ -7,6 +7,8 @@ import { useRouter } from "next/router";
 import CheckboxComponent from "./CheckboxComponent";
 import ButtonComponent from "@/componentesGeral/button";
 import axios from "axios";
+import { apipublic } from "@/services/apipublic";
+import { toast } from "react-toastify";
 
 export const personaInfoSchema = createUserSchema.pick({
   cpf: true,
@@ -30,11 +32,6 @@ interface StepSchemas {
   [key: number]: any;
 }
 
-const stepSchemaCPF: StepSchemas = {
-  1: createUserSchema.pick({cpf: true})
-
-  // Adicione mais conforme suas etapas e campos
-};
 
 //Criando a typagem a partir do Schema de validação
 type CreateUserData = zod.infer<typeof personaInfoSchema>;
@@ -46,7 +43,11 @@ export default function FormUser() {
   const [formDataSttep1, setFormDataSteep1] = useState<Partial<CreateUserData>>({});
   const [formDataSttep2, setFormDataSteep2] = useState<Partial<CreateUserData>>({});
   const [emailError, setEmailError] = useState("");
+  const [existsCpf, setExistsCpf] = useState("");
+  const [cpfError, setCpfError] = useState<string | null>(null);
+  const [emailCadastrado, setEmailCadastrado] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const router = useRouter()
   const {
@@ -57,7 +58,7 @@ export default function FormUser() {
     getValues,
     setValue,
     watch,
-    setError,
+    clearErrors
   } = useForm<CreateUserData>({
     resolver: zodResolver(personaInfoSchema),
     defaultValues: {
@@ -88,27 +89,46 @@ export default function FormUser() {
     router.push('/user/register')
   }
 
+  
+  //Validacao do CPF
+  const validateCPF = (cpf: any) => {
+    // Sua lógica de validação de CPF aqui. 
+    // Por exemplo, verifique se tem o comprimento correto, contém apenas números, etc.
+    
+    if (cpf.length !== 11 || !/^\d{11}$/.test(cpf)) {
+      setCpfError("CPF inválido. Deve conter apenas 11 dígitos.");
+      return false;
+      
+    }
+    setCpfError(null);
+    return true;
+  };
+
   //Validacao Step 1
   const handleNextStepOne = async () => {
     const values = getValues();
     setFormDataSteep1(values)
-
-    const currentStepSchema = stepSchemaCPF[step];
-    if (currentStepSchema) {
-      const result = currentStepSchema.safeParse(getValues());
-      if (!result.success) {
-        // Aqui, result.error é uma instância de zod.ZodError
-        for (const subError of result.error.issues) {
-          setError(subError.path[0], {
-            type: "manual",
-            message: subError.message,
-          });
-        }
-        return;
-      }
+    
+    // Primeiro, valide o CPF usando sua função personalizada
+    if (!validateCPF(values.cpf)) {
+      return; // Retorna se o CPF é inválido
     }
-
-    setStep(step + 1); // Avança para a próxima etapa
+    
+    try{ 
+      const response = await apipublic.get(`cpf/${values.cpf}/`);
+    } catch (error: any){
+      if (error.response && error.response.status === 400) {
+        setExistsCpf("Esse CPF ja consta cadastrado");
+        return;
+        
+      } else {
+        console.error('Ocorreu um erro:', error);
+          // Lida com outros tipos de erros aqui.
+        }
+      }
+      clearErrors()
+      setExistsCpf("")
+      setStep(step + 1); // Avança para a próxima etapa
   };
   
   //Validacao Step 2 Validacao zood
@@ -124,15 +144,31 @@ export default function FormUser() {
     }
   };
 
-  //Validacao CPF
-  const handleNextStepCPF = async () => {
+  //Validacao Email
+  const handleNextStepEmail = async () => {
     const values = getValues();
     // Verifique a igualdade dos emails antes de validar com o Zod
     if (values.email !== values.confirmaemail) {
       setEmailError("Os e-mails não são iguais");
       return false;
     }
+    
+    //Verificando se o email existe no servidor
+    try{ 
+      const response = await apipublic.get(`email/${values.email}/`);
+    } catch (error: any){
+      if (error.response && error.response.status === 400) {
+        setEmailCadastrado("Esse Email ja consta cadastrado");
+        return;
+        
+      } else {
+        console.error('Ocorreu um erro:', error);
+          // Lida com outros tipos de erros aqui.
+        }
+      }
+    
     setEmailError("");
+    setEmailCadastrado("");
     return true;
   };
 
@@ -149,10 +185,9 @@ export default function FormUser() {
     return true;
   };
   
-
   async function handleClick() {
     const isValidStep = await handleNextStep();
-    const isValidCPF = await handleNextStepCPF();
+    const isValidCPF = await handleNextStepEmail();
     const isValidPassword = await handleNextStepPassword();
 
     if (isValidStep && isValidCPF && isValidPassword) {
@@ -175,15 +210,21 @@ export default function FormUser() {
 
             // Continue para os outros campos...
           }
-        });
+        })
+      .catch (error => {
+        
+      })
         
     }
   }, [cep, setValue]);
 
   //Funcao de preparacao para enviar os dados ao servidor
-  function createUser(data: CreateUserData){
+  function createUser(data: CreateUserData, event: any){
+    event.preventDefault();
+
     if (step === 3) {
-    const register = {
+      setLoading(true);
+      const register = {
       nome: data.nome,
       cpf: data.cpf,
       email: data.email,
@@ -197,13 +238,21 @@ export default function FormUser() {
       numero: data.numero,
       telefone: data.telefone,
       telefone2: data.telefone2
-    }
-    console.log(register)
-    }
-  }
- 
-  
+      }
+      apipublic.post('register/', register)
+        .then(response => {
+          toast.success('Cadastro enviado com Sucesso, receberá um email para confirmação!')
+          setLoading(false);
+        })
+        .catch(error => {
+          setLoading(false);
+          toast.error('Erro ao enviar os dados, tente mais tarde')
+          console.error('Erro ao enviar os dados', error)
+        })
 
+      }
+    }
+ 
   return (
 
     <div className="relative items-center justify-center ml-3 mr-3 mt-5">
@@ -252,9 +301,10 @@ export default function FormUser() {
                         focus:ring-inset focus:ring-indigo-600 sm:text-base sm:leading-6"
                 {...register('cpf')}
                 />
-                {errors.cpf?.message && (
-                          <p className="mt-2 text-sm text-red-500">{errors.cpf.message}</p>
-                        )}
+              
+                {cpfError && <p className="mt-2 text-sm text-red-500">{cpfError}</p>}
+                {existsCpf && <p className="mt-2 text-sm text-red-500">{existsCpf}</p>}
+         
               </div>
         </div>
           )}
@@ -313,6 +363,7 @@ export default function FormUser() {
               {errors.email?.message && (
                 <p className="mt-2 text-sm text-red-500">{errors.email.message}</p>
               )}
+              {emailCadastrado && <p className="mt-2 text-sm text-red-500">{emailCadastrado}</p>}
             </div>
             <div className="mx-auto w-full max-w-4xl">
               <label
@@ -678,9 +729,12 @@ export default function FormUser() {
 
           {step === 3 && (
             <button
+              disabled={loading}
               className="mt-2 border-2 bg-blue-500 border-blue-500 text-sm text-white p-2 rounded-2xl 
                           w-40 h-12 hover:bg-yellow-400 hover:border-yellow-400 hover:text-white"
-            >SALVAR</button>
+            >
+              {loading ? 'Carregando...' : 'SALVAR'}
+            </button>
           )}
        
           </div>

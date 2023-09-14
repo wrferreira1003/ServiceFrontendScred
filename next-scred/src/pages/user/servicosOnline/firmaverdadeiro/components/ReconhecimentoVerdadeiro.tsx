@@ -1,18 +1,18 @@
-import { useState } from "react";
-import Afiliados from "./fomulario/afiliados";
-import EnderecoForm from "./fomulario/endereco";
-import DadosPessoasReconhecimentoFirma from "./fomulario/DadosPessoasreconhecimentoFirma";
-import FormDocumentosSimples from "./fomulario/documentoSimples";
-import ResumoAfiliados from "./fomulario/Resumo/resumoAfiliado";
-import ResumoDadosReconhecimento from "./fomulario/Resumo/resumoDadosReconhecimento";
-import { FileData, combineData } from "./NovoServicoGeral";
-import UploadDocumentos from "./fomulario/uploadDocumentos/uploadDocumentos";
-import EnviarFormularioModal from "./enviarFormularioModal";
-import ResumoUploadDocumentos from "./fomulario/Resumo/resumoUploadDocumentos";
-import { useServico } from "../../../context/servicocontext";
-
+import { useContext, useState } from "react";
 import moment from "moment";
 import { api } from "@/services/api";
+import { FileData, combineData } from "../../atanotarial/components/NovoServicoGeral";
+import { useServico } from "@/context/servicocontext";
+import DadosPessoasReconhecimentoFirma from "@/componentesGeral/fomulario/DadosPessoasreconhecimentoFirma";
+import EnderecoForm from "@/componentesGeral/fomulario/endereco";
+import FormDocumentosSimples from "@/componentesGeral/fomulario/documentoSimples";
+import UploadDocumentos from "@/componentesGeral/fomulario/uploadDocumentos/uploadDocumentos";
+import Afiliados from "@/componentesGeral/fomulario/afiliados";
+import ResumoDadosReconhecimento from "@/componentesGeral/fomulario/Resumo/resumoDadosReconhecimento";
+import ResumoAfiliados from "@/componentesGeral/fomulario/Resumo/resumoAfiliado";
+import ResumoUploadDocumentos from "@/componentesGeral/fomulario/Resumo/resumoUploadDocumentos";
+import EnviarFormularioModal from "@/componentesGeral/enviarFormularioModal";
+import { AuthUserContext } from "@/context/AuthUserContext";
 
 export interface FormularioDadosPessoal {
   nome: string;
@@ -58,6 +58,7 @@ export interface FormularioCartorio {
 }
 
 export default function ReconhecimentoVerdadeiro() {
+  const {userCliente} = useContext(AuthUserContext)
   const [validateAndSave, setValidateAndSave] = useState<
     (() => Promise<boolean>) | null
   >(null);
@@ -169,6 +170,7 @@ export default function ReconhecimentoVerdadeiro() {
 
   const handleSendApi = () => {
     const combinedData: combineData = {
+      idCliente: userCliente?.id,
       nome: formData.nome,
       sobrenome: formData.sobrenome,
       email: formData.email,
@@ -186,7 +188,7 @@ export default function ReconhecimentoVerdadeiro() {
       bairro: formDataendereco.bairro,
       cep: formDataendereco.cep,
       afiliado: formDataAfiliados.afiliadoId,
-      servico: servico,
+      servico: 'Reconhecimento de Firma por Verdadeiro',
       subservico: subservico,
       nomeEnvolvido: "",
       sobrenomeEnvolvido: "",

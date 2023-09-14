@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as zod from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createUserSchema } from "../../../../lib/validationSchemas";
+import { createUserSchema } from "../../lib/validationSchemas";
+import { AuthUserContext } from "@/context/AuthUserContext";
 
 const personalInfoSchema = createUserSchema.pick({
   estado: true,
@@ -32,9 +33,8 @@ export default function EnderecoForm({
     handleSubmit,
     register,
     formState: { errors },
-    watch,
-    control,
     getValues,
+    setValue,
     trigger,
   } = useForm<CreateUserData>({
     resolver: zodResolver(personalInfoSchema),
@@ -47,6 +47,17 @@ export default function EnderecoForm({
       //Colocar os valores default para cada campo.
     },
   });
+  const {userCliente} = useContext(AuthUserContext)
+
+  useEffect(() => {
+    if (userCliente){
+      setValue('endereco', userCliente.logradouro || '');
+      setValue('estado', userCliente.estado || '');
+      setValue('cidade', userCliente.cidade || '');
+      setValue('bairro', userCliente.bairro || '');
+      setValue('cep', userCliente.cep || '');
+    }
+  }, [userCliente, setValue]);
 
   const validateAndSave = async () => {
     console.log("A função validateAndSave foi chamada componente endereco.");

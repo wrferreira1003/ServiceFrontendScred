@@ -24,6 +24,6 @@
     "**/*.tsx",
     "src/pages/Hcred/Tabelionato",
     "src/pages/Hcred/Components"
-, "src/pages/adm/home/componentes/AdmHome"  ],
+, "src/pages/adm/home/componentes/AdmHome", "src/componentesGeral/fomulario"  ],
   "exclude": ["node_modules"]
 }

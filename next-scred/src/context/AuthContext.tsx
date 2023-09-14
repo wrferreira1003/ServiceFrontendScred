@@ -1,7 +1,7 @@
 import { createContext, use, useEffect, useState } from "react";
 import { setCookie, parseCookies, destroyCookie } from "nookies";
 import Router from "next/router";
-import { api } from "@/services/api";
+import { api, apiuser } from "@/services/api";
 
 type useData = {
   name: string;
@@ -39,6 +39,7 @@ export function AuthProvider({ children }: any) {
   //Usuario estara autenticado caso o user existir.
   const isAuthenticated = !!user;
 
+
   //Vamos criar um UseEffect para que os dados do afiliado sempre seja atualizado, assim
   //que o componente for atualizado
   useEffect(() => {
@@ -59,7 +60,8 @@ export function AuthProvider({ children }: any) {
     }
   }, []);
 
-  //Funcao de autenticacao
+
+  //Funcao de autenticacao Afiliado
   async function signIn({ email, senha }: signInData) {
     try {
       const response = await api.post("login/", {
@@ -100,6 +102,7 @@ export function AuthProvider({ children }: any) {
     }
   }
 
+ 
   //Funcao para sair do sistema e destroi o Token
   async function signOut() {
     destroyCookie(undefined, "tokenAfiliado", { path: "/" });

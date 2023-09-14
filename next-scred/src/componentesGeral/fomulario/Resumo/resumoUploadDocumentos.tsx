@@ -1,4 +1,4 @@
-import { FileData } from "../../NovoServicoGeral";
+import { FileData } from "@/pages/user/servicosOnline/atanotarial/components/NovoServicoGeral";
 
 interface UploadDocumentosProps {
   fileState: FileData[];

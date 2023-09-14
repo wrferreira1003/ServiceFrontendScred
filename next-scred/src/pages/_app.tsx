@@ -5,15 +5,22 @@ import { AuthProvider } from "@/context/AuthContext";
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.min.css';
 import React from "react";
+import { AuthUserProvider } from "@/context/AuthUserContext";
+import { ServicoProvider } from "@/context/servicocontext";
+
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <React.StrictMode>
     <div className="flex min-h-screen flex-col">
       <div className="flex-grow">
-        <AuthProvider>
-          <Component {...pageProps} />
-        </AuthProvider>
+        <ServicoProvider>
+          <AuthProvider>
+            <AuthUserProvider>
+              <Component {...pageProps} />
+            </AuthUserProvider>
+          </AuthProvider>
+        </ServicoProvider>
       </div>
       <Footer />
       <ToastContainer />

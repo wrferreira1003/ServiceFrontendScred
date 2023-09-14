@@ -1,9 +1,9 @@
 import { useForm } from "react-hook-form";
 import * as zod from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createUserSchema } from "../../../../lib/validationSchemas";
+import { createUserSchema } from "../../lib/validationSchemas";
 import { useEffect, useState } from "react";
-import { ApiAfiliados } from "../../../../types/Hred/types";
+import { ApiAfiliados } from "../../types/Hred/types";
 import { apipublic } from "@/services/apipublic";
 
 const personalInfoSchema = createUserSchema.pick({

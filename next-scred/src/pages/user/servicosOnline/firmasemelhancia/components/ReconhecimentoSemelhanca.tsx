@@ -1,49 +1,60 @@
-import { useState } from "react";
-import Afiliados from "./fomulario/afiliados";
-import DadosCartorio from "./fomulario/dadosCartorio";
-import FormDocumentos from "./fomulario/documentos";
-import EnderecoForm from "./fomulario/endereco";
-import DadosPessoas from "./fomulario/DadosPessoas";
-import { useServico } from "../../../context/servicocontext";
-import LoadingIndicator from "../../../componentesGeral/LoadingIndicator";
-
-import {
-  FormularioDadosPessoal,
-  FormularioEndereco,
-  FormularioDocumentos,
-  FormularioAfiliados,
-  FormularioCartorio,
-  FileData,
-  combineData,
-} from "./NovoServicoGeral";
-
-import UploadDocumentos from "./fomulario/uploadDocumentos/uploadDocumentos";
-import ResumoDadosPessoas from "./fomulario/Resumo/resumoDadosPessoas";
-import ResumoDadosEnvolvido from "./fomulario/Resumo/resumoDadosEnvolvidos";
-import ResumoCartorio from "./fomulario/Resumo/resumoCartorio";
-import ResumoAfiliados from "./fomulario/Resumo/resumoAfiliado";
-import EnviarFormularioModal from "./enviarFormularioModal";
-import ResumoUploadDocumentos from "./fomulario/Resumo/resumoUploadDocumentos";
+import { useContext, useState } from "react";
+import moment from "moment";
 import { api } from "@/services/api";
-//import { Check } from '@phosphor-icons/react';
+import { FileData, FormularioAfiliados, FormularioEndereco, combineData } from "../../atanotarial/components/NovoServicoGeral";
+import { useServico } from "@/context/servicocontext";
+import DadosPessoasReconhecimentoFirma from "@/componentesGeral/fomulario/DadosPessoasreconhecimentoFirma";
+import EnderecoForm from "@/componentesGeral/fomulario/endereco";
+import FormDocumentosSimples from "@/componentesGeral/fomulario/documentoSimples";
+import UploadDocumentos from "@/componentesGeral/fomulario/uploadDocumentos/uploadDocumentos";
+import CartorioAutenticacao from "@/componentesGeral/fomulario/cartorioReconhecimento";
+import Afiliados from "@/componentesGeral/fomulario/afiliados";
+import ResumoDadosReconhecimento from "@/componentesGeral/fomulario/Resumo/resumoDadosReconhecimento";
+import ResumoCartorioReconhecimento from "@/componentesGeral/fomulario/Resumo/resumoCartorioReconhecimento";
+import ResumoAfiliados from "@/componentesGeral/fomulario/Resumo/resumoAfiliado";
+import ResumoUploadDocumentos from "@/componentesGeral/fomulario/Resumo/resumoUploadDocumentos";
+import LoadingIndicator from "@/componentesGeral/LoadingIndicator";
+import EnviarFormularioModal from "@/componentesGeral/enviarFormularioModal";
+import { AuthUserContext } from "@/context/AuthUserContext";
 
-export default function ConsultaServico() {
-  const { servico, subservico } = useServico();
+export interface FormularioDadosReconhecimentoFirma {
+  nome: string;
+  sobrenome: string;
+  email: string;
+  telefone: string;
+  estadocivil: string;
+  profissao: string;
+  nascimento: string;
+}
+export interface FormularioDadosDocumentos {
+  rg: string;
+  cpf: string;
+}
+
+export interface FormularioCartorio {
+  cartorio: string;
+  cidadeCartorio: string;
+  estadoCartorio: string;
+}
+
+export default function ReconhecimentoSemelhanca() {
+  const {userCliente} = useContext(AuthUserContext)
   const [validateAndSave, setValidateAndSave] = useState<
     (() => Promise<boolean>) | null
   >(null);
   const [isDisable, setIsDisable] = useState(false);
   const [fileState, setFileState] = useState<FileData[]>([]);
   const [showModal, setShowModal] = useState(false);
+  const { servico, subservico } = useServico();
   const [isLoading, setIsLoading] = useState(false);
-
-  const [formData, setFormData] = useState<FormularioDadosPessoal>({
+  const [formData, setFormData] = useState<FormularioDadosReconhecimentoFirma>({
     nome: "",
     sobrenome: "",
     email: "",
     telefone: "",
-    nomeenvolvido: "",
-    sobrenomeenvolvido: "",
+    estadocivil: "",
+    profissao: "",
+    nascimento: "",
   });
   const [formDataendereco, setFormDataendereco] = useState<FormularioEndereco>({
     estado: "",
@@ -54,13 +65,16 @@ export default function ConsultaServico() {
   });
 
   const [formDataDocumentos, setFormDataDocumentos] =
-    useState<FormularioDocumentos>({
+    useState<FormularioDadosDocumentos>({
       rg: "",
       cpf: "",
-      rgenvolvido: "",
-      cpfenvolvido: "",
-      fileUpload: "",
     });
+
+  const [formDataCartorio, setformDataCartorio] = useState<FormularioCartorio>({
+    cartorio: "",
+    cidadeCartorio: "",
+    estadoCartorio: "",
+  });
 
   const [formDataAfiliados, setformDataAfiliados] =
     useState<FormularioAfiliados>({
@@ -68,13 +82,6 @@ export default function ConsultaServico() {
       afiliado: "",
       afiliadoId: 0,
     });
-
-  const [formDataCartorio, setformDataCartorio] = useState<FormularioCartorio>({
-    cartorio: "",
-    estadolivro: "",
-    livro: "",
-    folha: "",
-  });
 
   //stepper
   const steps = [
@@ -90,26 +97,38 @@ export default function ConsultaServico() {
 
   //Funcao que recebe os dados dos componentes do formulario
   const handleFormDataChange = (newData: any) => {
+    // Convertendo newData.nascimento de string para Date, se existe
+    if (newData.nascimento) {
+      newData.nascimento = new Date(newData.nascimento);
+    }
+
     setFormData((prevData) => ({
       ...prevData,
       ...newData,
     }));
   };
-  //Funcao que recebe os dados dos componentes do formulario
+
+  //Funcao que recebe os dados dos componentes do formulario de endereco
   const handleFormDataChangeEndereco = (newData: any) => {
     setFormDataendereco((prevDataendereco) => ({
       ...prevDataendereco,
       ...newData,
     }));
   };
-
+  //Funcao que recebe os dados dos componentes documento
   const handleFormDataChangeDocumentos = (newData: any) => {
     setFormDataDocumentos((prevDataDocumentos) => ({
       ...prevDataDocumentos,
       ...newData,
     }));
   };
-
+  const handleFormDataChangeCartorio = (newData: any) => {
+    setformDataCartorio((prevDataCartorio) => ({
+      ...prevDataCartorio,
+      ...newData,
+    }));
+  };
+  //Funcao que recebe os dados dos componentes Afiliado
   const handleFormDataChangeAfiliados = (newData: any) => {
     setformDataAfiliados((prevDataAfiliados) => ({
       ...prevDataAfiliados,
@@ -117,13 +136,6 @@ export default function ConsultaServico() {
     }));
   };
 
-  const handleFormDataChangeCartorio = (newData: any) => {
-    setformDataCartorio((prevDataCartorio) => ({
-      ...prevDataCartorio,
-      ...newData,
-    }));
-  };
-  //Funcao que trata os uploads
   const handleFilesChange = (files: any) => {
     const newFilesArray: FileData[] = Object.values(files);
     setFileState((prevDataUpload) => {
@@ -136,7 +148,7 @@ export default function ConsultaServico() {
       return uniqueFiles;
     });
   };
-  //Funcao para Remover um arquivo
+
   const removeFile = (indexToRemove: number) => {
     setFileState((prevFiles) => {
       const updatedFiles = [...prevFiles];
@@ -145,38 +157,41 @@ export default function ConsultaServico() {
     });
   };
 
-  const handleSendApi = () => {
+  const combineDataForm = () => {
     const combinedData: combineData = {
+      idCliente: userCliente?.id,
       nome: formData.nome,
       sobrenome: formData.sobrenome,
       email: formData.email,
       telefone: formData.telefone,
       RegistroGeral: formDataDocumentos.rg,
       cpf: formDataDocumentos.cpf,
-      estado_civil: "",
-      profissao: "",
-      data_nascimento: "",
+      estado_civil: formData.estadocivil,
+      profissao: formData.profissao,
+      data_nascimento: moment(formData.nascimento, "DD/MM/YYYY").format(
+        "YYYY-MM-DD",
+      ),
       estado: formDataendereco.estado,
       endereco: formDataendereco.endereco,
       cidade: formDataendereco.cidade,
       bairro: formDataendereco.bairro,
       cep: formDataendereco.cep,
       afiliado: formDataAfiliados.afiliadoId,
-      servico: servico,
+      servico: 'Reconhecimento de Firma por Semelhancia',
       subservico: subservico,
-      nomeEnvolvido: formData.nomeenvolvido,
-      sobrenomeEnvolvido: formData.sobrenomeenvolvido,
-      RegistroGeralEnvolvido: formDataDocumentos.rgenvolvido,
-      cpfEnvolvido: formDataDocumentos.cpfenvolvido,
+      nomeEnvolvido: "",
+      sobrenomeEnvolvido: "",
+      RegistroGeralEnvolvido: "",
+      cpfEnvolvido: "",
 
-      nomeCartorio: formDataCartorio.cartorio,
-      estadoCartorio: formDataCartorio.estadolivro,
-      livroCartorio: formDataCartorio.livro,
-      folhaCartorio: formDataCartorio.folha,
+      nomeCartorio: "",
+      estadoCartorio: "",
+      livroCartorio: "",
+      folhaCartorio: "",
 
-      nomeCartorioFirmaReconhecida: "",
-      estadoCartorioFirmaReconhecida: "",
-      livroCartorioFirmaReconhecida: "",
+      nomeCartorioFirmaReconhecida: formDataCartorio.cartorio,
+      estadoCartorioFirmaReconhecida: formDataCartorio.estadoCartorio,
+      livroCartorioFirmaReconhecida: formDataCartorio.cidadeCartorio,
 
       documentos: [],
     };
@@ -209,6 +224,7 @@ export default function ConsultaServico() {
         });
       }
     });
+
     const sendDataToServer = async (formDataToSend: any) => {
       setIsLoading(true);
       try {
@@ -223,8 +239,7 @@ export default function ConsultaServico() {
         setShowModal(true);
         return response.data;
       } catch (error) {
-        console.error("Erro ao enviar os dados");
-        setIsLoading(false);
+        console.error("Erro ao enviar os dados", error);
         throw error;
       }
     };
@@ -236,6 +251,7 @@ export default function ConsultaServico() {
       })
       .catch((error) => {
         console.error("Erro ao enviar os dados:");
+        setIsLoading(false);
         // Faça algo em caso de erro, como mostrar uma mensagem de erro.
       });
   };
@@ -248,7 +264,7 @@ export default function ConsultaServico() {
     if (currentStep === steps.length) {
       setComplete(true);
       setIsLoading(true);
-      handleSendApi(); //Chamando a funcao para enviar os dados.
+      combineDataForm(); //Chamando a funcao para juntar os dados.
     } else {
       //Verificando qual etapa
       if (currentStep === 1 && validateAndSave) {
@@ -278,6 +294,7 @@ export default function ConsultaServico() {
           setCurrentStep((prev) => prev + 1);
         }
       } else if (currentStep === 6) {
+        console.log("Aqui colocaremos o formulario parte 3");
         setCurrentStep((prev) => prev + 1);
       }
     }
@@ -287,14 +304,13 @@ export default function ConsultaServico() {
     <div>
       <div>
         <h2 className="mt-10 text-lg font-semibold leading-7 text-gray-900">
-          Informações Para Solicitaçao de Consulta de Documentos
+          Reconhecimento de Firma por Semelhança
         </h2>
         <p className="mt-1 text-sm leading-6 text-gray-600">
-          Esta solicitação foi criada especificamente para os clientes que
-          desejam realizar uma consulta de documentos em um determinado
-          cartório. Por favor, tenha em mente que as informações requeridas para
-          tal consulta devem estar corretas e completas para garantir a precisão
-          dos resultados
+          O Reconhecimento de Firma por Semelhança é um procedimento jurídico
+          que confirma a autenticidade de uma assinatura em um documento. No
+          processo, o tabelião compara a assinatura no documento com a original
+          registrada em arquivo, atestando a autenticidade se forem semelhantes.
         </p>
       </div>
 
@@ -316,8 +332,9 @@ export default function ConsultaServico() {
             </div>
           ))}
         </div>
+
         {currentStep === 1 && (
-          <DadosPessoas
+          <DadosPessoasReconhecimentoFirma
             formData={formData}
             handleFormDataChange={handleFormDataChange}
             setValidateAndSave={setValidateAndSave}
@@ -330,13 +347,15 @@ export default function ConsultaServico() {
             setValidateAndSave={setValidateAndSave}
           />
         )}
+
         {currentStep === 3 && (
           <>
-            <FormDocumentos
+            <FormDocumentosSimples
               formDataDocumentos={formDataDocumentos}
               handleFormDataChangeDocumentos={handleFormDataChangeDocumentos}
               setValidateAndSave={setValidateAndSave}
             />
+
             <UploadDocumentos
               onFilesChange={handleFilesChange}
               filesState={fileState}
@@ -346,7 +365,7 @@ export default function ConsultaServico() {
         )}
 
         {currentStep === 4 && (
-          <DadosCartorio
+          <CartorioAutenticacao
             handleFormDataChangeCartorio={handleFormDataChangeCartorio}
             formDataCartorio={formDataCartorio}
             setValidateAndSave={setValidateAndSave}
@@ -364,17 +383,12 @@ export default function ConsultaServico() {
         {currentStep === 6 && (
           <>
             {" "}
-            <ResumoDadosPessoas
+            <ResumoDadosReconhecimento
               InfoPessoal={formData}
               Documentos={formDataDocumentos}
               Endereco={formDataendereco}
             />
-            <ResumoDadosEnvolvido
-              InfoPessoal={formData}
-              Documentos={formDataDocumentos}
-              Endereco={formDataendereco}
-            />
-            <ResumoCartorio Cartorio={formDataCartorio} />
+            <ResumoCartorioReconhecimento Cartorio={formDataCartorio} />
             <ResumoAfiliados Afiliados={formDataAfiliados} />
             <ResumoUploadDocumentos fileState={fileState} />
           </>
@@ -389,7 +403,7 @@ export default function ConsultaServico() {
             {currentStep > 1 && (
               <button
                 className="btn flex w-24 items-center justify-center text-center
-                                focus:outline-none focus:ring-0"
+                              focus:outline-none focus:ring-0"
                 onClick={() => setCurrentStep((prev) => prev - 1)}
               >
                 Voltar

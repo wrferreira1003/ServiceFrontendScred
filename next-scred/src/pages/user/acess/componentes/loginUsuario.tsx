@@ -3,23 +3,19 @@ import logoimg from "../../../../assets/logo.png";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { useContext, useState } from "react";
-import { AuthContext } from "@/context/AuthContext";
 import { ArrowLongRightIcon, UserIcon, UserPlusIcon } from "@heroicons/react/24/solid";
+import { AuthUserContext } from "@/context/AuthUserContext";
 
-type usersType = {
-  email: string;
-  senha: string;
-};
 
 export default function LoginUsuarios() {
   const { register, handleSubmit } = useForm();
-  const { signIn } = useContext(AuthContext);
+  const { signInUser } = useContext(AuthUserContext);
   const [loginError, setLoginError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
 
   async function handleSignIn(data: any) {
     try {
-      await signIn(data);
+      await signInUser(data);
       setLoginError(null); // Limpa qualquer erro anterior
     } catch (error) {
       const err = error as { message?: string };

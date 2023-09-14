@@ -1,17 +1,18 @@
-import { useState } from "react";
-import DadosPessoas from "./fomulario/DadosPessoas";
-import Afiliados from "./fomulario/afiliados";
-import FormDocumentos from "./fomulario/documentos";
-import EnderecoForm from "./fomulario/endereco";
-import ResumoDadosPessoas from "./fomulario/Resumo/resumoDadosPessoas";
-import ResumoDadosEnvolvido from "./fomulario/Resumo/resumoDadosEnvolvidos";
-import ResumoAfiliados from "./fomulario/Resumo/resumoAfiliado";
-import EnviarFormularioModal from "./enviarFormularioModal";
-import UploadDocumentos from "./fomulario/uploadDocumentos/uploadDocumentos";
-import ResumoUploadDocumentos from "./fomulario/Resumo/resumoUploadDocumentos";
-import { useServico } from "../../../context/servicocontext";
-import LoadingIndicator from "../../../componentesGeral/LoadingIndicator";
+import {useContext, useState } from "react";
 import { api } from "@/services/api";
+import { useServico } from "@/context/servicocontext";
+import DadosPessoas from "@/componentesGeral/fomulario/DadosPessoas";
+import EnderecoForm from "@/componentesGeral/fomulario/endereco";
+import FormDocumentos from "@/componentesGeral/fomulario/documentos";
+import UploadDocumentos from "@/componentesGeral/fomulario/uploadDocumentos/uploadDocumentos";
+import Afiliados from "@/componentesGeral/fomulario/afiliados";
+import ResumoDadosPessoas from "@/componentesGeral/fomulario/Resumo/resumoDadosPessoas";
+import ResumoDadosEnvolvido from "@/componentesGeral/fomulario/Resumo/resumoDadosEnvolvidos";
+import ResumoAfiliados from "@/componentesGeral/fomulario/Resumo/resumoAfiliado";
+import ResumoUploadDocumentos from "@/componentesGeral/fomulario/Resumo/resumoUploadDocumentos";
+import LoadingIndicator from "@/componentesGeral/LoadingIndicator";
+import EnviarFormularioModal from "@/componentesGeral/enviarFormularioModal";
+import { AuthUserContext } from "@/context/AuthUserContext";
 
 interface Documentos {
   arquivo: File;
@@ -107,6 +108,8 @@ export type FileData = {
 };
 
 export default function NovoServico() {
+  const {userCliente} = useContext(AuthUserContext)
+
   const [validateAndSave, setValidateAndSave] = useState<
     (() => Promise<boolean>) | null
   >(null);
@@ -221,6 +224,7 @@ export default function NovoServico() {
   //Funcao que pepara e enviar os dados ao servidor
   const handleSendApi = () => {
     const combinedData: combineData = {
+      idCliente: userCliente?.id,
       nome: formData.nome,
       sobrenome: formData.sobrenome,
       email: formData.email,
@@ -237,7 +241,7 @@ export default function NovoServico() {
       cep: formDataendereco.cep,
       afiliado: formDataAfiliados.afiliadoId,
       servico: servico,
-      subservico: subservico,
+      subservico: 'Ata Notarial',
       nomeEnvolvido: formData.nomeenvolvido,
       sobrenomeEnvolvido: formData.sobrenomeenvolvido,
       RegistroGeralEnvolvido: formDataDocumentos.rgenvolvido,
@@ -287,26 +291,22 @@ export default function NovoServico() {
     const sendDataToServer = async (formDataToSend: any) => {
       setIsLoading(true);
       //Funcao apenas para simular uma demora para os dados ir ao servidor
-      return new Promise((resolve, reject) => {
-        setTimeout(async () => {
-          try {
-            const response = await api.post("criar_cliente/", formDataToSend, {
-              headers: {
-                "Content-Type": "multipart/form-data",
-              },
-            });
+      try {
+        const response = await api.post("criar_cliente/", formDataToSend, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
 
-            console.log("Dados enviados com sucesso:", response.data);
-            setIsLoading(false);
-            setShowModal(true);
-            return response.data;
-          } catch (error) {
-            console.error("Erro ao enviar os dados");
-            setIsLoading(false);
-            throw error;
-          }
-        }, 10000);
-      });
+        console.log("Dados enviados com sucesso:", response.data);
+        setIsLoading(false);
+        setShowModal(true);
+        return response.data;
+      } catch (error) {
+        console.error("Erro ao enviar os dados");
+        setIsLoading(false);
+        throw error;
+      }
     };
 
     sendDataToServer(formDataToSend)

@@ -37,10 +37,7 @@ export default function HeaderService({
       <p className="mt-4 mb-4 text-sm leading-6 text-gray-600">
         Por gentileza, selecione o tipo de serviço que atenda às suas
         necessidades, seja para a solicitação de um novo documento ou para a
-        consulta de um documento preexistente. Além disso, indique o tipo de
-        serviço de tabelionato correspondente à sua solicitação. Uma vez
-        realizada a seleção, você será redirecionado para o preenchimento do
-        formulário correspondente.
+        consulta de um documento preexistente.
       </p>
       <div className="flex flex-col gap-4 sm:flex-row sm:gap-x-16">
         <div className="mt-5 sm:col-span-3">
@@ -48,7 +45,7 @@ export default function HeaderService({
             htmlFor="solicitacao"
             className="block text-lg leading-6 text-gray-900"
           >
-            Selecione o Serviço
+            Serviço Selecionado
           </label>
           <div className="mt-2">
             <select
@@ -62,12 +59,7 @@ export default function HeaderService({
                             sm:text-sm sm:leading-6"
               onChange={handleSubServicoChange}
             >
-              <option>Tipo de Serviço</option>
-              {dadosServicoApi.map((servico) => (
-                <option key={servico.id} value={servico.nome_servico}>
-                  {servico.nome_servico}
-                </option>
-              ))}
+              <option>Ata Notarial</option>
             </select>
           </div>
         </div>

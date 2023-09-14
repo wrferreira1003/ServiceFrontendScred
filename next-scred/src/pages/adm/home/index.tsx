@@ -33,10 +33,10 @@ export default function HomeAfiliado({ InfoData }: RequestProps) {
 
 //Aqui estou fazendo verificaoes pelo lado do servidor next se existe o token
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-
+  
   const apiClient = getApiClient(ctx);
   const { ["tokenAfiliado"]: token } = parseCookies(ctx);
-
+  
   if (!token) {
     return {
       redirect: {
