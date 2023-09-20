@@ -5,6 +5,7 @@ import React, {
   Dispatch,
   SetStateAction,
   useContext,
+  useEffect,
 } from "react";
 
 interface ServicoContextType {
@@ -32,6 +33,8 @@ interface ProviderProps {
 export function ServicoProvider({ children }: ProviderProps) {
   const [servico, setServico] = useState<string | null>(null);
   const [subservico, setSubServico] = useState<string | null>(null);
+  
+
 
   const value = {
     servico,

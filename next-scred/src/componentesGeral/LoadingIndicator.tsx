@@ -1,21 +1,20 @@
 import React from "react";
 
 export default function LoadingIndicator() {
+  let circleCommonClasses = 'h-2.5 w-2.5 bg-current rounded-full';
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="flex items-center justify-center rounded-md bg-white p-5 shadow-lg">
-        <div
-          className="inline-block h-24 w-24 animate-spin rounded-full border-4 border-solid 
-                    border-current border-r-transparent align-[-0.125em] 
-                    motion-reduce:animate-[spin_1.5s_linear_infinite]"
-          role="status"
-        >
-          <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap 
-                          !border-0 !p-0 ![clip:rect(0,0,0,0)]">
-            Loading...
-          </span>
-        </div>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-700 bg-opacity-30">
+      <div className='flex'>
+         <div className={`${circleCommonClasses} mr-1 animate-bounce delay-75`}></div>
+         <div className={`${circleCommonClasses} mr-1 animate-bounce delay-150`}></div>
+         <div className={`${circleCommonClasses} animate-bounce delay-225`}></div>
       </div>
     </div>
   );
 }
+
+
+
+
+

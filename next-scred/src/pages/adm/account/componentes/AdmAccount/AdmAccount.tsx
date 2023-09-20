@@ -1,5 +1,4 @@
 import { createUserSchema } from "@/lib/validationSchemas";
-import { api } from "@/services/api";
 import { InfoDataType } from "@/types/Adm/types";
 import { ArrowLongLeftIcon } from "@heroicons/react/24/solid";
 import { zodResolver } from "@hookform/resolvers/zod";

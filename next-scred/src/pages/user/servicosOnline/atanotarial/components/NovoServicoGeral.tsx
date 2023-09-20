@@ -274,11 +274,9 @@ export default function NovoServico() {
         formDataToSend.append(key, combinedData[key]);
       } else {
         combinedData.documentos.forEach((documento, index) => {
-          console.log(`documentos[${index}].descricao:`, documento.descricao);
-          console.log(`documentos[${index}].arquivo:`, documento.arquivo);
           formDataToSend.append(
             `documentos[${index}].descricao`,
-            documento.descricao,
+             documento.descricao,
           );
           formDataToSend.append(
             `documentos[${index}].arquivo`,
@@ -290,15 +288,19 @@ export default function NovoServico() {
 
     const sendDataToServer = async (formDataToSend: any) => {
       setIsLoading(true);
-      //Funcao apenas para simular uma demora para os dados ir ao servidor
+
+
       try {
+        // Simulando um atraso de 2 segundos (2000 milissegundos)
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+        
         const response = await api.post("criar_cliente/", formDataToSend, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         });
 
-        console.log("Dados enviados com sucesso:", response.data);
+        //console.log("Dados enviados com sucesso:", response.data);
         setIsLoading(false);
         setShowModal(true);
         return response.data;
@@ -311,11 +313,11 @@ export default function NovoServico() {
 
     sendDataToServer(formDataToSend)
       .then((data) => {
-        console.log("Dados recebidos:");
+        //console.log("Dados recebidos:");
         // Faça algo após receber uma resposta bem-sucedida, como mostrar uma mensagem de sucesso.
       })
       .catch((error) => {
-        console.error("Erro ao enviar os dados:");
+        //console.error("Erro ao enviar os dados:");
         // Faça algo em caso de erro, como mostrar uma mensagem de erro.
       });
   };

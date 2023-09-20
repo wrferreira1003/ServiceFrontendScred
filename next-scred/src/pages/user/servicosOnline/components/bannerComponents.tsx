@@ -1,12 +1,15 @@
 import { AuthUserContext } from '@/context/AuthUserContext';
-import { XMarkIcon } from '@heroicons/react/24/solid';
 import { useContext } from 'react';
-
+import { useRouter } from 'next/router';
 
 export default function BannerComponents() {
   
   const { userCliente, signOutUser } = useContext(AuthUserContext);
-  
+  const router = useRouter();
+
+  const clickOnMyDetails = () => {
+    router.push('/user/account');
+  };
 
   return (
       <div className="relative isolate flex items-center gap-x-6 overflow-hidden bg-gray-50 px-6 py-2.5 sm:px-3.5 sm:before:flex-1">
@@ -43,13 +46,13 @@ export default function BannerComponents() {
             {userCliente?.nome}
           </p>
           <button
-            
+            onClick={clickOnMyDetails} 
             className="flex-none rounded-full bg-gray-900 px-3.5 py-1 text-sm font-semibold text-white shadow-sm hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900"
           >
             Meus Dados <span aria-hidden="true">&rarr;</span>
           </button>
         </div>
-        <div className="flex flex-1 justify-end">
+        <div className="flex flex-1 mr-10 justify-end">
           <button
             onClick={signOutUser} 
             type="button" 

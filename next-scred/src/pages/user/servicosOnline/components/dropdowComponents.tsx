@@ -34,7 +34,7 @@ const people = [
 export default function DropdowComponents() {
 
   const router = useRouter();
-
+  
   return (
     <ul role="list" className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
       {people.map((person) => (
@@ -72,7 +72,7 @@ export default function DropdowComponents() {
               <div className="-ml-px flex w-0 flex-1">
                 <button
                   onClick={() => {
-                    router.push('/user/pedido');
+                    router.push(`/user/requests`);
                   }}
                   className="relative inline-flex w-0 flex-1 items-center 
                             justify-center gap-x-3 rounded-br-lg border 
