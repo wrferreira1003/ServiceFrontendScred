@@ -43,7 +43,6 @@ export default function HeaderAdmAfiliado() {
   const { foto, nome, email, user_type } = afiliadoData || {};
 
   const navigation = [
-    { name: "Home", href: "/adm/home", current: router.pathname === "/" },
     {name: "Processos",href: "/adm/request",current: router.pathname === "/request",},
     { name: "Afiliados", href: "/adm/signup", current: router.pathname === "/signup", visible: user_type === 'ADMIN' },
     {name: "Financeiro",href: "",current: router.pathname === "",},

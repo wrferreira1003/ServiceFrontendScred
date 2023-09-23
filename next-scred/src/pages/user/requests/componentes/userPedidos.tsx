@@ -12,17 +12,6 @@ const statuses = {
   Arquivado: "text-yellow-800 bg-yellow-50 ring-yellow-600/20",
   pendente: "text-yellow-800 bg-red-300 ring-yellow-600/20",
 };
-const projects = [
-  {
-    id: 1,
-    name: "Processo 1",
-    href: "#",
-    status: "Finalizado",
-    createdBy: "Wellington Ferreira",
-    dueDate: "Março 17, 2023",
-    dueDateTime: "2023-03-17T00:00Z",
-  }
-];
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");

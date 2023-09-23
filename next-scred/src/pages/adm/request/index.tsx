@@ -9,12 +9,13 @@ import AfiliadoProcessos from "./components/AfiliadoProcessos/AfiliadoProcessos"
 interface RequestProps {
   InfoData: InfoDataType;
 }
-
 export default function Request({ InfoData }: RequestProps) {
+
+  
   return (
     <>
     <HeaderAdmAfiliado />
-      
+           
      {
         InfoData.user_type === 'ADMIN' ? 
           <AdmProcessos /> 
@@ -43,7 +44,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   }
 
   const response = await apiClient.get("afiliado");
-
+  
   return {
     props: {
       InfoData: response.data,

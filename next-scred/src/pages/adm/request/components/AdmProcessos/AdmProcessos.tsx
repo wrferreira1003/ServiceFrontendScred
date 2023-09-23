@@ -1,67 +1,67 @@
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { EllipsisVerticalIcon } from "@heroicons/react/20/solid";
 import { CheckCircleIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
+import { InfoDataTypeRequests } from "@/types/Adm/types";
+import { apipublic } from "@/services/apipublic";
+import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
+import ModalProcessos from "../modalProcessos";
+
+type DadosType = InfoDataTypeRequests[];
 
 const statuses = {
   Finalizado: "text-green-700 bg-green-50 ring-green-600/20",
   "In progress": "text-gray-600 bg-gray-50 ring-gray-500/10",
   Arquivado: "text-yellow-800 bg-yellow-50 ring-yellow-600/20",
 };
-const projects = [
-  {
-    id: 1,
-    name: "Processo 1",
-    href: "#",
-    status: "Finalizado",
-    createdBy: "Wellington Ferreira",
-    dueDate: "Março 17, 2023",
-    dueDateTime: "2023-03-17T00:00Z",
-  },
-  {
-    id: 2,
-    name: "Processo 2",
-    href: "#",
-    status: "Aguardando Documentos",
-    createdBy: "Alexandre Rodriguez",
-    dueDate: "May 5, 2023",
-    dueDateTime: "2023-05-05T00:00Z",
-  },
-  {
-    id: 3,
-    name: "Processo 3",
-    href: "#",
-    status: "Arquivado",
-    createdBy: "Courtney Henry",
-    dueDate: "May 25, 2023",
-    dueDateTime: "2023-05-25T00:00Z",
-  },
-  {
-    id: 4,
-    name: "Processo 4",
-    href: "#",
-    status: "Arquivado",
-    createdBy: "Leonard Krasner",
-    dueDate: "June 7, 2023",
-    dueDateTime: "2023-06-07T00:00Z",
-  },
-  {
-    id: 5,
-    name: "Processo 5",
-    href: "#",
-    status: "Finalizado",
-    createdBy: "Courtney Henry",
-    dueDate: "June 10, 2023",
-    dueDateTime: "2023-06-10T00:00Z",
-  },
-];
+
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function AdmProcessos() {
+  const [carregando, setCarregando] = useState<boolean>(false);
+  const [dados, setDados] = useState<DadosType | undefined>(); // Estado para armazenar os dados
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [selectedProcessId, setSelectedProcessId] = useState<number | null>(null);
+
+  useEffect(() => {
+    setCarregando(true);
+
+      apipublic
+        .get(`listrequest/`)
+        .then((response) => {
+          setDados(response.data);       
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          setCarregando(false);
+        });
+    
+  }, []);
+
+  const handleOpenModal = (id: number) => {
+    setSelectedProcessId(id);
+    setModalOpen(true);
+  };
+
+
+  // Classifique os dados do mais novo para o mais antigo
+  let dadosOrdenados: typeof dados = [];
+  if (dados) {
+    dadosOrdenados = [...dados].sort((a, b) => {
+      const dateA = a.data_pedido ? new Date(a.data_pedido).getTime() : 0;
+      const dateB = b.data_pedido ? new Date(b.data_pedido).getTime() : 0;
+      return dateB - dateA; // do mais novo para o mais antigo
+    });
+  }
+  
+
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div className="mb-6 mt-8 flex items-start justify-between">
@@ -78,43 +78,61 @@ export default function AdmProcessos() {
         </button>
       </div>
       <ul role="list" className="divide-y divide-gray-100">
-        {projects.map((project) => (
+      {dadosOrdenados.map((item, index) => (
           <li
-            key={project.id}
+            key={item.id}
             className="flex items-center justify-between gap-x-6 py-5"
           >
             <div className="min-w-0">
               <div className="flex items-start gap-x-3">
                 <p className="text-sm font-semibold leading-6 text-gray-900">
-                  {project.name}
+                  {item.servico !== null ? item.servico : ''}
+                  </p>
+                  <p>-</p>
+                  <p className="text-sm font-semibold leading-6 text-gray-900">
+                  {item.subservico !== 'null' ? item.subservico : ''}
                 </p>
                 <p
                   className={classNames(
-                    statuses[project.status as keyof typeof statuses],
+                    statuses[item.status as keyof typeof statuses],
                     "mt-0.5 whitespace-nowrap rounded-md px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset",
                   )}
                 >
-                  {project.status}
+                  {item.status}
                 </p>
               </div>
-              <div className="mt-1 flex items-center gap-x-2 text-xs leading-5 text-gray-500">
+              <div className="mt-1 flex-col items-center gap-x-2 text-sm leading-5 text-gray-500">
                 <p className="whitespace-nowrap">
-                  Due on{" "}
-                  <time dateTime={project.dueDateTime}>{project.dueDate}</time>
+                  Data Solicitação:{" "}
+                  {
+                    item?.data_pedido 
+                    ? format(new Date(item?.data_pedido), 'dd/MM/yyyy - HH:mm', { locale: ptBR })
+                    : null
+                  }
                 </p>
-                <svg viewBox="0 0 2 2" className="h-0.5 w-0.5 fill-current">
-                  <circle cx={1} cy={1} r={1} />
-                </svg>
-                <p className="truncate">Created by {project.createdBy}</p>
+                <p className="whitespace-nowrap">
+                  N Processo:{" "}
+                  {item?.id}
+                </p>
+
+                <p className="whitespace-nowrap">
+                  Afiliado:{" "}
+                  {item.afiliado?.nome}
+                </p>
+                <p className="truncate">Telefone: {item.afiliado?.telefone}</p>
               </div>
             </div>
             <div className="flex flex-none items-center gap-x-4">
-              <Link
-                href={project.href}
+              <button
+                onClick={() => {
+                  if (item.id !== undefined) {
+                    handleOpenModal(item.id);
+                  }
+                }}
                 className="hidden rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:block"
               >
-                Abrir processo<span className="sr-only">, {project.name}</span>
-              </Link>
+                Abrir processo<span className="sr-only"></span>
+              </button>
               <Menu as="div" className="relative flex-none">
                 <Menu.Button className="-m-2.5 block p-2.5 text-gray-500 hover:text-gray-900">
                   <span className="sr-only">Open options</span>
@@ -142,7 +160,7 @@ export default function AdmProcessos() {
                             "block px-3 py-1 text-sm leading-6 text-gray-900",
                           )}
                         >
-                          Editar<span className="sr-only">, {project.name}</span>
+                          Editar<span className="sr-only"></span>
                         </Link>
                       )}
                     </Menu.Item>
@@ -155,7 +173,7 @@ export default function AdmProcessos() {
                             "block px-3 py-1 text-sm leading-6 text-gray-900",
                           )}
                         >
-                          Mover<span className="sr-only">, {project.name}</span>
+                          Mover<span className="sr-only"></span>
                         </Link>
                       )}
                     </Menu.Item>
@@ -169,7 +187,7 @@ export default function AdmProcessos() {
                           )}
                         >
                           Deletar
-                          <span className="sr-only">, {project.name}</span>
+                          <span className="sr-only"></span>
                         </Link>
                       )}
                     </Menu.Item>
@@ -180,6 +198,11 @@ export default function AdmProcessos() {
           </li>
         ))}
       </ul>
+      <ModalProcessos 
+        isOpen={isModalOpen} 
+        onClose={() => setModalOpen(false)} 
+        processId={selectedProcessId}
+      />
     </div>
   );
 }

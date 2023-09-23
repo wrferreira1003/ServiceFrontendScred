@@ -82,7 +82,7 @@ export function AuthProvider({ children }: any) {
       setUser(user);
 
       //Redirecionando caso tenha dado certo
-      Router.push("/adm/home");
+      Router.push("/adm/request");
     } catch (error) {
       if (error && typeof error === "object" && "response" in error) {
         const responseData = (error.response as { data: { error: string } })

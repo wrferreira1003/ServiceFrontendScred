@@ -63,7 +63,7 @@ export default function Request({ InfoData }: RequestProps) {
 
         <main className="flex-1 rounded-lg bg-slate-200 p-4">
         {
-        InfoData.user_type === 'ADMIN' ? 
+        InfoData.user_type === 'ADMIN' ?
           <AdmAccount 
             infoData={InfoData} 
             onUpdateData={handleUpdateData} 
