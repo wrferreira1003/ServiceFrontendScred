@@ -4,13 +4,15 @@ import { InfoDataTypeRequests } from "@/types/Adm/types";
 import { useRouter } from "next/router";
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import { useState } from "react";
+import ModalProcessosUser from "./modalProcessosUser";
 
 
 const statuses = {
-  Finalizado: "text-green-700 bg-green-50 ring-green-600/20",
+  Aprovado: "text-green-700 bg-green-50 ring-green-600/20",
   "In progress": "text-gray-600 bg-gray-50 ring-gray-500/10",
-  Arquivado: "text-yellow-800 bg-yellow-50 ring-yellow-600/20",
-  pendente: "text-yellow-800 bg-red-300 ring-yellow-600/20",
+  "Em analise": "text-yellow-800 bg-yellow-50 ring-yellow-600/20",
+  Recusado: "text-yellow-800 bg-red-200 ring-yellow-600/20",
 };
 
 function classNames(...classes: any) {
@@ -24,10 +26,18 @@ interface DadosType {
 
 export default function UserPedidos(dados:DadosType) {
   const router = useRouter();
-  
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [selectedProcessId, setSelectedProcessId] = useState<number | null>(null);
+  const [isModalOpenStatus, setModalOpenStatus] = useState(false);
 
+  const handleOpenModal = (id: number) => {
+
+    setSelectedProcessId(id);
+    setModalOpen(true);
+  };
 
   return (
+    <>
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div className="mb-6 mt-8 flex items-start justify-between">
         <h1>Processos em Andamento</h1>
@@ -95,6 +105,21 @@ export default function UserPedidos(dados:DadosType) {
             </div>
             
             <div className="mr-5 flex flex-none items-center gap-x-4">
+              {item.status === 'Ajustar documentação' && (
+              <button
+                onClick={() => {
+                  if (item.id !== undefined) {
+                    handleOpenModal(item.id);
+                  }
+                } }
+                className="hidden rounded-md bg-red-400 px-2.5 py-1.5 text-sm 
+                          font-semibold text-white shadow-sm ring-1 ring-inset 
+                          ring-gray-300 hover:bg-red-700 sm:block"
+              >
+                Editar Contrato<span className="sr-only">, </span>
+              
+              </button>
+              )}
               <Link
                 href={`https://wa.me/${item.afiliado?.telefone}`}
                 target="_blank"
@@ -107,6 +132,13 @@ export default function UserPedidos(dados:DadosType) {
         )): null}
       </ul>
     </div>
+    <ModalProcessosUser 
+    isOpen={isModalOpen} 
+    onClose={() => setModalOpen(false)} 
+    processId={selectedProcessId}
+
+  />
+  </>
   );
 }
 

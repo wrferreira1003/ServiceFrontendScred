@@ -10,7 +10,6 @@ interface RequestProps {
   InfoData: InfoDataType;
 }
 export default function Request({ InfoData }: RequestProps) {
-
   
   return (
     <>
@@ -21,7 +20,7 @@ export default function Request({ InfoData }: RequestProps) {
           <AdmProcessos /> 
         :
         InfoData.user_type === 'AFILIADO' ? 
-          < AfiliadoProcessos /> 
+          < AfiliadoProcessos/> 
         :
         null
       }

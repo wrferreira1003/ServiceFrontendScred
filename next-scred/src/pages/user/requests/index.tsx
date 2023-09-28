@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import { InfoDataTypeRequests } from "@/types/Adm/types";
 import { parseCookies } from "nookies";
 import { apipublic } from "@/services/apipublic";
+import { useApi } from "@/hooks/useApi";
+import { any } from "zod";
 
 export type DadosType = InfoDataTypeRequests[];
 
@@ -13,26 +15,15 @@ export default function ConsultaPedidos(){
   const [dados, setDados] = useState<DadosType | undefined>(); // Estado para armazenar os dados
   const [carregando, setCarregando] = useState<boolean>(false); // Estado para monitorar o status da chamada da API
 
-
+  //Utilizando o userSWR para trazer sempre os dados mais atualizado conforme alteracao feita do Administrador
+  const {data} = useApi('listrequests/');
   useEffect(() => {
-    setCarregando(true);
-    if (IdUser) {
-      apipublic
-        .get(`requests/${IdUser}`)
-        .then((response) => {
-          setDados(response.data); 
-        })
-        .catch((error) => {
-          console.error(error);
-        })
-        .finally(() => {
-          setCarregando(false);
-        });
-    } else {
-      setCarregando(false);
+    if (data) {
+        const dadosFiltrados = data.filter((request: any) => request.idCliente === IdUser);
+        setDados(dadosFiltrados);
     }
-  }, [IdUser]);
-  
+  }, [data, IdUser ]);
+
   return (
     <div className="flex min-h-screen flex-col">
           <div className="mb-auto flex-grow pt-28">

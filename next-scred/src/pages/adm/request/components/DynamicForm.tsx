@@ -35,11 +35,22 @@ export default function DynamicForm({processData, processId}:DynamicFormProps){
       <h2 className="text-left font-semibold text-2xl text-black mt-5">
         Processo numero: {processId}
       </h2>
+      
       {processData && typeof processData === 'object' &&
         Object.entries(processData)
         .filter(([key]) => !propriedadesExcluidas.includes(key))
         .map(([key, value]) => {
           if (!value) return null;
+          /* Se o campo for "Status do Processo", renderize conforme desejado
+            if (key === "Status do Processo") {
+              return (
+                <div key={key} className="mt-5">
+                  <h2 className="text-lg font-bold leading-6 text-black mb-3">Status</h2>
+                  <p>{JSON.stringify(value)}</p>
+                  <div className="border-b border-gray-200 my-4"></div>
+                </div>
+              );
+            }*/
 
             // Se o campo for "documentos", renderize os links para baixar
             if (key === "documentos" && Array.isArray(value)) {

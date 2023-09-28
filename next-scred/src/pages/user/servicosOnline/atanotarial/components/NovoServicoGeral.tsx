@@ -290,10 +290,7 @@ export default function NovoServico() {
       setIsLoading(true);
 
 
-      try {
-        // Simulando um atraso de 2 segundos (2000 milissegundos)
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-        
+      try { 
         const response = await api.post("criar_cliente/", formDataToSend, {
           headers: {
             "Content-Type": "multipart/form-data",
