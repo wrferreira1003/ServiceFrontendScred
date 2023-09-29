@@ -28,8 +28,7 @@ export default function UserPedidos(dados:DadosType) {
   const router = useRouter();
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedProcessId, setSelectedProcessId] = useState<number | null>(null);
-  const [isModalOpenStatus, setModalOpenStatus] = useState(false);
-
+  
   const handleOpenModal = (id: number) => {
 
     setSelectedProcessId(id);
@@ -41,9 +40,10 @@ export default function UserPedidos(dados:DadosType) {
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div className="mb-6 mt-8 flex items-start justify-between">
         <h1>Processos em Andamento</h1>
+
         <button
           onClick={() =>{
-            router.push('/user/servicosOnline');
+            router.push('/servicosOnline');
           }}
           type="button"
           className="inline-flex items-center gap-x-2 rounded-md bg-indigo-600 

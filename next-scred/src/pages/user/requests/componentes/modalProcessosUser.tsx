@@ -4,8 +4,8 @@ import { InfoDataTypeRequests } from '@/types/Adm/types';
 import { apipublic } from '@/services/apipublic';
 import { downloadWord } from '@/componentesGeral/downloadWord';
 import DynamicFormUser from './DinamicFormUser';
-import UploadDocumentos from '@/componentesGeral/fomulario/uploadDocumentos/uploadDocumentos';
-import { FileData } from '../../servicosOnline/atanotarial/components/NovoServicoGeral';
+import LoadingComponent from '@/componentesGeral/ReactLoading';
+
 
 
 interface ModalProps {
@@ -45,6 +45,7 @@ export default function ModalProcessos({isOpen, onClose, processId}:ModalProps) 
 
   return (
     <>
+    {isLoading && <LoadingComponent/>}
     {isOpen && (
       <Fragment>
         <Dialog as="div" className="relative z-10" open={isOpen} onClose={setOpen}>
@@ -69,16 +70,18 @@ export default function ModalProcessos({isOpen, onClose, processId}:ModalProps) 
                     X
                   </button>
                 </div>
-                  {!isLoading && processData && (
+                  {isLoading ? (
+                    <LoadingComponent/>
+                  ) :(
+                    processData && (
                     <>
-                    <DynamicFormUser
-                      processData={processData} 
-                      processId={processId}
-                      
-         
+                      <DynamicFormUser
+                        processData={processData} 
+                        processId={processId}
                     />
                     
                     </>
+                    )
                   )}
                 </div>
                 <div className="mt-5 sm:mt-6 flex gap-2">

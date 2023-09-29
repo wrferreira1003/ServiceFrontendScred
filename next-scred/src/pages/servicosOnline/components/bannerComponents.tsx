@@ -1,6 +1,7 @@
 import { AuthUserContext } from '@/context/AuthUserContext';
 import { useContext } from 'react';
 import { useRouter } from 'next/router';
+import { InfoDataType } from '@/types/Adm/types';
 
 export default function BannerComponents() {
   

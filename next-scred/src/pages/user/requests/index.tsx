@@ -1,5 +1,5 @@
 import Header from "@/pages/Hcred/Home/Header";
-import BannerComponents from "../servicosOnline/components/bannerComponents";
+import BannerComponents from "../../servicosOnline/components/bannerComponents";
 import UserPedidos from "./componentes/userPedidos";
 import { useEffect, useState } from "react";
 import { InfoDataTypeRequests } from "@/types/Adm/types";

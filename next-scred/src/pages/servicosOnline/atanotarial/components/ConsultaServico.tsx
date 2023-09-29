@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { api } from "@/services/api";
-import { FileData, FormularioAfiliados, FormularioCartorio, FormularioDadosPessoal, FormularioDocumentos, FormularioEndereco, combineData } from "@/pages/user/servicosOnline/atanotarial/components/NovoServicoGeral";
+import { FileData, FormularioAfiliados, FormularioCartorio, FormularioDadosPessoal, FormularioDocumentos, FormularioEndereco, combineData } from "@/pages/servicosOnline/atanotarial/components/NovoServicoGeral";
 import EnviarFormularioModal from "@/componentesGeral/enviarFormularioModal";
 import { useServico } from "@/context/servicocontext";
 import DadosPessoas from "@/componentesGeral/fomulario/DadosPessoas";

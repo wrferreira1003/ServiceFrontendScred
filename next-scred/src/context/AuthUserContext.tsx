@@ -62,6 +62,15 @@ export function AuthUserProvider({ children }: any) {
 
   //Funcao de autenticacao para usuario
   async function signInUser({ email, senha }: signInData) {
+     // 1. Verifique se o token já existe.
+    const { tokenUser } = parseCookies();
+    const { IdUser } = parseCookies();
+    // 2. Se existir, destrua-o.
+    if (tokenUser) {
+      destroyCookie(undefined, "tokenUser");
+      destroyCookie(undefined, "IdUser");
+    }
+    
     try {
       const response = await apiuser.post("loginuser/", {
         email,
@@ -92,10 +101,10 @@ export function AuthUserProvider({ children }: any) {
       setUserCliente(user);
       setCookie(undefined, "IdUser", user.id);
     
-      
+      console.log("Passou aqui")
       // Agora adicionando uma pequena pausa antes de redirecionar
       setTimeout(() => {
-        Router.push("/user/servicosOnline");
+        Router.push("/servicosOnline");
       }, 1000); // 100 milissegundos de pausa
 
     } catch (error) {

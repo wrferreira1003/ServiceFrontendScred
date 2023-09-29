@@ -43,9 +43,10 @@ export default function HeaderAdmAfiliado() {
   const { foto, nome, email, user_type } = afiliadoData || {};
 
   const navigation = [
-    {name: "Processos",href: "/adm/request",current: router.pathname === "/request",},
+    {name: "Propostas",href: "/adm/request",current: router.pathname === "/request",},
     { name: "Afiliados", href: "/adm/signup", current: router.pathname === "/signup", visible: user_type === 'ADMIN' },
     {name: "Financeiro",href: "",current: router.pathname === "",},
+    {name: "Todos os Serviços",href: "/adm/servicos",current: router.pathname === "/servicos", visible: user_type === 'AFILIADO'},
   ];
   const visibleNavigation = navigation.filter(item => item.visible !== false);
 

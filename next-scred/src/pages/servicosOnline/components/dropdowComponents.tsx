@@ -1,6 +1,13 @@
+import ButtonComponent from '@/componentesGeral/button';
+import { AuthContext } from '@/context/AuthContext';
 import { EnvelopeIcon, PhoneIcon } from '@heroicons/react/20/solid'
 import { BuildingLibraryIcon, BuildingOffice2Icon, ClipboardDocumentCheckIcon, KeyIcon, PlusCircleIcon } from '@heroicons/react/24/solid'
 import { useRouter } from 'next/router';
+
+interface IAfiliado {
+  user_type?: string;
+  // ... qualquer outra propriedade que você espera
+}
 
 const people = [
   {
@@ -9,7 +16,7 @@ const people = [
     imageUrl:
       <BuildingLibraryIcon />,
     classNameBorder: 'border border-red-300',
-    linkNovoPedido: '/user/servicosOnline/atanotarial',
+    linkNovoPedido: '/servicosOnline/atanotarial',
   },
 
   {
@@ -18,7 +25,7 @@ const people = [
     imageUrl:
       <BuildingOffice2Icon />,
     classNameBorder: 'border border-green-500',
-    linkNovoPedido: '/user/servicosOnline/firmaverdadeiro',
+    linkNovoPedido: '/servicosOnline/firmaverdadeiro',
   },
   {
     id:3,
@@ -27,15 +34,17 @@ const people = [
     imageUrl:
       <BuildingOffice2Icon />,
     classNameBorder: 'border border-gray-500',
-    linkNovoPedido: '/user/servicosOnline/firmasemelhancia',
+    linkNovoPedido: '/servicosOnline/firmasemelhancia',
   },
 ]
 
 export default function DropdowComponents() {
 
   const router = useRouter();
-  
+ 
+
   return (
+    <>
     <ul role="list" className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
       {people.map((person) => (
         <li key={person.id} className={`${person.classNameBorder} col-span-1 divide-y divide-gray-900 rounded-lg bg-transparent shadow`}>
@@ -70,24 +79,14 @@ export default function DropdowComponents() {
                 </button>
               </div>
               <div className="-ml-px flex w-0 flex-1">
-                <button
-                  onClick={() => {
-                    router.push(`/user/requests`);
-                  }}
-                  className="relative inline-flex w-0 flex-1 items-center 
-                            justify-center gap-x-3 rounded-br-lg border 
-                            border-transparent py-4 text-sm font-semibold
-                             text-gray-900"
-                >
-                  <ClipboardDocumentCheckIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
-                  CONSULTA PEDIDO
-                </button>
+               
               </div>
             </div>
           </div>
         </li>
       ))}
     </ul>
+    </>
   )
 }
 

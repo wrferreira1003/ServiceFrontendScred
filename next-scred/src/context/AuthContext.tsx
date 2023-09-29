@@ -63,6 +63,14 @@ export function AuthProvider({ children }: any) {
 
   //Funcao de autenticacao Afiliado
   async function signIn({ email, senha }: signInData) {
+     // 1. Verifique se o token já existe.
+     const { tokenAfiliado } = parseCookies();
+
+     // 2. Se existir, destrua-o.
+     if (tokenAfiliado) {
+       destroyCookie(undefined, "tokenAfiliado");
+
+     }
     try {
       const response = await api.post("login/", {
         email,

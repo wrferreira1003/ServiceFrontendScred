@@ -1,6 +1,6 @@
 import { InfoDataTypeRequests } from "@/types/Adm/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FileData } from '../../servicosOnline/atanotarial/components/NovoServicoGeral';
+import { FileData } from '../../../servicosOnline/atanotarial/components/NovoServicoGeral';
 import Link from "next/link";
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form";
@@ -8,6 +8,7 @@ import { z } from "zod";
 import UploadDocumentos from "@/componentesGeral/fomulario/uploadDocumentos/uploadDocumentos";
 import { apipublic } from "@/services/apipublic";
 import { toast } from "react-toastify";
+import LoadingComponent from "@/componentesGeral/ReactLoading";
 
 interface DynamicFormProps {
   processData: InfoDataTypeRequests[];
@@ -61,10 +62,6 @@ export default function DynamicFormUser({processData, processId}:DynamicFormProp
     "Telefone":"telefone"
   };
 
-  const [formDataDocumentos, setFormDataDocumentos] =
-  useState<FormularioDocumentos>({
-    fileUpload: "",
-});
 
 //Funcao que trata os uploads
 const handleFilesChange = (files: any) => {
@@ -148,7 +145,8 @@ const handleFilesChange = (files: any) => {
     const transformedData = prepareDataForServer(dataValues)
     setIsLoading(true);
     let combinedData: any = {
-      documentos: [] // Para armazenar os arquivos
+      documentos: [], // Para armazenar os arquivos
+      status: "Pendente"
     };
     // Adicione os dados do componente filho ao formData
     Object.entries(transformedData).forEach(([key, value]) => {
@@ -188,6 +186,10 @@ const handleFilesChange = (files: any) => {
           "Content-Type": "multipart/form-data",
         },
       });
+      // Esperar 2 segundos (2000 milissegundos) depois de receber a resposta
+      await new Promise((resolve) => setTimeout(resolve, 5000));
+
+
       toast.success("Dados enviados com sucesso")
       setIsLoading(false);
       return response.data;
@@ -197,10 +199,13 @@ const handleFilesChange = (files: any) => {
     }
   
   };
-  
+
   return (
+    <>
+      {isLoading && <LoadingComponent/>}
     <form onSubmit={handleSubmit(onSubmitForm)}>
     <div className="mx-auto w-full max-w-4xl">
+      
       <h1 className="text-center font-semibold text-2xl text-blue-900">Informações do Processo</h1>
       <h2 className="text-left font-semibold text-2xl text-black mt-5">
         Processo numero: {processId}
@@ -315,5 +320,6 @@ const handleFilesChange = (files: any) => {
                       removeFile={removeFile}
                     />
   </form>
+  </>
   );
 }

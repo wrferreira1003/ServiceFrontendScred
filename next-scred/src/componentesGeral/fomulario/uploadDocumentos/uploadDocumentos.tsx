@@ -2,7 +2,7 @@ import { PhotoIcon } from "@heroicons/react/24/solid";
 import { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { filesize } from "filesize";
-import { FileData } from "@/pages/user/servicosOnline/atanotarial/components/NovoServicoGeral";
+import { FileData } from "@/pages/servicosOnline/atanotarial/components/NovoServicoGeral";
 
 
 type UploadFile = {

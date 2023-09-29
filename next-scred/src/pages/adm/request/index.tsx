@@ -5,6 +5,7 @@ import { GetServerSideProps } from "next";
 import { InfoDataType } from "@/types/Adm/types";
 import AdmProcessos from "./components/AdmProcessos/AdmProcessos";
 import AfiliadoProcessos from "./components/AfiliadoProcessos/AfiliadoProcessos";
+import BannerComponentsGeral from "@/componentesGeral/BannerComponentsGeral";
 
 interface RequestProps {
   InfoData: InfoDataType;
@@ -14,6 +15,10 @@ export default function Request({ InfoData }: RequestProps) {
   return (
     <>
     <HeaderAdmAfiliado />
+    <BannerComponentsGeral 
+    texto="Propostas em Andamento"
+    />
+
            
      {
         InfoData.user_type === 'ADMIN' ? 

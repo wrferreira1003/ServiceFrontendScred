@@ -90,10 +90,7 @@ export default function Processos() {
   const status = dadosOrdenados[0]?.status || ''
 
   return (
-    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div className="mb-6 mt-8 flex items-start justify-between">
-        <h1>Processos em Andamento</h1>
-      </div>
+    <div className="mt-5 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <ul role="list" className="divide-y divide-gray-100">
       {dadosOrdenados.map((item, index) => (
           <li
