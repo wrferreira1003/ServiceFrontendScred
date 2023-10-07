@@ -18,6 +18,22 @@ export const createUserSchema = zod.object({
     .min(3, {
       message: "O Sobrenome precisa ter no mínimo 3 caracteres",
     }),
+    filiacao1: zod
+    .string()
+    .nonempty({
+      message: "O Nome é obrigatório",
+    })
+    .min(3, {
+      message: "O Nome precisa ter no mínimo 3 caracteres",
+    }),
+    filiacao2: zod
+    .string()
+    .nonempty({
+      message: "O Nome é obrigatório",
+    })
+    .min(3, {
+      message: "O Nome precisa ter no mínimo 3 caracteres",
+    }),
 
   telefone: zod.string().refine(
     (value) => {
@@ -90,6 +106,8 @@ export const createUserSchema = zod.object({
   livro: zod.string().nonempty("Informar o número do livro"),
 
   folha: zod.string().nonempty("Informar o número da folha"),
+  
+  termo: zod.string().nonempty("Informar o número do termo"),
 
   //Realizar as validacoes dos documentos
   rg: zod.string().nonempty({
@@ -140,7 +158,7 @@ export const createUserSchema = zod.object({
   cep: zod.string()
         .nonempty("CEP não pode ser vazio")
         .refine((cep) => cep.length === 8, {
-        message: "CPF precisa ter apenas números e 8 Dígitos",
+        message: "CEP precisa ter apenas números e 8 Dígitos",
   }),
   complemento: zod.string(),
 

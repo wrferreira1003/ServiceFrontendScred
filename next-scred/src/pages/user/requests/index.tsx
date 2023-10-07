@@ -17,6 +17,8 @@ export default function ConsultaPedidos(){
 
   //Utilizando o userSWR para trazer sempre os dados mais atualizado conforme alteracao feita do Administrador
   const {data} = useApi('listrequests/');
+
+  //Ajustar para trazer os dados ja filtrado o servidor.
   useEffect(() => {
     if (data) {
         const dadosFiltrados = data.filter((request: any) => request.idCliente === IdUser);

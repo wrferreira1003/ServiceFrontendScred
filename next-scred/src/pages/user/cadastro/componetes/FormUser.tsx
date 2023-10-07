@@ -212,7 +212,7 @@ export default function FormUser() {
           }
         })
       .catch (error => {
-        
+          
       })
         
     }
@@ -522,6 +522,7 @@ export default function FormUser() {
                 <p className="mt-2 text-sm text-red-500">{errors.cep.message}</p>
               )}
             </div>
+            
             <div className="mx-auto w-full max-w-4xl">
               <label
                   htmlFor="nome"

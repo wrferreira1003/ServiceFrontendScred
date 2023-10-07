@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 
 
 export default function UserAccount() {
-  const { tokenUser: token } = parseCookies();
+const { toke: token } = parseCookies();
   const router = useRouter();
   //Monitora o token do usuario
   useEffect(() => {
@@ -14,7 +14,7 @@ export default function UserAccount() {
       router.push('/user/acess');
     }
   }, [token, router]);
-
+ 
   return (
     <div className="flex min-h-screen flex-col">
           <div className="mb-auto flex-grow pt-28 ">

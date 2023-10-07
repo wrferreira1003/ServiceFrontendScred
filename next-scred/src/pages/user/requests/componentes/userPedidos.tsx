@@ -66,7 +66,7 @@ export default function UserPedidos(dados:DadosType) {
             <div className="ml-5 min-w-0">
               <div className="flex items-start gap-x-3">
                 <p className="text-sm font-semibold leading-6 text-gray-900">
-                {item.servico !== null ? item.servico : ''}
+                {item.nome !== null ? item.nome : ''}
                 </p>
                 <p>-</p>
                 <p className="text-sm font-semibold leading-6 text-gray-900">

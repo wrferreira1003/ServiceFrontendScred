@@ -1,5 +1,5 @@
 import { Fragment, useState } from 'react'
-import { CheckCircleIcon, EllipsisVerticalIcon } from '@heroicons/react/20/solid'
+import {EllipsisVerticalIcon } from '@heroicons/react/20/solid'
 import ModalSigup from '../ModalSigup'
 import { InfoDataType } from '@/types/Adm/types'
 import { GetServerSideProps } from 'next'
@@ -202,7 +202,7 @@ export default function AdmSigup({InfoData}:RequestProps) {
 
 //Aqui estou fazendo verificaoes pelo lado do servidor next se existe o token
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  
+
   const { ["tokenAfiliado"]: token } = parseCookies(ctx);
 
   if (!token) {

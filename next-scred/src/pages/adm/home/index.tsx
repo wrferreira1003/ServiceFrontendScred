@@ -35,9 +35,9 @@ export default function HomeAfiliado({ InfoData }: RequestProps) {
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   
   const apiClient = getApiClient(ctx);
-  const { ["tokenAfiliado"]: token } = parseCookies(ctx);
-  
-  if (!token) {
+const { ["tokenAfiliado"]: token } = parseCookies(ctx);
+
+if (!token) {
     return {
       redirect: {
         destination: "/login",

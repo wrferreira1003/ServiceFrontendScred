@@ -50,6 +50,8 @@ export type combineData = {
   estadoCartorioFirmaReconhecida: string;
   livroCartorioFirmaReconhecida: string;
   documentos: Array<{ arquivo: File; descricao: string }>;
+  filiacao1: string,
+  filiacao2: string,
 };
 
 export interface FormularioDadosPessoal {
@@ -241,6 +243,8 @@ export default function NovoServico() {
       cep: formDataendereco.cep,
       afiliado: formDataAfiliados.afiliadoId,
       servico: servico,
+      filiacao1: "",
+      filiacao2: "",
       subservico: 'Ata Notarial',
       nomeEnvolvido: formData.nomeenvolvido,
       sobrenomeEnvolvido: formData.sobrenomeenvolvido,

@@ -7,10 +7,12 @@ import AdmProcessos from "./components/AdmProcessos/AdmProcessos";
 import AfiliadoProcessos from "./components/AfiliadoProcessos/AfiliadoProcessos";
 import BannerComponentsGeral from "@/componentesGeral/BannerComponentsGeral";
 
-interface RequestProps {
+export interface RequestProps {
   InfoData: InfoDataType;
 }
 export default function Request({ InfoData }: RequestProps) {
+
+  const user_type: string = InfoData.user_type
   
   return (
     <>
@@ -18,11 +20,13 @@ export default function Request({ InfoData }: RequestProps) {
     <BannerComponentsGeral 
     texto="Propostas em Andamento"
     />
-
            
      {
         InfoData.user_type === 'ADMIN' ? 
-          <AdmProcessos /> 
+        <>
+        {console.log(InfoData.user_type)}
+          <AdmProcessos user_type = {user_type} /> 
+        </>
         :
         InfoData.user_type === 'AFILIADO' ? 
           < AfiliadoProcessos/> 

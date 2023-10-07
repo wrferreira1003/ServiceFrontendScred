@@ -1,10 +1,12 @@
-import { createContext, use, useEffect, useState } from "react";
+import { createContext, use, useContext, useEffect, useState } from "react";
 import { setCookie, parseCookies, destroyCookie } from "nookies";
 import Router from "next/router";
 import { api, apiuser } from "@/services/api";
+import { apipublic } from "@/services/apipublic";
 
 type useData = {
-  name: string;
+  id:number
+  nome: string;
   razao_social: string;
   cnpj: string;
   email: string;
@@ -22,12 +24,25 @@ type signInData = {
   senha: string;
 };
 
+interface ServicoType {
+    id: number;
+    nome_servico: string;
+    tipo?: string;
+    preco: string;
+}
+
 type AuthContextType = {
   isAuthenticated: boolean;
   user: useData | null;
   signIn: (data: signInData) => Promise<void>;
   signOut: () => Promise<void>;
+  dataServico:ServicoType[]
+  selectService: (serviceName: string) => void;
+  selectedService: string | '' 
+  dataServicoAtual: ServicoType | null;
+  setDataServicoAtual: React.Dispatch<React.SetStateAction<ServicoType | null>>;
 };
+
 
 export const AuthContext = createContext({} as AuthContextType);
 
@@ -35,13 +50,35 @@ export function AuthProvider({ children }: any) {
   //Salvamos o usuario no estado, pois queremos sempre os dados mais atualizado possivel
   //se salvarmos nos cookies nao teremos os dados caso haja alguma alteracao
   const [user, setUser] = useState<useData | null>(null);
+  const [dataServico, setDataServico] = useState<ServicoType[]>([]);
+  const [loadingServico, setLoadingServico] = useState(true);
+  
 
   //Usuario estara autenticado caso o user existir.
   const isAuthenticated = !!user;
 
+  //Carrega os dados dos servicos cadastrados no banco de dados
+  useEffect(() => {
+    const fetchData = async () => {
+        try {
+            const response = await apipublic.get('categoria');
+            setDataServico(response.data);
+            setLoadingServico(false);
+        } catch (error) {
+            console.log(error);
+            setLoadingServico(false);
+        }
+    };
+
+    fetchData();
+  }, []);
 
   //Vamos criar um UseEffect para que os dados do afiliado sempre seja atualizado, assim
   //que o componente for atualizado
+  const [userChanged, setUserChanged] = useState(false);
+  const onUserChanged = () => {
+    setUserChanged(!userChanged);
+  }
   useEffect(() => {
     /*Quando a componente que esta o provider for renderizado esse UseEffect vai verificar se existe um 
     cookie salvo, caso tenha sabemos que o usuario esta logado, e com isso vamos ao backend buscar os dados 
@@ -58,7 +95,7 @@ export function AuthProvider({ children }: any) {
           console.log("Erro no Contexto que atualiza o usuario", error);
         });
     }
-  }, []);
+  }, [userChanged]);
 
 
   //Funcao de autenticacao Afiliado
@@ -87,11 +124,11 @@ export function AuthProvider({ children }: any) {
       api.defaults.headers["authorization"] = `Bearer ${token}`;
 
       //Aqui eu guardo os dados do usuario para utilizar na aplicacao
-      setUser(user);
-
+      setUser(user)
+      onUserChanged()
       //Redirecionando caso tenha dado certo
       Router.push("/adm/request");
-    } catch (error) {
+          } catch (error) {
       if (error && typeof error === "object" && "response" in error) {
         const responseData = (error.response as { data: { error: string } })
           .data;
@@ -118,8 +155,35 @@ export function AuthProvider({ children }: any) {
     Router.push("/login");
   }
 
+  //********************************************************************************* */
+  /* Aqui esta lidando como o servico, quando o cliente clica no servico no componente
+  DropdowComponents, eu trago para ca o servico que foi clicado para comparar com os servicoes
+  do banco de dados e trazer as informacoes do respectivo servico.*/
+  const [selectedService, setSelectedService] = useState("");
+  const [dataServicoAtual, setDataServicoAtual] = useState<ServicoType | null >(null);
+
+  const selectService = (serviceName: string) => {
+    setSelectedService(serviceName);
+    const servicoFiltrado = dataServico.find(servico => servico.nome_servico === serviceName);
+    setDataServicoAtual(servicoFiltrado || null)
+  }
+
+  
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, signIn, signOut }}>
+    <AuthContext.Provider 
+      value={{ 
+        user, 
+        isAuthenticated, 
+        signIn, 
+        signOut, 
+        dataServico,
+        
+        selectService,
+        selectedService,
+        dataServicoAtual,
+        setDataServicoAtual,
+
+      }}>
       {children}
     </AuthContext.Provider>
   );

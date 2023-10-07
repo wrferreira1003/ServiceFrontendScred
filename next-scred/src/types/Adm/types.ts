@@ -30,10 +30,31 @@ interface AfiliadoType {
   telefone?: string;
 }
 
+type Servico = {
+  id: number;
+  nome_servico: string;
+  tipo: string | null;
+  preco: string;
+  categoria: number;
+};
+type Transacao = {
+  id: number;
+  preco: string;
+  FormaDePagamento: string;
+  data_criacao: string;
+  data_atualizacao: string;
+  status: string;
+  cliente: number;
+  afiliado: number;
+  pedido: number;
+  servico: Servico;
+};
+
 export interface InfoDataTypeRequests{
   RegistroGeral?: string; 
   RegistroGeralEnvolvido?: string;
   afiliado?: AfiliadoType;
+  transacao: Transacao;
   bairro?: string;
   cep?: string;
   cidade?:string;
@@ -58,10 +79,11 @@ export interface InfoDataTypeRequests{
   nomeCartorioFirmaReconhecida?: string
   nomeEnvolvido?: string
   profissao?: string
-  servico?:string
   sobrenome?:string
   sobrenomeEnvolvido?: string
   status?: string
   subservico?: string
   telefone?: string
+  FormaDePagamento?: string
+
 } 

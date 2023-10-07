@@ -1,7 +1,5 @@
 import Header from "@/pages/Hcred/Home/Header";
-import { parseCookies } from "nookies";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
 import InicioUsuario from "./components/inicio";
 import Head from "next/head";
 import BannerComponents from "./components/bannerComponents";
@@ -12,16 +10,8 @@ import ButtonComponent from "@/componentesGeral/button";
 export default function ServicosOnline() { 
   
   const router = useRouter();
-  const { tokenUser: token } = parseCookies();
-
-  
-  //Monitora o token do usuario
-  useEffect(() => {
-    if (!token) {
-      router.push('/user/acess');
-    }
-  }, [token,router]);
-
+ 
+ 
   
   return (
 
@@ -33,12 +23,13 @@ export default function ServicosOnline() {
             <div className="mb-auto flex-grow pt-28">
               <Header />
               <BannerComponents/>
-             
+              <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <ButtonComponent
                   nome='PROPOSTAS'
                   onClick={() => {router.push(`/user/requests`)}}
                   className='mb-5 mt-5'
                   />
+              </div>
 
               <InicioUsuario /> 
               

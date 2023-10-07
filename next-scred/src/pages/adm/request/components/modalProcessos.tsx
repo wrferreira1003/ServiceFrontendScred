@@ -4,7 +4,6 @@ import { InfoDataTypeRequests } from '@/types/Adm/types';
 import { apipublic } from '@/services/apipublic';
 import DynamicForm from './DynamicForm';
 import { downloadWord } from '@/componentesGeral/downloadWord';
-import { useApi } from '@/hooks/useApi';
 
 interface ModalProps {
   isOpen: boolean;

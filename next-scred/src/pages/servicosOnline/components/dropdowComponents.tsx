@@ -1,48 +1,33 @@
-import ButtonComponent from '@/componentesGeral/button';
-import { AuthContext } from '@/context/AuthContext';
-import { EnvelopeIcon, PhoneIcon } from '@heroicons/react/20/solid'
-import { BuildingLibraryIcon, BuildingOffice2Icon, ClipboardDocumentCheckIcon, KeyIcon, PlusCircleIcon } from '@heroicons/react/24/solid'
+import { BuildingLibraryIcon, PlusCircleIcon } from '@heroicons/react/24/solid'
 import { useRouter } from 'next/router';
 
-interface IAfiliado {
-  user_type?: string;
-  // ... qualquer outra propriedade que você espera
-}
 
+
+//Cadastrar os Servicos
 const people = [
   {
     id:1,
-    name: 'ATA NOTARIAL',
+    name: 'Serviços Cartorários',
     imageUrl:
       <BuildingLibraryIcon />,
     classNameBorder: 'border border-red-300',
-    linkNovoPedido: '/servicosOnline/atanotarial',
+    linkNovoPedido: '/servicosOnline/servicosCartorario',
   },
-
   {
     id:2,
-    name: 'RECONHECIMENTO DE FIRMA POR VERDADEIRO',
+    name: 'Cartório de Tabelionato de Notas',
     imageUrl:
-      <BuildingOffice2Icon />,
-    classNameBorder: 'border border-green-500',
-    linkNovoPedido: '/servicosOnline/firmaverdadeiro',
-  },
-  {
-    id:3,
-    name: 'RECONHECIMENTO DE FIRMA POR SEMELHANCIA',
-    
-    imageUrl:
-      <BuildingOffice2Icon />,
-    classNameBorder: 'border border-gray-500',
-    linkNovoPedido: '/servicosOnline/firmasemelhancia',
-  },
+      <BuildingLibraryIcon />,
+    classNameBorder: 'border border-green-300',
+    linkNovoPedido: '',
+  }
 ]
 
 export default function DropdowComponents() {
-
   const router = useRouter();
- 
 
+
+  
   return (
     <>
     <ul role="list" className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -75,7 +60,7 @@ export default function DropdowComponents() {
                             py-4 text-sm font-semibold text-gray-900"
                 >
                   <PlusCircleIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
-                  NOVO PEDIDO
+                  Acessar
                 </button>
               </div>
               <div className="-ml-px flex w-0 flex-1">
@@ -89,5 +74,7 @@ export default function DropdowComponents() {
     </>
   )
 }
+
+
 
   

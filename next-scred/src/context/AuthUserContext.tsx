@@ -94,18 +94,18 @@ export function AuthUserProvider({ children }: any) {
         setUserCliente(null);
         Router.push("/user/acess");
       }, tokenExpirationTime * 1000)
-      
-      const { tokenUser: tokenw } = parseCookies()
 
+      const { tokenUser: tokenw } = parseCookies()
+      
       //Aqui eu guardo os dados do usuario para utilizar na aplicacao
       setUserCliente(user);
       setCookie(undefined, "IdUser", user.id);
     
       console.log("Passou aqui")
       // Agora adicionando uma pequena pausa antes de redirecionar
-      setTimeout(() => {
-        Router.push("/servicosOnline");
-      }, 1000); // 100 milissegundos de pausa
+setTimeout(() => {
+      Router.push("/servicosOnline");
+    }, 1000); // 100 milissegundos de pausa
 
     } catch (error) {
       if (error && typeof error === "object" && "response" in error) {
@@ -125,8 +125,6 @@ export function AuthUserProvider({ children }: any) {
       // Você pode querer mostrar uma mensagem de erro para o usuário aqui.
     }
   }
-
-
 
   //Funcao para sair do sistema e destroi o Token
   async function signOutUser() {

@@ -4,14 +4,13 @@ import { createUserSchema } from "@/lib/validationSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as zod from "zod";
-import { ArrowLongLeftIcon, CheckCircleIcon } from "@heroicons/react/24/solid";
+import { ArrowLongLeftIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import { api } from "@/services/api";
 import { toast } from "react-toastify";
 import { useState } from "react";
-import { handleApiErrors } from "@/lib/RetornoApi";
 import Router from "next/router";
-import axios, { AxiosError } from 'axios';
+import { AxiosError } from 'axios';
 
 
 

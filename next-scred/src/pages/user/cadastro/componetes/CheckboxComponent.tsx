@@ -1,5 +1,5 @@
 import React from 'react';
-import { UseFormRegister, RegisterOptions } from 'react-hook-form';
+import {RegisterOptions } from 'react-hook-form';
 
 interface CheckboxProps {
   name: string;

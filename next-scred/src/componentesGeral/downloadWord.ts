@@ -18,7 +18,7 @@ export function downloadWord(data: any) {
   });
 
   // Export the document
-  Packer.toBlob(doc).then(blob => {
+  Packer.toBlob(doc).then((blob: Blob) => {
       // Use blob to create and download the file
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
