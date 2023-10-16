@@ -18,6 +18,7 @@ export type useData = {
   numero: string,
   telefone: string,
   telefone2: string
+  afiliado: number,
 };
 type signInData = {
   email: string;
@@ -103,9 +104,8 @@ export function AuthUserProvider({ children }: any) {
     
       console.log("Passou aqui")
       // Agora adicionando uma pequena pausa antes de redirecionar
-setTimeout(() => {
-      Router.push("/servicosOnline");
-    }, 1000); // 100 milissegundos de pausa
+
+      Router.push("/user/requests");
 
     } catch (error) {
       if (error && typeof error === "object" && "response" in error) {

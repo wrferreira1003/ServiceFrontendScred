@@ -22,7 +22,7 @@ export default function App({ Component, pageProps }: AppProps) {
           </AuthProvider>
         </ServicoProvider>
       </div>
-      <Footer />
+      <Footer /> 
       <ToastContainer />
     </div>
     </React.StrictMode>

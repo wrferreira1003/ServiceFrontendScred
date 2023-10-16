@@ -42,9 +42,10 @@ export default function HeaderAdmAfiliado() {
 
   const { foto, nome, email, user_type } = afiliadoData || {};
 
+  console.log(user_type)
   const navigation = [
     {name: "Propostas",href: "/adm/request",current: router.pathname === "/request",},
-    { name: "Afiliados", href: "/adm/signup", current: router.pathname === "/signup", visible: user_type === 'ADMIN' },
+    {name: "Afiliados", href: "/adm/signup", current: router.pathname === "/signup", visible: user_type === 'ADMIN' },
     {name: "Financeiro",href: "",current: router.pathname === "",},
     {name: "Todos os Serviços",href: "/adm/servicos",current: router.pathname === "/servicos", visible: user_type === 'AFILIADO'},
   ];
@@ -179,7 +180,8 @@ export default function HeaderAdmAfiliado() {
                     </div>
                   </div>
                   <div className="-mr-2 flex items-center sm:hidden">
-                    {/* Mobile menu button */}
+                  
+                  {/* Mobile menu button */}
                     <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md  p-2 text-white hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                       <span className="absolute -inset-0.5" />
                       <span className="sr-only">Abra o menu do usuário</span>
@@ -201,7 +203,7 @@ export default function HeaderAdmAfiliado() {
 
               <Disclosure.Panel className="sm:hidden">
                 <div className="space-y-1 pb-3 pt-2">
-                  {navigation.map((item) => (
+                  {visibleNavigation.map((item) => (
                     <Disclosure.Button
                       key={item.name}
                       as="a"

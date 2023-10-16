@@ -8,6 +8,9 @@ export const createUserSchema = zod.object({
     })
     .min(3, {
       message: "O Nome precisa ter no mínimo 3 caracteres",
+    })
+    .refine(name => !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(name), {
+      message: "O Nome não pode ser no formato de e-mail",
     }),
 
   sobrenome: zod
@@ -26,6 +29,7 @@ export const createUserSchema = zod.object({
     .min(3, {
       message: "O Nome precisa ter no mínimo 3 caracteres",
     }),
+
     filiacao2: zod
     .string()
     .nonempty({
@@ -214,7 +218,6 @@ export const createUserSchema = zod.object({
       message: "A confirmaão da senha é obrigatório",
     }),
 
-  
   email: zod
     .string()
     .nonempty({
@@ -231,6 +234,54 @@ export const createUserSchema = zod.object({
     })
     .email({
       message: "Formato de e-mail inválido",
+    }),
+    conjugue1: zod
+    .string()
+    .nonempty({
+      message: "O Nome é obrigatório",
     })
+    .min(3, {
+      message: "O Nome precisa ter no mínimo 3 caracteres",
+    }),
+    conjugue2: zod
+    .string()
+    .nonempty({
+      message: "O Nome é obrigatório",
+    })
+    .min(3, {
+      message: "O Nome precisa ter no mínimo 3 caracteres",
+    }),
+    DtCasamento: zod.string().nonempty({
+      message: "A data de casamento é obrigatória",
+    }),
+    DtObito: zod.string().nonempty({
+      message: "A data do Óbito é obrigatória",
+    }),
+    Dtinicial: zod.string().nonempty({
+      message: "A data inicial é obrigatória",
+    }),
+    Dtfinal: zod.string().nonempty({
+      message: "A data final é obrigatória",
+    }),
+
+    
+    nome_falecido: zod
+    .string()
+    .nonempty({
+      message: "O Nome do falecido é obrigatório",
+    })
+    .min(3, {
+      message: "O Nome precisa ter no mínimo 3 caracteres",
+    })
+    .refine(name => !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(name), {
+      message: "O Nome não pode ser no formato de e-mail",
+    }),
+    temFilhosMenores: zod
+    .string(),
+    temBens: zod
+    .string(),
+    filhoIncapaz: zod
+    .string(),
+
 })
 

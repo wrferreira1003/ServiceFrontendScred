@@ -8,9 +8,10 @@ import { ArrowLongLeftIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import { api } from "@/services/api";
 import { toast } from "react-toastify";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Router from "next/router";
-import { AxiosError } from 'axios';
+import axios, { AxiosError } from 'axios';
+import LoadingIndicator from "@/componentesGeral/LoadingIndicator";
 
 
 
@@ -48,13 +49,15 @@ type FormData = {
 export type CreateUserData = zod.infer<typeof personalSchema>;
 
 export default function CreateUserComponents() {
-
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState<FormData | null>(null);
 
   const {
     register,
     formState: { errors },
     handleSubmit,
+    watch,
+    setValue,
   } = useForm<CreateUserData>({
     resolver: zodResolver(personalSchema),
   });
@@ -102,9 +105,34 @@ export default function CreateUserComponents() {
     CreateUser(transformeData)
 
   }
+
+  const numberCnpj = watch('cpfUsuario')
+  useEffect(() => {
+    if (numberCnpj && numberCnpj.length === 14){
+      setIsLoading(true); 
+      axios.get(`https://api-publica.speedio.com.br/buscarcnpj?cnpj=${numberCnpj}`)
+      .then(response =>{
+        if (!response.data.erro){
+          console.log(response.data)
+          setValue('razao_social', response.data['RAZAO SOCIAL'])
+          setValue('email', response.data['EMAIL'])
+          setValue('telefone', response.data['TELEFONE'])
+          setValue('cidade', response.data['MUNICIPIO'])
+          setValue('bairro', response.data['LOGRADOURO'])
+          setValue('cep', response.data['CEP'])
+          setValue('estado', response.data['UF'])
+          setValue('endereco', response.data['COMPLEMENTO'])
+       
+        }
+        setIsLoading(false); // Finalizar o carregamento
+      })
+      .catch(error => {})
+    }
+  }, [numberCnpj, setValue])
   
   return (
     <form onSubmit={handleSubmit(onSubmitData)}>
+      {isLoading ? <LoadingIndicator /> : (
       <div className="mx-auto max-w-2xl mb-2 mt-10 flex flex-col items-center justify-center rounded-md bg-slate-100 p-3">
         <div className="space-y-12">
           
@@ -125,6 +153,33 @@ export default function CreateUserComponents() {
             </div>
 
           <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+
+          <div className="sm:col-span-2">
+                <label
+                  htmlFor="cpfUsuario"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
+                  CNPJ/CPF
+                </label>
+                <div className="mt-2">
+                  <input
+                    {...register("cpfUsuario")}
+                    type="text"
+                    name="cpfUsuario"
+                    id="cpfUsuario"
+                    autoComplete="cpfUsuario"
+                    className="block w-full rounded-md border-0 px-2 py-1.5 
+                                text-gray-900 shadow-sm ring-1 ring-inset 
+                                ring-gray-300 placeholder:text-gray-400 focus:ring-2 
+                                focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  />
+                  {errors.cpfUsuario && (
+                    <p className="mt-2 text-sm text-red-500">
+                      {errors.cpfUsuario.message}
+                    </p>
+                  )}
+                </div>
+              </div>
               
               <div className="col-span-full">
                 <label
@@ -390,8 +445,9 @@ export default function CreateUserComponents() {
                                 ring-gray-300 placeholder:text-gray-400 focus:ring-2 
                                 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   >
-                    <option value="ADMIN">Administrador</option>
                     <option value="AFILIADO">Afiliado</option>
+                    <option value="ADMIN">Administrador</option>
+                    
                   </select>
                   {errors.user_type && (
                     <p className="mt-2 text-sm text-red-500">
@@ -400,32 +456,7 @@ export default function CreateUserComponents() {
                   )}
                 </div>
               </div>
-              <div className="sm:col-span-2">
-                <label
-                  htmlFor="cpfUsuario"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  CNPJ/CPF
-                </label>
-                <div className="mt-2">
-                  <input
-                    {...register("cpfUsuario")}
-                    type="text"
-                    name="cpfUsuario"
-                    id="cpfUsuario"
-                    autoComplete="cpfUsuario"
-                    className="block w-full rounded-md border-0 px-2 py-1.5 
-                                text-gray-900 shadow-sm ring-1 ring-inset 
-                                ring-gray-300 placeholder:text-gray-400 focus:ring-2 
-                                focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  />
-                  {errors.cpfUsuario && (
-                    <p className="mt-2 text-sm text-red-500">
-                      {errors.cpfUsuario.message}
-                    </p>
-                  )}
-                </div>
-              </div>
+              
             </div>
           </div>       
         </div>
@@ -440,6 +471,7 @@ export default function CreateUserComponents() {
             Cadastrar
         </button>
       </div>
+      )}
     </form>
   )
 }

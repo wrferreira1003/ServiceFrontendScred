@@ -1,5 +1,5 @@
 type ResumoProps = {
-  data: Record<string, any>;
+  data?: Record<string, any>;
 };
 
 export default function ComponetsResumo({ data }: ResumoProps) {
@@ -11,9 +11,9 @@ export default function ComponetsResumo({ data }: ResumoProps) {
           Confira as Informações Pessoal
         </h3>
       </div>
-      <div className="mt-6">
-        <dl className="grid sm:grid-cols-6">
-          {Object.entries(data).map(([key, value]) => (
+      <div className="mt-6 flex justify-center items-center">
+        <dl className="grid sm:grid-cols-4 gap-6">
+          {data && Object.entries(data).map(([key, value]) => (
             <div key={key} className="border-t border-gray-100 px-4 sm:col-span-1 sm:px-0">
               <dt className="font-roboto text-sm font-bold leading-6 text-gray-900">
                 {key}:

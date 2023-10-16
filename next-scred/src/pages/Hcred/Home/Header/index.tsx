@@ -14,7 +14,7 @@ const products = [
   {
     name: "Cartório de Tabelionato",
     description: "Solicite novos serviços e consultas cartorária ",
-    href: "#",
+    href: "/user/acess",
     icon: DocumentTextIcon,
   },
 ];
@@ -38,7 +38,7 @@ export default function Header() {
       >
         <div className="flex lg:flex-1">
           <Link href="/" className="-m-1.5 p-1.5">
-            <span className="sr-only">RC Fácil Documentos e Serviços</span>
+            <span className="sr-only">RCFÁCIL CORRESPONDENTE BANCÁRIO</span>
             <Image
               className="h-16 w-auto"
               src={logoimg}
@@ -142,12 +142,7 @@ export default function Header() {
           </Link>
         </Popover.Group>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          <Link
-            href="login"
-            className="leading-6"
-          >
-            Entrar <span aria-hidden="true">&rarr;</span>
-          </Link>
+         
         </div>
       </nav>
 
@@ -164,7 +159,7 @@ export default function Header() {
         >
           <div className="flex items-center justify-between">
             <Link href="#" className="-m-1.5 p-1.5">
-              <span className="sr-only">HCRED CORRESPONDENTE BANCÁRIO</span>
+              <span className="sr-only">RCFÁCIL CORRESPONDENTE BANCÁRIO</span>
               <Image className="h-8 w-auto" src={logoimg} alt="" />
             </Link>
             <button
@@ -233,12 +228,7 @@ export default function Header() {
                 </Link>
               </div>
               <div className="py-6">
-                <Link
-                  href="login"
-                  className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                >
-                  Entrar
-                </Link>
+               
               </div>
             </div>
           </div>

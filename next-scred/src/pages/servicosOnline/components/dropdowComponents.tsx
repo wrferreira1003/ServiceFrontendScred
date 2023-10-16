@@ -1,31 +1,34 @@
 import { BuildingLibraryIcon, PlusCircleIcon } from '@heroicons/react/24/solid'
 import { useRouter } from 'next/router';
 
+type DropdowComponentsProps = {
+  linkServicoCartorario: string;
+};
 
 
-//Cadastrar os Servicos
-const people = [
-  {
-    id:1,
-    name: 'Serviços Cartorários',
-    imageUrl:
-      <BuildingLibraryIcon />,
-    classNameBorder: 'border border-red-300',
-    linkNovoPedido: '/servicosOnline/servicosCartorario',
-  },
-  {
-    id:2,
-    name: 'Cartório de Tabelionato de Notas',
-    imageUrl:
-      <BuildingLibraryIcon />,
-    classNameBorder: 'border border-green-300',
-    linkNovoPedido: '',
-  }
-]
 
-export default function DropdowComponents() {
+export default function DropdowComponents({linkServicoCartorario}: DropdowComponentsProps) {
   const router = useRouter();
-
+  
+  //Cadastrar os Servicos
+  const people = [
+    {
+      id:1,
+      name: 'Serviços Cartorários',
+      imageUrl:
+        <BuildingLibraryIcon />,
+      classNameBorder: 'border border-red-300',
+      linkNovoPedido: linkServicoCartorario,
+    },
+    {
+      id:2,
+      name: 'Cartório de Tabelionato de Notas',
+      imageUrl:
+        <BuildingLibraryIcon />,
+      classNameBorder: 'border border-green-300',
+      linkNovoPedido: '',
+    }
+  ]
 
   
   return (

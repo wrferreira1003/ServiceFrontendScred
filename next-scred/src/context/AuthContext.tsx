@@ -115,7 +115,6 @@ export function AuthProvider({ children }: any) {
       });
 
       const { token, user } = response.data;
-
       //Aqui eu guardo o token do afiliado com um secao de 1hora
       setCookie(undefined, "tokenAfiliado", token, {
         maxAge: 60 * 60 * 1, //1 hours //numeros em segundo para e expiracao do cookies(Secao)
@@ -167,7 +166,6 @@ export function AuthProvider({ children }: any) {
     const servicoFiltrado = dataServico.find(servico => servico.nome_servico === serviceName);
     setDataServicoAtual(servicoFiltrado || null)
   }
-
   
   return (
     <AuthContext.Provider 

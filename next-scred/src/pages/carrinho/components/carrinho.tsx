@@ -1,8 +1,7 @@
 import { Fragment, useEffect, useState } from 'react'
 import { Dialog, Popover, RadioGroup, Tab, Transition } from '@headlessui/react'
-import { ChevronDownIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import { TrashIcon } from '@heroicons/react/20/solid'
-import Link from 'next/link'
+import { CreditCardIcon, XMarkIcon } from '@heroicons/react/24/solid'
+
 
 interface CarrinhoProps {
   id: number | undefined;
@@ -14,9 +13,9 @@ interface CarrinhoProps {
 
 
 const paymentMethods = [
-  { id: 'cartao', title: 'Cartão' },
-  { id: 'pix', title: 'Pix' },
-  { id: 'dinheiro', title: 'Dinheiro' },
+  { id: 'cartao', title: 'Cartão'},
+  { id: 'pix', title: 'Pix'},
+  { id: 'dinheiro', title: 'Dinheiro'},
 ]
 
 
@@ -197,7 +196,7 @@ export default function CarrinhoComponent({id,servico, valor, formaEntrega,onSel
                   <legend className="sr-only">Payment type</legend>
                   <div className="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
                     {paymentMethods.map((paymentMethod, paymentMethodIdx) => (
-                      <div key={paymentMethod.id} className="flex items-center">
+                      <div key={paymentMethod.id} className="p-6 w-1/4 border rounded-md text-center">
                           <input
                             id={paymentMethod.id}
                             name="payment-type"
@@ -206,7 +205,7 @@ export default function CarrinhoComponent({id,servico, valor, formaEntrega,onSel
                             onChange={handlePaymentMethod}
                             className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500"
                           />
-                      
+                       
 
                         <label htmlFor={paymentMethod.id} className="ml-3 block text-sm font-medium text-gray-700">
                           {paymentMethod.title}

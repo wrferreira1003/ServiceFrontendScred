@@ -87,3 +87,58 @@ export interface InfoDataTypeRequests{
   FormaDePagamento?: string
 
 } 
+
+export const DadosSolicitanteType = {
+  nome: "",
+  email: "",
+  cpf: "",
+  telefone: "",
+};
+
+export const DadosAfiliacaoType = {
+  filiacao1: "",
+  filiacao2: "",
+};
+export const DadosConjugueType = {
+  conjugue1: "",
+  conjugue2: "",
+};
+
+export const DadosDtCasamentoType = {
+  DtCasamento: "",
+};
+export const DadosDtObitoType = {
+  DtObito: "",
+};
+
+export type ServicoType = {
+  id: number;
+  nome_servico: string;
+  tipo?: string;
+  preco: string;
+};
+
+export interface FormularioDadosEntrega {
+  option: string;
+}
+
+export interface FormularioCartorio {
+  cartorio: string;
+  cidadeCartorio: string;
+  estadoCartorio: string;
+}
+export interface FormularioDadosRegistro {
+  livro: string;
+  folha: string;
+  termo: string;
+}
+export interface DadosCarrinho {
+  id: number | undefined;
+  servico: string | undefined;
+  valor: string | undefined; // Assumindo que 'preco' é uma string. Caso contrário, altere o tipo conforme necessário.
+}
+export interface FormularioDivorcio{
+  temFilhosMenores: string;
+  temBens: string;
+  filhoIncapaz: string;
+}

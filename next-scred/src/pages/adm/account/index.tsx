@@ -1,7 +1,5 @@
 import {useState } from "react";
-import AdmAccount, {
-CreateUserData,
-} from "./componentes/AdmAccount/AdmAccount";
+import AdmAccount, { CreateUserData } from "./componentes/AdmAccount/AdmAccount";
 import PerfilDados from "./componentes/PerfilDados";
 import { GetServerSideProps } from "next";
 import { parseCookies } from "nookies";
@@ -9,13 +7,15 @@ import HeaderAdmAfiliado from "../componentes/HeaderAdmAfiliados";
 import { InfoDataType } from "@/types/Adm/types";
 import { api } from "@/services/api";
 import { getApiClient } from "@/services/apiservidor";
-import AfiliadoAccount from "./componentes/AfiliadoAccount/AfiliadoAccount";
+import AfiliadoAccount, { CreateUserDataAfiliado } from "./componentes/AfiliadoAccount/AfiliadoAccount";
 import PasswordValid from "../componentes/PasswordValid";
 import { toast } from "react-toastify";
+import UserLayoutAdm from "../User_layout";
 
 interface RequestProps {
   InfoData: InfoDataType;
 }
+
 
 export default function Request({ InfoData }: RequestProps) {
   const { nome, foto } = InfoData;
@@ -29,7 +29,25 @@ export default function Request({ InfoData }: RequestProps) {
   };
 
   //Funcao recebe os dados do componente filho para enviar ao servidor
-  const handleUpdateData = async (data: CreateUserData, id: number) => {
+  const handleUpdateData = async (data: CreateUserDataAfiliado, id: number) => {
+    const combinedData = {
+      ...data,
+      foto: selectedFile, // supondo que "image" seja a chave onde você quer armazenar a imagem no objeto de dados
+    };
+    try {
+      const response = await api.patch(`afiliado/${id}`, combinedData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      toast.success("Cadastro atualizado com sucesso.");
+    } catch (error) {
+      toast.error("Erro ao tentar atualizar.");
+    }
+  };
+
+  //Funcao recebe os dados do componente filho para enviar ao servidor dos ADM
+  const handleUpdateDataAdm = async (data: CreateUserData, id: number) => {
     const combinedData = {
       ...data,
       foto: selectedFile, // supondo que "image" seja a chave onde você quer armazenar a imagem no objeto de dados
@@ -47,9 +65,8 @@ export default function Request({ InfoData }: RequestProps) {
   };
 
   return (
-    <>
-      <HeaderAdmAfiliado />
-
+    <UserLayoutAdm texto="Cadastro Pessoal">
+  
       <div
         className="mx-auto flex w-full max-w-7xl flex-col items-start gap-x-8 
                     px-4 py-10 sm:px-6 lg:flex-row lg:px-8"
@@ -66,7 +83,7 @@ export default function Request({ InfoData }: RequestProps) {
         InfoData.user_type === 'ADMIN' ?
           <AdmAccount 
             infoData={InfoData} 
-            onUpdateData={handleUpdateData} 
+            onUpdateData={handleUpdateDataAdm} 
           /> 
         :
         InfoData.user_type === 'AFILIADO' ? 
@@ -84,7 +101,7 @@ export default function Request({ InfoData }: RequestProps) {
 
         </main>
       </div>
-    </>
+    </UserLayoutAdm>
   );
 }
 //Aqui estou fazendo verificaoes pelo lado do servidor next se existe o token

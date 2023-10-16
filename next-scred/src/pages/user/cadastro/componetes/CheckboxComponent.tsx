@@ -8,7 +8,7 @@ interface CheckboxProps {
 
 const CheckboxComponent: React.FC<CheckboxProps> = ({ name, validation }) => {
   return (
-    <div>
+    <div className='mt-10'>
       <h1>ATENÇÃO!</h1>
       <p className='mt-5'>É de inteira responsabilidade do usuário a inserção dos dados corretos no 
           formulário de cadastro sob pena de ser responsabilizado civil e criminalmente 

@@ -41,7 +41,6 @@ function classNames(...classes: any) {
 
 export default function AdmProcessos({user_type}: AdmProcessosProps) {
 
-  console.log(user_type)
  
   const [carregando, setCarregando] = useState<boolean>(false);
   const [dados, setDados] = useState<DadosType | undefined>(); // Estado para armazenar os dados
@@ -119,7 +118,6 @@ export default function AdmProcessos({user_type}: AdmProcessosProps) {
     });
   }
 
-  console.log(data)
 
   const status = dadosOrdenados[0]?.status || ''
 

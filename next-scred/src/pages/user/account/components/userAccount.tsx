@@ -3,12 +3,11 @@ import * as zod from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createUserSchema } from "../../../../lib/validationSchemas";
 import { useForm } from "react-hook-form";
-import { useRouter } from "next/router";
-import ButtonComponent from "@/componentesGeral/button";
 import { apipublic } from "@/services/apipublic";
 import { toast } from "react-toastify";
 import { AuthUserContext } from "@/context/AuthUserContext";
 import ResetPassword from "@/componentesGeral/ResetPassword";
+import ButtonToGoBack from "@/componentesGeral/ButtonVoltar";
 
 export const personaInfoSchema = createUserSchema.pick({
   cpf: true,
@@ -45,7 +44,7 @@ export default function UserAccountDetails() {
   const [emailCadastrado, setEmailCadastrado] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const router = useRouter()
+
   const {
     handleSubmit,
     register,
@@ -80,10 +79,6 @@ export default function UserAccountDetails() {
           setStep(step - 1);
       }
   };
-  const handleConfirm = () => {
-    router.push('/user/servicosOnline')
-  }
-
   
   //Validacao do CPF
   const validateCPF = (cpf: any) => {
@@ -183,7 +178,7 @@ export default function UserAccountDetails() {
       setValue('telefone2', userCliente.telefone2 || '');
       setValue('cep', userCliente.cep || '');
       setValue('logradouro', userCliente.logradouro || '');
-      setValue('numero', userCliente.numero || '');
+      setValue('numero', String(userCliente.numero || ''));
       setValue('complemento', userCliente.complemento || '');
       setValue('bairro', userCliente.bairro || '');
       setValue('cidade', userCliente.cidade || '');
@@ -230,11 +225,10 @@ export default function UserAccountDetails() {
   return (
 
     <div className="relative items-center justify-center ml-3 mr-3 mt-5">
-
-      <h1 className="text-center font-semibold text-4xl text-blue-900">Confirme seus dados</h1>
-            
-   
-
+      <div className="items-center flex justify-between">
+        <h1 className="text-center font-semibold text-4xl text-blue-900">Confirme seus dados</h1>
+        <ButtonToGoBack route='/user/requests'/>
+      </div>
     <div>
       <form onSubmit={handleSubmit(createUser)} action="">
         <div className="relative  items-center justify-center flex flex-col mb-10 mt-10">
@@ -439,7 +433,7 @@ export default function UserAccountDetails() {
               </label>
               <div className="mt-2">
               <input
-                type="numero"
+                type="text"
                 id='numero'
                 style={{ paddingLeft: '1rem', paddingRight: '1rem' }}
                 className="block w-full rounded-2xl border-0 px-5 py-2 text-base
@@ -559,12 +553,7 @@ export default function UserAccountDetails() {
 
         <div className="mx-auto max-w-3xl flex items-center justify-between z-50 mb-5">
       
-          <ButtonComponent
-            nome="VOLTAR"
-            onClick={handleConfirm} 
-            className=" border-blue-950 text-sm text-blue-950  
-                        hover:bg-yellow-400 hover:border-yellow-400 hover:text-white"
-          />
+        
         
           <button
             disabled={loading}
@@ -575,7 +564,9 @@ export default function UserAccountDetails() {
           </button>
         </div>
         </form>
+        
         <ResetPassword/>
+        
       
     </div>    
   </div>

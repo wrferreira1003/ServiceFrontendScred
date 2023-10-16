@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as zod from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createUserSchema } from "../../lib/validationSchemas";
+import { createUserSchema } from "@/lib/validationSchemas";
+
 
 const personalSchema = createUserSchema.pick({
   livro: true,
@@ -11,11 +12,11 @@ const personalSchema = createUserSchema.pick({
 });
 
 //Criando a typagem a partir do Schema de validação
-type CreateUserData = zod.infer<typeof personalSchema>;
+export type CreateUserDataDadosRegistro = zod.infer<typeof personalSchema>;
 
 interface FormularioCartorioProps {
-  handleFormDataDadosRegistro: (data: CreateUserData) => void;
-  formDataDadosRegistro: CreateUserData | null;
+  handleFormDataDadosRegistro: (data: CreateUserDataDadosRegistro) => void;
+  formDataDadosRegistro: CreateUserDataDadosRegistro | null;
   setValidateAndSave: React.Dispatch<
     React.SetStateAction<(() => Promise<boolean>) | null>
   >;
@@ -31,7 +32,7 @@ export default function DadosDoRegistro({
     formState: { errors },
     trigger,
     getValues,
-  } = useForm<CreateUserData>({
+  } = useForm<CreateUserDataDadosRegistro>({
     resolver: zodResolver(personalSchema),
     defaultValues: {
       livro: formDataDadosRegistro ? formDataDadosRegistro.livro : "",

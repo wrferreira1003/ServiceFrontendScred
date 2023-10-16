@@ -11,11 +11,11 @@ const personalSchema = createUserSchema.pick({
 });
 
 //Criando a typagem a partir do Schema de validação
-type CreateUserData = zod.infer<typeof personalSchema>;
+export type CreateUserDataCartorio = zod.infer<typeof personalSchema>;
 
 interface FormularioCartorioProps {
-  handleFormDataChangeCartorio: (data: CreateUserData) => void;
-  formDataCartorio: CreateUserData | null;
+  handleFormDataChangeCartorio: (data: CreateUserDataCartorio) => void;
+  formDataCartorio: CreateUserDataCartorio | null;
   setValidateAndSave: React.Dispatch<
     React.SetStateAction<(() => Promise<boolean>) | null>
   >;
@@ -31,7 +31,7 @@ export default function CartorioAutenticacao({
     formState: { errors },
     trigger,
     getValues,
-  } = useForm<CreateUserData>({
+  } = useForm<CreateUserDataCartorio>({
     resolver: zodResolver(personalSchema),
     defaultValues: {
       cartorio: formDataCartorio ? formDataCartorio.cartorio : "",
@@ -60,7 +60,7 @@ export default function CartorioAutenticacao({
     <div className=" w-full">
       <form action="">
         <h2
-          className="mt-10 text-lg font-semibold
+          className="mt-5 text-lg font-semibold
                        leading-7 text-gray-900"
         >
           Dados do Cartório
@@ -75,7 +75,7 @@ export default function CartorioAutenticacao({
               htmlFor="cartorio"
               className="block text-sm font-medium leading-6 text-gray-900"
             >
-              Cartório que tem firma reconhecida
+              Cartório
             </label>
             <div className="mt-2">
               <input

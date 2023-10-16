@@ -6,6 +6,7 @@ import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { useState } from "react";
 import ModalProcessosUser from "./modalProcessosUser";
+import ButtonComponent from "@/componentesGeral/button";
 
 
 const statuses = {
@@ -40,21 +41,13 @@ export default function UserPedidos(dados:DadosType) {
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div className="mb-6 mt-8 flex items-start justify-between">
         <h1>Processos em Andamento</h1>
-
-        <button
-          onClick={() =>{
-            router.push('/servicosOnline');
-          }}
-          type="button"
-          className="inline-flex items-center gap-x-2 rounded-md bg-indigo-600 
-                  px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 
-                  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
-                 focus-visible:outline-indigo-600"
-        >
-          <CheckCircleIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
-          Nova Solicitação
-        </button>
+        <ButtonComponent
+                  nome='Nova Solicitação'
+                  onClick={() => {router.push(`/user/newservice`)}}
+                  />
+        
       </div>
+      
       <ul role="list" className="bg-slate-50 divide-y divide-gray-300">
        {
         dados && dados.dados ?  
@@ -105,21 +98,21 @@ export default function UserPedidos(dados:DadosType) {
             </div>
             
             <div className="mr-5 flex flex-none items-center gap-x-4">
-              {item.status === 'Ajustar documentação' && (
+              
               <button
                 onClick={() => {
                   if (item.id !== undefined) {
                     handleOpenModal(item.id);
                   }
                 } }
-                className="hidden rounded-md bg-red-400 px-2.5 py-1.5 text-sm 
+                className="hidden rounded-md bg-red-200 px-2.5 py-1.5 text-sm 
                           font-semibold text-white shadow-sm ring-1 ring-inset 
                           ring-gray-300 hover:bg-red-700 sm:block"
               >
                 Editar Contrato<span className="sr-only">, </span>
               
               </button>
-              )}
+             
               <Link
                 href={`https://wa.me/${item.afiliado?.telefone}`}
                 target="_blank"

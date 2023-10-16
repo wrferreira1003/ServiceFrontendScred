@@ -1,4 +1,4 @@
-import { FileData } from "@/pages/servicosOnline/atanotarial/components/NovoServicoGeral";
+import { FileData } from "@/types/Hred/types";
 
 interface UploadDocumentosProps {
   fileState: FileData[];

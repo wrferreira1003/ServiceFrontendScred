@@ -2,8 +2,9 @@ import { Fragment, useEffect, useState } from 'react'
 import { Dialog } from '@headlessui/react'
 import { InfoDataTypeRequests } from '@/types/Adm/types';
 import { apipublic } from '@/services/apipublic';
-import DynamicForm from './DynamicForm';
 import { downloadWord } from '@/componentesGeral/downloadWord';
+import DynamicFormUser from '@/componentesGeral/DinamicFormUser';
+import { useApi } from '@/hooks/useApi';
 
 interface ModalProps {
   isOpen: boolean;
@@ -22,46 +23,48 @@ export default function ModalProcessos({isOpen, onClose, processId}:ModalProps) 
   const [processData, setProcessData] = useState<DadosType | undefined>();
   const [isLoading, setIsLoading] = useState(false);
 
-
+  const { data, mutate } = useApi(`deleterequest/${processId}`);
   useEffect(() => {
-    if (processId) {
-      setIsLoading(true);
-      apipublic
-        .get(`deleterequest/${processId}`)
-        .then((response) => {
-          setProcessData(response.data);
-          setIsLoading(false) 
-        })
-        .catch((error) => {
-          console.error(error);
-        })
-        .finally(() => {
-          setIsLoading(false);
-        });
-    } else {
-      setIsLoading(false);
+    if(data){
+      setProcessData(data)
     }
-  }, [processId]);
+  }, [data, processId]);
 
-  
-  console.log(processData)
+  // Função para excluir um documento de processData
+  const handleDeleteDocument = (docId: number) => {
+    setProcessData(prevData => {
+      if (!prevData) return prevData;
+      // @ts-ignore
+      if (!prevData || !prevData.documentos) return prevData;
+      
+      return {
+        ...prevData,
+        // @ts-ignore
+        documentos: prevData.documentos.filter(documento => documento.id !== docId)
+      };
+    });
+  };
 
   return (
     <>
     {isOpen && (
       <Fragment>
-        <Dialog as="div" className="relative z-10" open={isOpen} onClose={setOpen}>
+        <Dialog as="div" className="relative z-50" open={isOpen} onClose={setOpen}>
           <div className="fixed inset-0 bg-gray-500 bg-opacity-75" />
           <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
             <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
               <Dialog.Panel className="relative transform overflow-hidden rounded-lg
-                 bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all 
+                 bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all mt-16 mb-5
                  w-3/5 h-4/5 sm:max-w-3xl ">
                 <div>
                   {!isLoading && processData && (
-                    <DynamicForm 
+                    <DynamicFormUser 
                       processData={processData} 
                       processId={processId}
+                      onDeleteDocument = {handleDeleteDocument}
+                      onClose = {onClose}
+                      setProcessData =  {setProcessData}
+                      mutate={mutate}
                     />
                   )}
                 </div>

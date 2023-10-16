@@ -15,7 +15,6 @@ interface FormularioSolicitacaoProps {
   >;
 }
 
-
 export default function TipoDeEntrega({ handleFormDataChangeEntrega, //Funcao que recebe os dados
                                         setValidateAndSave,}:FormularioSolicitacaoProps) {
 
@@ -50,11 +49,17 @@ export default function TipoDeEntrega({ handleFormDataChangeEntrega, //Funcao qu
 
   
   return (
+    <div className=" w-full">
     <form onSubmit={handleSubmit(createUser)}>
+      <h2
+          className="mt-5 text-lg font-semibold
+                       leading-7 text-gray-900"
+        >
+          Tipo de Entrega
+        </h2>
     <fieldset>
-      <legend className="sr-only"></legend>
-      <div className="space-y-5 mt-5">
-      <div className="ml-3 text-sm leading-6 mb-5 bg-blue-100 w-1/4 p-4 space-y-4">
+      <div className="mt-5">
+      <div className="text-sm leading-6 mb-5 bg-blue-100 p-4 space-y-4">
         <p className="text-gray-500">
           -Certidão Impressa está sujeita ao prazo de emissão de 5 dias úteis e prazo de entrega a ser calculado com base na 
           localização do endereço de entrega
@@ -113,6 +118,7 @@ export default function TipoDeEntrega({ handleFormDataChangeEntrega, //Funcao qu
       </div>
     </fieldset>
     </form>
+    </div>
   )
 }
 

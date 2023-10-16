@@ -41,10 +41,7 @@ export default function FacaSeuCadastro() {
           />
           <p className="mt-6 text-lg leading-8 text-gray-600">
             O cadastro permite a utilização deste Portal e requer acesso com login e senha. 
-            Alguns serviços exigem o uso do Certificado Digital ICP-Brasil. 
-            No primeiro acesso o usuário deverá preencher o cadastro. 
-            Os dados serão utilizados para emissão de boleto bancário, 
-            nota fiscal, eventuais comunicações, bem como a devolução de saldos existentes. 
+            No primeiro acesso o usuário deverá preencher o cadastro e confirmar no email cadastrado o acesso. 
             Todos os dados e transações estão absolutamente protegidos, 
             de conformidade com nossa Política de Privacidade.
           </p>              

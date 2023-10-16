@@ -6,6 +6,7 @@ import { InfoDataType } from "@/types/Adm/types";
 import AdmProcessos from "./components/AdmProcessos/AdmProcessos";
 import AfiliadoProcessos from "./components/AfiliadoProcessos/AfiliadoProcessos";
 import BannerComponentsGeral from "@/componentesGeral/BannerComponentsGeral";
+import UserLayoutAdm from "../User_layout";
 
 export interface RequestProps {
   InfoData: InfoDataType;
@@ -15,25 +16,20 @@ export default function Request({ InfoData }: RequestProps) {
   const user_type: string = InfoData.user_type
   
   return (
-    <>
-    <HeaderAdmAfiliado />
-    <BannerComponentsGeral 
-    texto="Propostas em Andamento"
-    />
-           
-     {
-        InfoData.user_type === 'ADMIN' ? 
-        <>
-        {console.log(InfoData.user_type)}
-          <AdmProcessos user_type = {user_type} /> 
-        </>
-        :
-        InfoData.user_type === 'AFILIADO' ? 
-          < AfiliadoProcessos/> 
-        :
-        null
-      }
-    </>
+    <UserLayoutAdm texto="Propostas em Andamento">
+            
+      {
+          InfoData.user_type === 'ADMIN' ? 
+          <>
+            <AdmProcessos user_type = {user_type} /> 
+          </>
+          :
+          InfoData.user_type === 'AFILIADO' ? 
+            < AfiliadoProcessos/> 
+          :
+          null
+        }
+    </UserLayoutAdm>
   );
 }
 //Aqui estou fazendo verificaoes pelo lado do servidor next se existe o token

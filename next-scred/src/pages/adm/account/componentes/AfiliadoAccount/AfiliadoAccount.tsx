@@ -1,5 +1,4 @@
 import { createUserSchema } from "@/lib/validationSchemas";
-import { api } from "@/services/api";
 import { InfoDataType } from "@/types/Adm/types";
 import { ArrowLongLeftIcon } from "@heroicons/react/24/solid";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,7 +8,7 @@ import * as zod from "zod";
 
 interface ChildComponentProps {
   infoData: InfoDataType;
-  onUpdateData: (data: CreateUserData, id: number) => void;
+  onUpdateData: (data: CreateUserDataAfiliado, id: number) => void;
 }
 
 const personalSchema = createUserSchema.pick({
@@ -23,11 +22,10 @@ const personalSchema = createUserSchema.pick({
   cnpj: true,
   user_type: true,
   bairro: true,
-  cpf: true,
 });
 
 //Typagem para o zood a partir das validacoes ja existente na pasta lib
-export type CreateUserData = zod.infer<typeof personalSchema>;
+export type CreateUserDataAfiliado = zod.infer<typeof personalSchema>;
 
 export default function AdmAccount({
   infoData,
@@ -44,14 +42,16 @@ export default function AdmAccount({
     cep,
     user_type,
     cnpj,
-    bairro
+    bairro,
   } = infoData || {};
 
   const {
     register,
     formState: { errors },
     handleSubmit,
-  } = useForm<CreateUserData>({
+    watch,
+    setValue,
+  } = useForm<CreateUserDataAfiliado>({
     resolver: zodResolver(personalSchema),
     defaultValues: {
       nome: nome,
@@ -67,11 +67,12 @@ export default function AdmAccount({
     },
   });
 
-  const onSubmitData = async (data: CreateUserData) => {
+  const onSubmitData = async (data: CreateUserDataAfiliado) => {
     if (onUpdateData) {
       onUpdateData(data, id);
     }
   };
+  
 
   return (
     <form onSubmit={handleSubmit(onSubmitData)}>
@@ -84,7 +85,7 @@ export default function AdmAccount({
             </h2>
 
             <Link
-                href={'/adm/home'}
+                href={'/adm/request'}
                 type="button"
                 className="inline-flex items-center gap-x-2 rounded-md bg-indigo-600 
                     px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 

@@ -14,8 +14,6 @@ interface RequestProps {
 }
 
 export default function HomeAfiliado({ InfoData }: RequestProps) {
-  const router = useRouter();
-  const { user } = useContext(AuthContext);
 
   return (
     <>

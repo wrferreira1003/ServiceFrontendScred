@@ -9,6 +9,8 @@ import ButtonComponent from "@/componentesGeral/button";
 import axios from "axios";
 import { apipublic } from "@/services/apipublic";
 import { toast } from "react-toastify";
+import SelectAfiliado from "./SelectAfiliado";
+import FooterUser from "../../register/componentes/FooterUser";
 
 export const personaInfoSchema = createUserSchema.pick({
   cpf: true,
@@ -48,8 +50,15 @@ export default function FormUser() {
   const [emailCadastrado, setEmailCadastrado] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [loading, setLoading] = useState(false);
-
+  const [idAfiliado, setIdAfiliado] = useState<number | null>(null);
   const router = useRouter()
+
+
+  const handleAfiliadoID = (id:number) => {
+    console.log(id)
+    setIdAfiliado(id)
+  }
+
   const {
     handleSubmit,
     register,
@@ -224,6 +233,7 @@ export default function FormUser() {
 
     if (step === 3) {
       setLoading(true);
+      
       const register = {
       nome: data.nome,
       cpf: data.cpf,
@@ -237,11 +247,14 @@ export default function FormUser() {
       estado: data.estado,
       numero: data.numero,
       telefone: data.telefone,
-      telefone2: data.telefone2
+      telefone2: data.telefone2,
+      afiliado: idAfiliado
       }
+
       apipublic.post('register/', register)
         .then(response => {
           toast.success('Cadastro enviado com Sucesso, receberá um email para confirmação!')
+          router.push('/user/acess')
           setLoading(false);
         })
         .catch(error => {
@@ -282,6 +295,8 @@ export default function FormUser() {
       <form onSubmit={handleSubmit(createUser)} action="">
         <div className="relative  items-center justify-center flex flex-col mb-10 mt-10">
           {step === 1 && (
+            <>
+            <FooterUser/>
             <div className="mx-auto w-full max-w-4xl">
               <label
                   htmlFor="nome"
@@ -307,6 +322,7 @@ export default function FormUser() {
          
               </div>
         </div>
+        </>
           )}
         
           {step === 2 && (
@@ -678,14 +694,17 @@ export default function FormUser() {
           )}
           </div>
            
-        <div className="mx-auto mt-10 max-w-3xl flex items-center justify-between"> 
+        <div className="mx-auto mt-5 max-w-3xl flex items-center justify-between"> 
           {step === 3 && (
-            <CheckboxComponent
-              name="terms"
-              validation={{
-              required: "Você deve concordar com os termos para continuar."
-              }}
-              />
+            <div>
+              <SelectAfiliado onAfiliadoSelect={handleAfiliadoID}/>
+              <CheckboxComponent
+                name="terms"
+                validation={{
+                required: "Você deve concordar com os termos para continuar."
+                }}
+                />
+            </div>
             )}
           
         </div>  
@@ -731,8 +750,10 @@ export default function FormUser() {
           {step === 3 && (
             <button
               disabled={loading}
-              className="mt-2 border-2 bg-blue-500 border-blue-500 text-sm text-white p-2 rounded-2xl 
-                          w-40 h-12 hover:bg-yellow-400 hover:border-yellow-400 hover:text-white"
+              className="border-2 rounded-md w-40 h-12 p-2 inline-flex items-center justify-center gap-x-2 bg-indigo-600 
+              px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
+             focus-visible:outline-indigo-600 mt-2  border-blue-500   
+             hover:bg-yellow-400 hover:border-yellow-400 hover:text-white"
             >
               {loading ? 'Carregando...' : 'SALVAR'}
             </button>

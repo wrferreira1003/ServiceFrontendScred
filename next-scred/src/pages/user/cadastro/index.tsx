@@ -8,10 +8,9 @@ export default function UserFomaulario(){
     <>
       
       <Header />
-      <div className="mt-24">
-        <FooterUser/>
-      </div>
-        <FormUser />
+        <div className="mt-36">
+        </div>
+      <FormUser />
       
     </>
   )

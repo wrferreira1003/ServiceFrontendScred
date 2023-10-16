@@ -6,6 +6,7 @@ import { createUserSchema } from "../../lib/validationSchemas";
 import { AuthUserContext } from "@/context/AuthUserContext";
 import axios from "axios";
 import { apipublic } from "@/services/apipublic";
+import { AuthContext } from "@/context/AuthContext";
 
 const personalInfoSchema = createUserSchema.pick({
   nome: true,
@@ -41,6 +42,9 @@ export default function DadosPessoasCertidao({
   handleFormDataChange, //Funcao que recebe os dados
   setValidateAndSave,
 }: FormularioSolicitacaoProps) {
+
+  const {userCliente} = useContext(AuthUserContext)
+  const {user} = useContext(AuthContext)
   const [message, setMessage] = useState("");
   const {
     handleSubmit,
@@ -123,9 +127,19 @@ export default function DadosPessoasCertidao({
     }
   }, [cep, setValue]);
 
-  //funcao que tras as informacoes do Endereco na API Viacep
-  const cpf = watch('cpf');
+  useEffect(() => {
+    // Quando o componente renderizar, verifique se o user e userCliente estão definidos
+    if (
+      (user && user.user_type !== "Afiliado" || !user) && 
+      userCliente && 
+      userCliente.cpf) {
+      // Se não for um afiliado, atualize o CPF para o CPF do usuário
+      setValue('cpf', userCliente.cpf);
+    }
+  }, [setValue, user, userCliente]);
 
+
+  const cpf = watch('cpf');
   useEffect(() => {
     if (cpf && cpf.length === 11) {
       apipublic.get(`listcpf/${cpf}/`)
@@ -150,7 +164,7 @@ export default function DadosPessoasCertidao({
     }
   }, [cpf, setValue]);
 
-
+ 
   return (
     <div className=" w-full">
       <form onSubmit={handleSubmit(createUser)} action="">
@@ -170,8 +184,9 @@ export default function DadosPessoasCertidao({
             >
               CPF
             </label>
-            <div className="mt-3">
+            <div className="mt-2">
               <input
+                disabled={user?.user_type !== "AFILIADO"}
                 id="cpf"
                 type="cpf"
                 className="block w-full rounded-md border-0 px-1 py-1.5 text-gray-900 shadow-sm ring-1
@@ -198,6 +213,7 @@ export default function DadosPessoasCertidao({
             </label>
             <div className="mt-2">
               <input
+                disabled={user?.user_type !== "AFILIADO"}
                 type="text"
                 id="nome"
                 className="block w-full rounded-md border-0 px-1 py-1.5
@@ -222,6 +238,7 @@ export default function DadosPessoasCertidao({
             </label>
             <div className="mt-2">
               <input
+                disabled={user?.user_type !== "AFILIADO"}
                 type="text"
                 id="email"
                 className="block w-full rounded-md border-0 px-1 py-1.5 text-gray-900
