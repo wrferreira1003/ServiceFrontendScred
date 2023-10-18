@@ -1,8 +1,6 @@
 import { useContext, useState } from "react";
-import CartorioAutenticacao from "@/componentesGeral/fomulario/cartorioReconhecimento";
 import LoadingIndicator from "@/componentesGeral/LoadingIndicator";
 import EnviarFormularioModal from "@/componentesGeral/enviarFormularioModal";
-import TipoDeEntrega from "@/componentesGeral/fomulario/TipodeEntrega";
 import { AuthContext } from "@/context/AuthContext";
 import ComponetsResumo from "../../components/ComponentsResumo";
 import { apipublic } from "@/services/apipublic";
@@ -22,6 +20,7 @@ import DivorcioComponets, { CreateUserDataDovorcio } from "@/componentesGeral/fo
 import EstadoCidadeComponet, { CreateUserDataCidade } from "@/componentesGeral/fomulario/NovosPequenosComponents/EstadoCidade";
 import UploadDocumentos from "@/componentesGeral/fomulario/uploadDocumentos/uploadDocumentos";
 import { FileData, combineData } from "@/types/Hred/types";
+import BannerInformeComponents from "@/componentesGeral/BannerInformes";
 
 const notificationMethods = ConsolidadoServicos.filter(
   method => method.id === 'CertidaoNascimento' || method.categoria === 'Divórcio extrajudicial'
@@ -384,6 +383,11 @@ export default function DivorcioExtraJudicial() {
               <p className="text-gray-500">{step}</p>
             </div>
           ))}
+        </div>
+        <div>
+        <BannerInformeComponents
+            texto="Caso seja Divorcio Judicial, Por Favor, Chamar no WhatsApp."
+            />
         </div>
         {currentStep === 1 && (
           <>

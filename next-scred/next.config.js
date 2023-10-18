@@ -8,6 +8,7 @@ const nextConfig = {
       "tailwindui.com",
       "github.com",
       "127.0.0.1",
+      'rcfacil.cloud',
     ],
   },
 };

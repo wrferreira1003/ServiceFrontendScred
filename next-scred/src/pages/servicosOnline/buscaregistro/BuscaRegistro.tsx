@@ -1,5 +1,4 @@
 import { useContext, useState } from "react";
-import CartorioAutenticacao from "@/componentesGeral/fomulario/cartorioReconhecimento";
 import LoadingIndicator from "@/componentesGeral/LoadingIndicator";
 import EnviarFormularioModal from "@/componentesGeral/enviarFormularioModal";
 import TipoDeEntrega from "@/componentesGeral/fomulario/TipodeEntrega";
@@ -19,6 +18,7 @@ import TermoCondicoes from "@/componentesGeral/TermoCondicoes";
 import RecadoSolicitacao from "./components/recadoComponet";
 import { ConsolidadoServicos } from "@/types/TodosServicos";
 import TextAreaComponents from "@/componentesGeral/fomulario/NovosPequenosComponents/TextAreaComponets";
+import CartorioAutenticacao from "@/componentesGeral/fomulario/NovosPequenosComponents/cartorioReconhecimento";
 
 const notificationMethods = ConsolidadoServicos.filter(
   method => method.id === 'CertidaoNascimento' || method.categoria === 'Busca Registro'
@@ -348,7 +348,6 @@ export default function BuscaRegistro() {
             />
           </>
         )}
-        
         {currentStep === 5 && (
           <>
             <TextAreaComponents

@@ -1,5 +1,6 @@
 import axios from 'axios'
+import { api_servidor } from './url';
 
 export const apipublic = axios.create({
-  baseURL: 'http://127.0.0.1:8000/api/',
+  baseURL: api_servidor,
 });

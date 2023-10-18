@@ -16,7 +16,7 @@ type useData = {
   cidade: string;
   estado: string;
   cep: string;
-  avatar: string;
+  foto: string;
   user_type: string;
 };
 type signInData = {
@@ -123,11 +123,17 @@ export function AuthProvider({ children }: any) {
       api.defaults.headers["authorization"] = `Bearer ${token}`;
 
       //Aqui eu guardo os dados do usuario para utilizar na aplicacao
-      setUser(user)
+      setUser(response.data.afiliado)
       onUserChanged()
+      console.log(response.data.afiliado.user_type)
       //Redirecionando caso tenha dado certo
+      if(response.data.afiliado.user_type === 'ADMIN'){
       Router.push("/adm/request");
-          } catch (error) {
+      }else {
+        Router.push("/assoc")
+      }
+
+      } catch (error) {
       if (error && typeof error === "object" && "response" in error) {
         const responseData = (error.response as { data: { error: string } })
           .data;

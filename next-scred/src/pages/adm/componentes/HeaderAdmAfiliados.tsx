@@ -24,25 +24,9 @@ interface IAfiliado {
 export default function HeaderAdmAfiliado() {
 
   const router = useRouter();
-  const { signOut } = useContext(AuthContext);
-  const [afiliadoData, setAfiliadoData] = useState<IAfiliado | null>(null);
+  const { signOut, user } = useContext(AuthContext);
+  const { foto, nome, email, user_type } = user || {};
 
-  //Assim que usuario fazer login eu faco uma requisao dos dados ao meu backend
-  useEffect(() => {
-    async function fetchAfiliado() {
-      try {
-        const response = await api.get("afiliado");
-        setAfiliadoData(response.data);
-      } catch (error) {
-        console.error("Erro ao buscar dados do afiliado:", error);
-      }
-    }
-    fetchAfiliado();
-  }, []);
-
-  const { foto, nome, email, user_type } = afiliadoData || {};
-
-  console.log(user_type)
   const navigation = [
     {name: "Propostas",href: "/adm/request",current: router.pathname === "/request",},
     {name: "Afiliados", href: "/adm/signup", current: router.pathname === "/signup", visible: user_type === 'ADMIN' },

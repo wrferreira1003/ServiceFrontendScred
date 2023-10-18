@@ -1,12 +1,13 @@
 import axios from 'axios'
 import { parseCookies } from 'nookies'
 import Router from 'next/router'
+import { api_servidor } from './url';
 
 export function getApiClientUser(ctx?: any) {
   const { tokenUser: token } = parseCookies(ctx); // Pegando o token do usuário
   
   const apiuser = axios.create({
-    baseURL: 'http://127.0.0.1:8000/api/',
+    baseURL: api_servidor,
   });
 
   if (token) {

@@ -1,0 +1,1 @@
+export const api_servidor = 'https://rcfacil.cloud/api/'

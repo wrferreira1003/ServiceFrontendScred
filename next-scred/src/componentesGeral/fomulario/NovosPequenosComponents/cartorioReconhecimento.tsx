@@ -1,28 +1,27 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import * as zod from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createUserSchema } from "../../lib/validationSchemas";
+import { createUserSchema } from "@/lib/validationSchemas";
 
 const personalSchema = createUserSchema.pick({
   cartorio: true,
-  estadolivro: true,
-  livro: true,
-  folha: true,
+  cidadeCartorio: true,
+  estadoCartorio: true,
 });
 
 //Criando a typagem a partir do Schema de validação
-type CreateUserData = zod.infer<typeof personalSchema>;
+export type CreateUserDataCartorio = zod.infer<typeof personalSchema>;
 
 interface FormularioCartorioProps {
-  handleFormDataChangeCartorio: (data: CreateUserData) => void;
-  formDataCartorio: CreateUserData | null;
+  handleFormDataChangeCartorio: (data: CreateUserDataCartorio) => void;
+  formDataCartorio: CreateUserDataCartorio | null;
   setValidateAndSave: React.Dispatch<
     React.SetStateAction<(() => Promise<boolean>) | null>
   >;
 }
 
-export default function DadosCartorio({
+export default function CartorioAutenticacao({
   handleFormDataChangeCartorio,
   formDataCartorio,
   setValidateAndSave,
@@ -32,13 +31,12 @@ export default function DadosCartorio({
     formState: { errors },
     trigger,
     getValues,
-  } = useForm<CreateUserData>({
+  } = useForm<CreateUserDataCartorio>({
     resolver: zodResolver(personalSchema),
     defaultValues: {
       cartorio: formDataCartorio ? formDataCartorio.cartorio : "",
-      estadolivro: formDataCartorio ? formDataCartorio.estadolivro : "",
-      livro: formDataCartorio ? formDataCartorio.livro : "",
-      folha: formDataCartorio ? formDataCartorio.folha : "",
+      cidadeCartorio: formDataCartorio ? formDataCartorio.cidadeCartorio : "",
+      estadoCartorio: formDataCartorio ? formDataCartorio.estadoCartorio : "",
     },
   });
 
@@ -58,12 +56,11 @@ export default function DadosCartorio({
     setValidateAndSave(() => validateAndSave);
     //eslint-disable-next-line
   }, []);
-
   return (
     <div className=" w-full">
       <form action="">
         <h2
-          className="mt-10 text-lg font-semibold
+          className="mt-5 text-lg font-semibold
                        leading-7 text-gray-900"
         >
           Dados do Cartório
@@ -78,7 +75,7 @@ export default function DadosCartorio({
               htmlFor="cartorio"
               className="block text-sm font-medium leading-6 text-gray-900"
             >
-              Cartorio
+              Cartório
             </label>
             <div className="mt-2">
               <input
@@ -103,7 +100,7 @@ export default function DadosCartorio({
               htmlFor="estadolivro"
               className="block text-sm font-medium leading-6 text-gray-900"
             >
-              Estado
+              Estado do cartório
             </label>
             <div className="mt-2">
               <input
@@ -113,11 +110,11 @@ export default function DadosCartorio({
                 className="block w-full rounded-md border-0 px-1 py-1.5 text-gray-900 shadow-sm ring-1
                                  ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 
                                  focus:ring-indigo-600 first-letter:first-line:marker:selection:focus:ring-inset sm:text-sm sm:leading-6"
-                {...register("estadolivro")}
+                {...register("estadoCartorio")}
               />
-              {errors.estadolivro && (
+              {errors.estadoCartorio && (
                 <p className="mt-2 text-sm text-red-500">
-                  {errors.estadolivro.message}
+                  {errors.estadoCartorio.message}
                 </p>
               )}
             </div>
@@ -128,46 +125,21 @@ export default function DadosCartorio({
               htmlFor="livro"
               className="block text-sm font-medium leading-6 text-gray-900"
             >
-              Livro
+              Cidade do Cartório
             </label>
             <div className="mt-2">
               <input
                 type="text"
                 id="livro"
-                placeholder="Digite o livro"
+                placeholder="Digite a Cidade"
                 className="block w-full rounded-md border-0 px-1 py-1.5 text-gray-900 shadow-sm ring-1
                                  ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 
                                  focus:ring-indigo-600 first-letter:first-line:marker:selection:focus:ring-inset sm:text-sm sm:leading-6"
-                {...register("livro")}
+                {...register("cidadeCartorio")}
               />
-              {errors.livro && (
+              {errors.cidadeCartorio && (
                 <p className="mt-2 text-sm text-red-500">
-                  {errors.livro.message}
-                </p>
-              )}
-            </div>
-          </div>
-
-          <div className="sm:col-span-3">
-            <label
-              htmlFor="folha"
-              className="block text-sm font-medium leading-6 text-gray-900"
-            >
-              Folha
-            </label>
-            <div className="mt-2">
-              <input
-                type="text"
-                id="folha"
-                placeholder="Digite a folha"
-                className="block w-full rounded-md border-0 px-1 py-1.5 text-gray-900 shadow-sm ring-1
-                                 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 
-                                 focus:ring-indigo-600 first-letter:first-line:marker:selection:focus:ring-inset sm:text-sm sm:leading-6"
-                {...register("folha")}
-              />
-              {errors.folha && (
-                <p className="mt-2 text-sm text-red-500">
-                  {errors.folha.message}
+                  {errors.cidadeCartorio.message}
                 </p>
               )}
             </div>

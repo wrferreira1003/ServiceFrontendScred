@@ -1,5 +1,4 @@
 import { useContext, useState } from "react";
-import CartorioAutenticacao, { CreateUserDataCartorio } from "@/componentesGeral/fomulario/cartorioReconhecimento";
 import LoadingIndicator from "@/componentesGeral/LoadingIndicator";
 import EnviarFormularioModal from "@/componentesGeral/enviarFormularioModal";
 import TipoDeEntrega from "@/componentesGeral/fomulario/TipodeEntrega";
@@ -20,6 +19,7 @@ import { FormularioDadosEntrega, ServicoType } from "@/types/Adm/types";
 import { ConsolidadoServicos } from "@/types/TodosServicos";
 import DadosAfiliacao, { CreateUserDataAfiliacao } from "@/componentesGeral/fomulario/NovosPequenosComponents/dadosAfiliacao";
 import TextAreaComponents from "@/componentesGeral/fomulario/NovosPequenosComponents/TextAreaComponets";
+import CartorioAutenticacao, { CreateUserDataCartorio } from "@/componentesGeral/fomulario/NovosPequenosComponents/cartorioReconhecimento";
 
 //Trazendo os servicos do consolidado filtrado
 const notificationMethods = ConsolidadoServicos.filter(

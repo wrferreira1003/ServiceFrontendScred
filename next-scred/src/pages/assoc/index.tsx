@@ -1,22 +1,21 @@
 import { parseCookies } from "nookies";
-import HeaderAdmAfiliado from "../componentes/HeaderAdmAfiliados";
 import { getApiClient } from "@/services/apiservidor";
 import { GetServerSideProps } from "next";
 import { InfoDataType } from "@/types/Adm/types";
-import AdmProcessos from "./components/AdmProcessos/AdmProcessos";
-import AfiliadoProcessos from "./components/AfiliadoProcessos/AfiliadoProcessos";
-import UserLayoutAdm from "../User_layout";
+import UserLayoutAdm from "../adm/User_layout";
+import AfiliadoProcessos from "../adm/request/components/AfiliadoProcessos/AfiliadoProcessos";
+
 
 export interface RequestProps {
   InfoData: InfoDataType;
 }
-export default function Request({ InfoData }: RequestProps) {
+export default function RequestAfiliado({ InfoData }: RequestProps) {
 
   const user_type: string = InfoData.user_type
   
   return (
     <UserLayoutAdm texto="Propostas em Andamento">
-            <AdmProcessos user_type = {user_type} /> 
+            < AfiliadoProcessos/> 
     </UserLayoutAdm>
   );
 }

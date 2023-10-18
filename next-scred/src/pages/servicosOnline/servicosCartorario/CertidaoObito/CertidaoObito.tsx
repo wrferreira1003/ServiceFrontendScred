@@ -1,5 +1,4 @@
 import { useContext, useState } from "react";
-import CartorioAutenticacao from "@/componentesGeral/fomulario/cartorioReconhecimento";
 import LoadingIndicator from "@/componentesGeral/LoadingIndicator";
 import EnviarFormularioModal from "@/componentesGeral/enviarFormularioModal";
 import TipoDeEntrega from "@/componentesGeral/fomulario/TipodeEntrega";
@@ -18,6 +17,7 @@ import { ConsolidadoServicos } from "@/types/TodosServicos";
 import { FormularioCartorio, FormularioDadosEntrega, FormularioDadosRegistro, ServicoType } from "@/types/Adm/types";
 import BuscaTipoRegistro from "@/componentesGeral/fomulario/NovosPequenosComponents/BuscaTipoRegistro";
 import TextAreaComponents from "@/componentesGeral/fomulario/NovosPequenosComponents/TextAreaComponets";
+import CartorioAutenticacao from "@/componentesGeral/fomulario/NovosPequenosComponents/cartorioReconhecimento";
 
 //Filtro as informacoes uqe mostro no primeiro steep
 const notificationMethods = ConsolidadoServicos.filter(
