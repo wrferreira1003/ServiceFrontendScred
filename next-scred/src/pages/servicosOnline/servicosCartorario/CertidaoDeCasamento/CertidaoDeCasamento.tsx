@@ -216,7 +216,7 @@ export default function CertidaoCasamento() {
         setShowModal(true);
         return response.data;
       } catch (error) {
-        console.error("Erro ao enviar os dados");
+        console.error("Erro ao enviar os dados", error);
         setIsLoading(false);
         toast.error('Erro ao enviar os dados');
         throw error;
